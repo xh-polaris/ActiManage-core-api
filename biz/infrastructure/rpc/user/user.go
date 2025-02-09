@@ -1,4 +1,4 @@
-package openapi_charge
+package user
 
 import (
 	"github.com/google/wire"
