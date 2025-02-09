@@ -124,9 +124,9 @@ func MerchantUpdateSetting(ctx context.Context, c *app.RequestContext) {
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
-// MerchantGetBookRecords .
+// MerchantListBookRecords .
 // @router /merchant/book/list [POST]
-func MerchantGetBookRecords(ctx context.Context, c *app.RequestContext) {
+func MerchantListBookRecords(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req core_api.MerchantListBookRecordsReq
 	err = c.BindAndValidate(&req)
@@ -136,7 +136,7 @@ func MerchantGetBookRecords(ctx context.Context, c *app.RequestContext) {
 	}
 
 	p := provider.Get()
-	resp, err := p.MerchantService.MerchantGetBookRecords(ctx, &req)
+	resp, err := p.MerchantService.MerchantListBookRecords(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 

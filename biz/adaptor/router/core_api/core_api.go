@@ -29,7 +29,7 @@ func Register(r *server.Hertz) {
 		}
 		{
 			_book := _merchant.Group("/book", _bookMw()...)
-			_book.POST("/list", append(_merchantgetbookrecordsMw(), core_api.MerchantGetBookRecords)...)
+			_book.POST("/list", append(_merchantlistbookrecordsMw(), core_api.MerchantListBookRecords)...)
 		}
 		{
 			_info := _merchant.Group("/info", _infoMw()...)
@@ -55,6 +55,10 @@ func Register(r *server.Hertz) {
 		{
 			_cos := _sts.Group("/cos", _cosMw()...)
 			_cos.POST("/apply", append(_stsapplysignedurlMw(), core_api.StsApplySignedUrl)...)
+		}
+		{
+			_verify := _sts.Group("/verify", _verifyMw()...)
+			_verify.POST("/send", append(_stssendverifycodeMw(), core_api.StsSendVerifyCode)...)
 		}
 	}
 	{

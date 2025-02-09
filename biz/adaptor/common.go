@@ -60,7 +60,7 @@ func PostProcess(ctx context.Context, c *app.RequestContext, req, resp any, err 
 	} else {
 		log.CtxError(ctx, "internal error, err=%s", err.Error())
 		code := hertz.StatusInternalServerError
-		c.String(code, hertz.StatusMessage(code))
+		c.String(code, err.Error())
 	}
 }
 

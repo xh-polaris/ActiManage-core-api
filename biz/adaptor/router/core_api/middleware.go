@@ -51,7 +51,7 @@ func _bookMw() []app.HandlerFunc {
 	return nil
 }
 
-func _merchantgetbookrecordsMw() []app.HandlerFunc {
+func _merchantlistbookrecordsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
@@ -287,6 +287,16 @@ func _settingsMw() []app.HandlerFunc {
 }
 
 func _getsettingMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _verifyMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _stssendverifycodeMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

@@ -21,6 +21,8 @@ type Config struct {
 	ListenOn      string
 	TimeThreshold int64
 	Auth          Auth
+	GLMKey        string
+	GLMModel      string
 }
 
 func NewConfig() (*Config, error) {

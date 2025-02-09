@@ -6,7 +6,7 @@ require (
 	github.com/cloudwego/hertz v0.9.3
 	github.com/cloudwego/thriftgo v0.3.17
 	github.com/google/wire v0.5.0
-	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250208094012-67e08d230a2c
+	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250209113411-8868f03cdcab
 	github.com/xh-polaris/gopkg v0.0.0-20231209130217-cd07835dcd83
 	github.com/zeromicro/go-zero v1.7.2
 	go.opentelemetry.io/contrib/propagators/b3 v1.20.0

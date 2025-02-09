@@ -43,3 +43,19 @@ func StsAIModify(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.StsService.StsAIModify(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// StsSendVerifyCode .
+// @router /sts/verify/send [POST]
+func StsSendVerifyCode(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.StsSendVerifyCodeReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(core_api.Response)
+
+	c.JSON(consts.StatusOK, resp)
+}
