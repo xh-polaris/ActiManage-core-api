@@ -3,30 +3,20 @@ module github.com/xh-polaris/ActiManage-core-api
 go 1.22.7
 
 require (
-	github.com/bytedance/gopkg v0.1.1
-	github.com/bytedance/sonic v1.12.2
-	github.com/cloudwego/hertz v0.9.3
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/cloudwego/thriftgo v0.3.17
 	github.com/google/wire v0.5.0
-	github.com/hertz-contrib/monitor-prometheus v0.0.0-20221109015426-47eab4e08245
-	github.com/hertz-contrib/obs-opentelemetry/tracing v0.4.1
-	github.com/jinzhu/copier v0.3.5
-	github.com/rabbitmq/amqp091-go v1.10.0
+	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250208094012-67e08d230a2c
 	github.com/xh-polaris/gopkg v0.0.0-20231209130217-cd07835dcd83
 	github.com/zeromicro/go-zero v1.7.2
-	go.mongodb.org/mongo-driver v1.16.1
-	go.opentelemetry.io/contrib/propagators/b3 v1.20.0
-	go.opentelemetry.io/otel v1.24.0
 	google.golang.org/grpc v1.68.0
-	google.golang.org/protobuf v1.35.1
 )
 
 require (
-	github.com/andeya/goutil v1.0.0 // indirect
 	github.com/apache/thrift v0.13.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bufbuild/protocompile v0.10.0 // indirect
-	github.com/bytedance/go-tagexpr/v2 v2.9.6 // indirect
+	github.com/bytedance/gopkg v0.1.1 // indirect
+	github.com/bytedance/sonic v1.12.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -36,22 +26,20 @@ require (
 	github.com/cloudwego/fastpb v0.0.5 // indirect
 	github.com/cloudwego/frugal v0.2.0 // indirect
 	github.com/cloudwego/gopkg v0.1.2 // indirect
+	github.com/cloudwego/hertz v0.9.3 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/cloudwego/kitex v0.11.3 // indirect
 	github.com/cloudwego/localsession v0.0.2 // indirect
 	github.com/cloudwego/netpoll v0.6.4 // indirect
 	github.com/cloudwego/runtimex v0.1.0 // indirect
-	github.com/cloudwego/thriftgo v0.3.17 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.23.0 // indirect
-	github.com/henrylee2cn/ameda v1.5.1 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/jhump/protoreflect v1.16.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -65,7 +53,6 @@ require (
 	github.com/modern-go/gls v0.0.0-20220109145502-612d0167dce5 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/nyaruka/phonenumbers v1.1.6 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
@@ -79,7 +66,9 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
-	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250208094012-67e08d230a2c // indirect
+	go.opentelemetry.io/contrib/propagators/b3 v1.20.0 // indirect
+	go.opentelemetry.io/contrib/propagators/ot v1.20.0 // indirect
+	go.opentelemetry.io/otel v1.24.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.17.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.24.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.24.0 // indirect
@@ -98,6 +87,7 @@ require (
 	golang.org/x/text v0.20.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241104194629-dd2ea8efbc28 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241104194629-dd2ea8efbc28 // indirect
+	google.golang.org/protobuf v1.35.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
