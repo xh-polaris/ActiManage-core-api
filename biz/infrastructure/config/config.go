@@ -18,11 +18,10 @@ type Auth struct {
 
 type Config struct {
 	service.ServiceConf
-	ListenOn      string
-	TimeThreshold int64
-	Auth          Auth
-	GLMKey        string
-	GLMModel      string
+	ListenOn string
+	Auth     Auth
+	GLMKey   string
+	GLMModel string
 }
 
 func NewConfig() (*Config, error) {

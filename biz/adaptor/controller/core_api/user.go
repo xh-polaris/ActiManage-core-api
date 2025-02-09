@@ -160,7 +160,7 @@ func CancelBookRecord(ctx context.Context, c *app.RequestContext) {
 // @router /user/book/list/activity [POST]
 func ListActivitiesByBookRecords(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req core_api.ListBookRecordsReq
+	var req core_api.ListActivitiesByBookRecordsReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
