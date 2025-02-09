@@ -66,28 +66,39 @@ func PostProcess(ctx context.Context, c *app.RequestContext, req, resp any, err 
 
 func makeResponse(resp any) map[string]any {
 	v := reflect.ValueOf(resp)
-	if v.Kind() == reflect.Struct {
-		// 构建返回数据
-		response := make(map[string]any, 3)
-		response["code"] = v.FieldByName("Code").Int()
-		response["msg"] = v.FieldByName("Msg").String()
+	if v.Kind() == reflect.Ptr {
+		v = v.Elem()
+		if v.Kind() == reflect.Struct {
+			// 构建返回数据
+			response := make(map[string]any, 3)
+			response["code"] = v.FieldByName("Code").Int()
+			response["msg"] = v.FieldByName("Msg").String()
 
-		if v.NumField() == 2 {
+			if v.NumField() == 2 {
+				return response
+			}
+
+			data := make(map[string]interface{}, v.NumField()-2)
+			for i := 0; i < v.NumField(); i++ {
+				field := v.Type().Field(i)
+				fieldValue := v.Field(i)
+				jsonTag := field.Tag.Get("json")
+				if field.Name == "code" || field.Name == "msg" {
+					continue
+				}
+				// 获取 json 标签名，空值则用字段名
+				if jsonTag == "" {
+					jsonTag = field.Name
+				}
+
+				// 过滤零值字段，避免返回不必要的字段
+				if !fieldValue.IsZero() {
+					data[jsonTag] = fieldValue.Interface()
+				}
+			}
+			response["data"] = data
 			return response
 		}
-
-		data := make(map[string]interface{}, v.NumField()-2)
-		for i := 0; i < v.NumField(); i++ {
-			field := v.Type().Field(i)
-			fieldValue := v.Field(i)
-			jsonTag := field.Tag.Get("json")
-			if field.Name == "code" || field.Name == "msg" {
-			} else {
-				data[jsonTag] = fieldValue.Interface()
-			}
-		}
-		response["data"] = data
-		return response
 	}
 	return nil
 }
