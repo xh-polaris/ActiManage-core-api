@@ -27,7 +27,7 @@ type ISystemService interface {
 
 type SystemService struct {
 	SystemRpc rpcsystem.IActiManageSystem
-	Config    config.Config
+	Config    *config.Config
 }
 
 var SystemServiceSet = wire.NewSet(

@@ -9,6 +9,8 @@ package provider
 import (
 	"github.com/xh-polaris/ActiManage-core-api/biz/application/service"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/config"
+	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/system"
+	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/user"
 )
 
 // Injectors from wire.go:
@@ -18,10 +20,29 @@ func NewProvider() (*Provider, error) {
 	if err != nil {
 		return nil, err
 	}
-	merchantService := service.MerchantService{}
+	client := system.NewActiManageSystem(configConfig)
+	actiManageSystem := &system.ActiManageSystem{
+		Client: client,
+	}
+	userserviceClient := user.NewActiManageUser(configConfig)
+	actiManageUser := &user.ActiManageUser{
+		Client: userserviceClient,
+	}
+	merchantService := service.MerchantService{
+		SystemRpc: actiManageSystem,
+		UserRpc:   actiManageUser,
+		Config:    configConfig,
+	}
 	stsService := service.StsService{}
-	systemService := service.SystemService{}
-	userService := service.UserService{}
+	systemService := service.SystemService{
+		SystemRpc: actiManageSystem,
+		Config:    configConfig,
+	}
+	userService := service.UserService{
+		UserRpc:   actiManageUser,
+		SystemRpc: actiManageSystem,
+		Config:    configConfig,
+	}
 	providerProvider := &Provider{
 		Config:          configConfig,
 		MerchantService: merchantService,

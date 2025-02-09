@@ -35,7 +35,7 @@ type IMerchantService interface {
 type MerchantService struct {
 	SystemRpc rpcsystem.IActiManageSystem
 	UserRpc   rpcuser.IActiManageUser
-	Config    config.Config
+	Config    *config.Config
 }
 
 var MerchantServiceSet = wire.NewSet(

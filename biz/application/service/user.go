@@ -39,7 +39,7 @@ type IUserService interface {
 type UserService struct {
 	UserRpc   rpcuser.IActiManageUser
 	SystemRpc rpcsystem.IActiManageSystem
-	Config    config.Config
+	Config    *config.Config
 }
 
 var UserServiceSet = wire.NewSet(
