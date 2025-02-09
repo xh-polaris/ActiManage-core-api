@@ -16,7 +16,7 @@ on:
 env:
   REGISTRY: docker.io
   USERNAME: xhpolaris
-  IMAGE_NAME: ActiManage-core-api
+  IMAGE_NAME: actimanage-core-api
 
 jobs:
   build:
