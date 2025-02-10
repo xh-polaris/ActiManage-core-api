@@ -300,3 +300,8 @@ func _stssendverifycodeMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _stsviewMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

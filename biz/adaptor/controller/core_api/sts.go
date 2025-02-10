@@ -55,7 +55,23 @@ func StsSendVerifyCode(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(core_api.Response)
+	p := provider.Get()
+	resp, err := p.StsService.StsSendVerifyCode(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
 
-	c.JSON(consts.StatusOK, resp)
+// StsView .
+// @router /sts/view [POST]
+func StsView(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.StsViewReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.StsService.StsView(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }

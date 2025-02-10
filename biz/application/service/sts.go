@@ -3,9 +3,14 @@ package service
 import (
 	"context"
 	"github.com/google/wire"
+	gensystem "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/system"
+	genuser "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/user"
 	"github.com/xh-polaris/ActiManage-core-api/biz/application/dto/core_api"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/consts"
+	rpcsystem "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/system"
+	rpcuser "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/user"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/util"
+	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/util/log"
 )
 
 type IStsService interface {
@@ -14,6 +19,8 @@ type IStsService interface {
 }
 
 type StsService struct {
+	SystemRpc rpcsystem.IActiManageSystem
+	UserRpc   rpcuser.IActiManageUser
 }
 
 var StsServiceSet = wire.NewSet(
@@ -42,4 +49,29 @@ func (s *StsService) StsAIModify(ctx context.Context, req *core_api.StsAIModifyR
 		Msg:  "模型调用成功",
 		Text: text,
 	}, nil
+}
+
+func (s *StsService) StsSendVerifyCode(ctx context.Context, req *core_api.StsSendVerifyCodeReq) (resp *core_api.Response, err error) {
+	response, err := s.SystemRpc.StsSendVerifyCode(ctx, &gensystem.StsSendVerifyCodeReq{
+		AuthId:   req.AuthId,
+		AuthType: req.AuthType,
+		Purpose:  req.Purpose,
+	})
+	if err != nil || response.Code != 0 {
+		log.Error("验证码发送失败:", err)
+		return nil, consts.ErrSend
+	}
+	return util.SuccessResp("发送成功")
+}
+
+func (s *StsService) StsView(ctx context.Context, req *core_api.StsViewReq) (resp *core_api.Response, err error) {
+	response, err := s.UserRpc.CreateView(ctx, &genuser.CreateViewReq{
+		TargetId: req.TargetId,
+		Type:     req.Type,
+	})
+	if err != nil || response.Code != 0 {
+		log.Error("记录访问失败:", err)
+		return nil, consts.ErrSend
+	}
+	return util.SuccessResp("记录成功")
 }

@@ -48,6 +48,7 @@ func Register(r *server.Hertz) {
 	}
 	{
 		_sts := root.Group("/sts", _stsMw()...)
+		_sts.POST("/view", append(_stsviewMw(), core_api.StsView)...)
 		{
 			_ai := _sts.Group("/ai", _aiMw()...)
 			_ai.POST("/modify", append(_stsaimodifyMw(), core_api.StsAIModify)...)

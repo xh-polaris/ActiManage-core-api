@@ -6,11 +6,13 @@ import (
 	"github.com/jinzhu/copier"
 	genbasic "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/basic"
 	gensystem "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/system"
+	genuser "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/user"
 	"github.com/xh-polaris/ActiManage-core-api/biz/adaptor"
 	"github.com/xh-polaris/ActiManage-core-api/biz/application/dto/core_api"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/config"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/consts"
 	rpcsystem "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/system"
+	rpcuser "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/user"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/util"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/util/log"
 )
@@ -27,6 +29,7 @@ type ISystemService interface {
 
 type SystemService struct {
 	SystemRpc rpcsystem.IActiManageSystem
+	UserRpc   rpcuser.IActiManageUser
 	Config    *config.Config
 }
 
@@ -168,11 +171,132 @@ func (s SystemService) SystemUpdateMerchant(ctx context.Context, req *core_api.S
 }
 
 func (s SystemService) SystemGetDashboard(ctx context.Context, req *core_api.SystemGetDashboardReq) (resp *core_api.SystemGetDashboardResp, err error) {
-	//TODO 根据图表计算数据
-	panic("implement me")
+	// 获取访问量折线图
+	viewLineResp, err := s.UserRpc.GetViewDataByMerchant(ctx, &genuser.GetViewDataByMerchantReq{
+		Number:     req.ViewDataNumber,
+		MerchantId: req.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	views := make([]*core_api.SystemGetDashboardResp_ViewItem, 0, len(viewLineResp.Items))
+	for _, v := range viewLineResp.Items {
+		views = append(views, &core_api.SystemGetDashboardResp_ViewItem{
+			Number: v.Number,
+			Time:   v.Time,
+		})
+	}
+
+	// 根据预约量获取活动id
+	activityIdResp, err := s.UserRpc.ListActivityIdByBookRecordRank(ctx, &genuser.ListActivityIdsByBookRecordRankReq{Number: req.ActivityByBookNumber, MerchantId: req.Id})
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]string, 0, len(activityIdResp.Items))
+	for _, item := range activityIdResp.Items {
+		ids = append(ids, item.Id)
+	}
+	activityResp, err := s.SystemRpc.ListActivityByActivityId(ctx, &gensystem.ListActivitiesByActivityIdReq{Ids: ids})
+	if err != nil {
+		return nil, err
+	}
+	activitiesByBookRecordNumber := make([]*core_api.SystemGetDashboardResp_ActivityItem, 0, len(activityResp.Items))
+	for i, item := range activityResp.Items {
+		activitiesByBookRecordNumber = append(activitiesByBookRecordNumber, &core_api.SystemGetDashboardResp_ActivityItem{
+			Id:     item.Id,
+			Name:   item.Name,
+			Number: activityIdResp.Items[i].Number,
+		})
+	}
+
+	resp = &core_api.SystemGetDashboardResp{
+		ViewData:             views,
+		ActivityByBookNumber: activitiesByBookRecordNumber,
+	}
+	return resp, nil
 }
 
 func (s SystemService) SystemGetOverallDashboard(ctx context.Context, req *core_api.SystemGetOverallDashboardReq) (resp *core_api.SystemGetOverallDashboardResp, err error) {
-	//TODO 根据图表计算数据
-	panic("implement me")
+	// 商家总数折线图
+	merchantTotal, err := s.SystemRpc.GetMerchantTotalData(ctx, &gensystem.GetMerchantTotalDataReq{
+		Number: req.LineNumber,
+	})
+	if err != nil {
+		return nil, err
+	}
+	totals := make([]*core_api.SystemGetOverallDashboardResp_LineItem, 0, len(merchantTotal.Items))
+	for _, v := range merchantTotal.Items {
+		totals = append(totals, &core_api.SystemGetOverallDashboardResp_LineItem{
+			Number: v.Number,
+			Time:   v.Time,
+		})
+	}
+	// 商家访问量排名
+	merchantIdByViewResp, err := s.UserRpc.ListMerchantIdByViewRank(ctx, &genuser.ListMerchantIdsByViewRankReq{Number: req.MerchantByViewRankNumber})
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]string, 0, len(merchantIdByViewResp.Items))
+	for _, item := range merchantIdByViewResp.Items {
+		ids = append(ids, item.Id)
+	}
+	merchantByViewResp, err := s.SystemRpc.ListMerchantByMerchantId(ctx, &gensystem.ListMerchantsByMerchantIdReq{Ids: ids})
+	if err != nil {
+		return nil, err
+	}
+	merchantByView := make([]*core_api.SystemGetOverallDashboardResp_MerchantItem, 0, len(merchantByViewResp.Items))
+	for i, item := range merchantByViewResp.Items {
+		merchantByView = append(merchantByView, &core_api.SystemGetOverallDashboardResp_MerchantItem{
+			Id:     item.Id,
+			Name:   item.Name,
+			Logo:   item.Logo,
+			Number: merchantIdByViewResp.Items[i].Number,
+		})
+	}
+
+	// 商家预约量排名
+	merchantIdByBookRecordResp, err := s.UserRpc.ListMerchantIdByBookRecordRank(ctx, &genuser.ListMerchantIdsByBookRecordRankReq{Number: req.MerchantByBookRecordRankNumber})
+	if err != nil {
+		return nil, err
+	}
+	ids = make([]string, 0, len(merchantIdByBookRecordResp.Items))
+	for _, item := range merchantIdByBookRecordResp.Items {
+		ids = append(ids, item.Id)
+	}
+	merchantByBookRecordResp, err := s.SystemRpc.ListMerchantByMerchantId(ctx, &gensystem.ListMerchantsByMerchantIdReq{Ids: ids})
+	if err != nil {
+		return nil, err
+	}
+	merchantByBookRecord := make([]*core_api.SystemGetOverallDashboardResp_MerchantItem, 0, len(merchantByBookRecordResp.Items))
+	for i, item := range merchantByBookRecordResp.Items {
+		merchantByBookRecord = append(merchantByBookRecord, &core_api.SystemGetOverallDashboardResp_MerchantItem{
+			Id:     item.Id,
+			Name:   item.Name,
+			Logo:   item.Logo,
+			Number: merchantIdByBookRecordResp.Items[i].Number,
+		})
+	}
+
+	// 商家活动量排名
+	merchantByActivityResp, err := s.SystemRpc.ListMerchantByActivityNumber(ctx, &gensystem.ListMerchantsByActivityNumberReq{Number: req.MerchantByActivityNumberRankNumber})
+	if err != nil {
+		return nil, err
+	}
+	merchantByActivity := make([]*core_api.SystemGetOverallDashboardResp_MerchantItem, 0, len(merchantByActivityResp.Items))
+	for _, item := range merchantByActivityResp.Items {
+		merchantByActivity = append(merchantByActivity, &core_api.SystemGetOverallDashboardResp_MerchantItem{
+			Id:     item.Id,
+			Name:   item.Name,
+			Logo:   item.Logo,
+			Number: item.Number,
+		})
+	}
+
+	resp = &core_api.SystemGetOverallDashboardResp{
+		LineData:                     totals,
+		MerchantByViewRank:           merchantByView,
+		MerchantByBookRecordRank:     merchantByBookRecord,
+		MerchantByActivityNumberRank: merchantByActivity,
+	}
+	return resp, nil
 }

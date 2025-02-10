@@ -48,4 +48,5 @@ var (
 	ErrDelete      = NewErrno(2002, errors.New("删除失败"))
 	ErrUpdate      = NewErrno(2003, errors.New("更新失败"))
 	ErrCall        = NewErrno(3001, errors.New("调用模型失败"))
+	ErrSend        = NewErrno(3002, errors.New("验证码发送失败"))
 )

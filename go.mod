@@ -9,8 +9,8 @@ require (
 	github.com/hertz-contrib/monitor-prometheus v0.1.3
 	github.com/hertz-contrib/obs-opentelemetry/tracing v0.4.1
 	github.com/jinzhu/copier v0.3.5
-	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250209113411-8868f03cdcab
-	github.com/xh-polaris/gopkg v0.0.0-20231209130217-cd07835dcd83
+	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250210103220-9989c405ed77
+	github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40
 	github.com/zeromicro/go-zero v1.7.2
 	go.opentelemetry.io/contrib/propagators/b3 v1.20.0
 	go.opentelemetry.io/otel v1.24.0
@@ -95,4 +95,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241104194629-dd2ea8efbc28 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	k8s.io/utils v0.0.0-20240711033017-18e509b52bc8 // indirect
 )

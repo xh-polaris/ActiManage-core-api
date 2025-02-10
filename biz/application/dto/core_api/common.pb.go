@@ -1490,6 +1490,7 @@ type CreateBookingReq struct {
 	ReserverIds []string `protobuf:"bytes,2,rep,name=reserverIds,proto3" form:"reserverIds" json:"reserverIds" query:"reserverIds"` // 预约人ID
 	Arrival     int64    `protobuf:"varint,3,opt,name=arrival,proto3" form:"arrival" json:"arrival" query:"arrival"`                // 到达时间
 	Remark      string   `protobuf:"bytes,4,opt,name=remark,proto3" form:"remark" json:"remark" query:"remark"`                     // 备注, 默认无
+	MerchantId  string   `protobuf:"bytes,5,opt,name=merchantId,proto3" form:"merchantId" json:"merchantId" query:"merchantId"`     // 商家ID
 }
 
 func (x *CreateBookingReq) Reset() {
@@ -1548,6 +1549,13 @@ func (x *CreateBookingReq) GetArrival() int64 {
 func (x *CreateBookingReq) GetRemark() string {
 	if x != nil {
 		return x.Remark
+	}
+	return ""
+}
+
+func (x *CreateBookingReq) GetMerchantId() string {
+	if x != nil {
+		return x.MerchantId
 	}
 	return ""
 }
@@ -4050,13 +4058,15 @@ func (x *SystemUpdateMerchantReq) GetStatus() int64 {
 	return 0
 }
 
-// TODO 获取某个商家数据看板
+// 获取某个商家数据看板
 type SystemGetDashboardReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	Id                   string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	ViewDataNumber       int64  `protobuf:"varint,2,opt,name=viewDataNumber,proto3" form:"viewDataNumber" json:"viewDataNumber" query:"viewDataNumber"`                         // 折线图数据数
+	ActivityByBookNumber int64  `protobuf:"varint,3,opt,name=activityByBookNumber,proto3" form:"activityByBookNumber" json:"activityByBookNumber" query:"activityByBookNumber"` // 根据预约量的活动排名数
 }
 
 func (x *SystemGetDashboardReq) Reset() {
@@ -4098,10 +4108,27 @@ func (x *SystemGetDashboardReq) GetId() string {
 	return ""
 }
 
+func (x *SystemGetDashboardReq) GetViewDataNumber() int64 {
+	if x != nil {
+		return x.ViewDataNumber
+	}
+	return 0
+}
+
+func (x *SystemGetDashboardReq) GetActivityByBookNumber() int64 {
+	if x != nil {
+		return x.ActivityByBookNumber
+	}
+	return 0
+}
+
 type SystemGetDashboardResp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	ViewData             []*SystemGetDashboardResp_ViewItem     `protobuf:"bytes,1,rep,name=viewData,proto3" form:"viewData" json:"viewData" query:"viewData"`
+	ActivityByBookNumber []*SystemGetDashboardResp_ActivityItem `protobuf:"bytes,2,rep,name=activityByBookNumber,proto3" form:"activityByBookNumber" json:"activityByBookNumber" query:"activityByBookNumber"`
 }
 
 func (x *SystemGetDashboardResp) Reset() {
@@ -4136,11 +4163,30 @@ func (*SystemGetDashboardResp) Descriptor() ([]byte, []int) {
 	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{57}
 }
 
-// TODO 获取总数据看板
+func (x *SystemGetDashboardResp) GetViewData() []*SystemGetDashboardResp_ViewItem {
+	if x != nil {
+		return x.ViewData
+	}
+	return nil
+}
+
+func (x *SystemGetDashboardResp) GetActivityByBookNumber() []*SystemGetDashboardResp_ActivityItem {
+	if x != nil {
+		return x.ActivityByBookNumber
+	}
+	return nil
+}
+
+// 获取总数据看板
 type SystemGetOverallDashboardReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	LineNumber                         int64 `protobuf:"varint,1,opt,name=lineNumber,proto3" form:"lineNumber" json:"lineNumber" query:"lineNumber"`
+	MerchantByViewRankNumber           int64 `protobuf:"varint,2,opt,name=merchantByViewRankNumber,proto3" form:"merchantByViewRankNumber" json:"merchantByViewRankNumber" query:"merchantByViewRankNumber"`
+	MerchantByBookRecordRankNumber     int64 `protobuf:"varint,3,opt,name=merchantByBookRecordRankNumber,proto3" form:"merchantByBookRecordRankNumber" json:"merchantByBookRecordRankNumber" query:"merchantByBookRecordRankNumber"`
+	MerchantByActivityNumberRankNumber int64 `protobuf:"varint,4,opt,name=merchantByActivityNumberRankNumber,proto3" form:"merchantByActivityNumberRankNumber" json:"merchantByActivityNumberRankNumber" query:"merchantByActivityNumberRankNumber"`
 }
 
 func (x *SystemGetOverallDashboardReq) Reset() {
@@ -4175,10 +4221,43 @@ func (*SystemGetOverallDashboardReq) Descriptor() ([]byte, []int) {
 	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{58}
 }
 
+func (x *SystemGetOverallDashboardReq) GetLineNumber() int64 {
+	if x != nil {
+		return x.LineNumber
+	}
+	return 0
+}
+
+func (x *SystemGetOverallDashboardReq) GetMerchantByViewRankNumber() int64 {
+	if x != nil {
+		return x.MerchantByViewRankNumber
+	}
+	return 0
+}
+
+func (x *SystemGetOverallDashboardReq) GetMerchantByBookRecordRankNumber() int64 {
+	if x != nil {
+		return x.MerchantByBookRecordRankNumber
+	}
+	return 0
+}
+
+func (x *SystemGetOverallDashboardReq) GetMerchantByActivityNumberRankNumber() int64 {
+	if x != nil {
+		return x.MerchantByActivityNumberRankNumber
+	}
+	return 0
+}
+
 type SystemGetOverallDashboardResp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	LineData                     []*SystemGetOverallDashboardResp_LineItem     `protobuf:"bytes,1,rep,name=lineData,proto3" form:"lineData" json:"lineData" query:"lineData"`
+	MerchantByViewRank           []*SystemGetOverallDashboardResp_MerchantItem `protobuf:"bytes,2,rep,name=merchantByViewRank,proto3" form:"merchantByViewRank" json:"merchantByViewRank" query:"merchantByViewRank"`
+	MerchantByBookRecordRank     []*SystemGetOverallDashboardResp_MerchantItem `protobuf:"bytes,3,rep,name=merchantByBookRecordRank,proto3" form:"merchantByBookRecordRank" json:"merchantByBookRecordRank" query:"merchantByBookRecordRank"`
+	MerchantByActivityNumberRank []*SystemGetOverallDashboardResp_MerchantItem `protobuf:"bytes,4,rep,name=merchantByActivityNumberRank,proto3" form:"merchantByActivityNumberRank" json:"merchantByActivityNumberRank" query:"merchantByActivityNumberRank"`
 }
 
 func (x *SystemGetOverallDashboardResp) Reset() {
@@ -4211,6 +4290,34 @@ func (x *SystemGetOverallDashboardResp) ProtoReflect() protoreflect.Message {
 // Deprecated: Use SystemGetOverallDashboardResp.ProtoReflect.Descriptor instead.
 func (*SystemGetOverallDashboardResp) Descriptor() ([]byte, []int) {
 	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *SystemGetOverallDashboardResp) GetLineData() []*SystemGetOverallDashboardResp_LineItem {
+	if x != nil {
+		return x.LineData
+	}
+	return nil
+}
+
+func (x *SystemGetOverallDashboardResp) GetMerchantByViewRank() []*SystemGetOverallDashboardResp_MerchantItem {
+	if x != nil {
+		return x.MerchantByViewRank
+	}
+	return nil
+}
+
+func (x *SystemGetOverallDashboardResp) GetMerchantByBookRecordRank() []*SystemGetOverallDashboardResp_MerchantItem {
+	if x != nil {
+		return x.MerchantByBookRecordRank
+	}
+	return nil
+}
+
+func (x *SystemGetOverallDashboardResp) GetMerchantByActivityNumberRank() []*SystemGetOverallDashboardResp_MerchantItem {
+	if x != nil {
+		return x.MerchantByActivityNumberRank
+	}
+	return nil
 }
 
 // 获取加签url
@@ -4523,6 +4630,62 @@ func (x *StsSendVerifyCodeReq) GetPurpose() string {
 	return ""
 }
 
+// 访问记录
+type StsViewReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TargetId string `protobuf:"bytes,1,opt,name=targetId,proto3" form:"targetId" json:"targetId" query:"targetId"`
+	Type     int64  `protobuf:"varint,2,opt,name=type,proto3" form:"type" json:"type" query:"type"` // 0商家,1活动
+}
+
+func (x *StsViewReq) Reset() {
+	*x = StsViewReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[65]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *StsViewReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StsViewReq) ProtoMessage() {}
+
+func (x *StsViewReq) ProtoReflect() protoreflect.Message {
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[65]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StsViewReq.ProtoReflect.Descriptor instead.
+func (*StsViewReq) Descriptor() ([]byte, []int) {
+	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *StsViewReq) GetTargetId() string {
+	if x != nil {
+		return x.TargetId
+	}
+	return ""
+}
+
+func (x *StsViewReq) GetType() int64 {
+	if x != nil {
+		return x.Type
+	}
+	return 0
+}
+
 type ListActivitiesResp_Item struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4547,7 +4710,7 @@ type ListActivitiesResp_Item struct {
 func (x *ListActivitiesResp_Item) Reset() {
 	*x = ListActivitiesResp_Item{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[65]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[66]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4560,7 +4723,7 @@ func (x *ListActivitiesResp_Item) String() string {
 func (*ListActivitiesResp_Item) ProtoMessage() {}
 
 func (x *ListActivitiesResp_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[65]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[66]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4698,7 +4861,7 @@ type ListActivitiesByBookRecordsResp_Item struct {
 func (x *ListActivitiesByBookRecordsResp_Item) Reset() {
 	*x = ListActivitiesByBookRecordsResp_Item{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[66]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[67]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4711,7 +4874,7 @@ func (x *ListActivitiesByBookRecordsResp_Item) String() string {
 func (*ListActivitiesByBookRecordsResp_Item) ProtoMessage() {}
 
 func (x *ListActivitiesByBookRecordsResp_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[66]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[67]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4838,7 +5001,7 @@ type MerchantListActivitiesResp_Item struct {
 func (x *MerchantListActivitiesResp_Item) Reset() {
 	*x = MerchantListActivitiesResp_Item{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[67]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[68]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4851,7 +5014,7 @@ func (x *MerchantListActivitiesResp_Item) String() string {
 func (*MerchantListActivitiesResp_Item) ProtoMessage() {}
 
 func (x *MerchantListActivitiesResp_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[67]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[68]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4901,7 +5064,7 @@ type MerchantCreateActivityReqActivitySetting struct {
 func (x *MerchantCreateActivityReqActivitySetting) Reset() {
 	*x = MerchantCreateActivityReqActivitySetting{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[68]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[69]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4914,7 +5077,7 @@ func (x *MerchantCreateActivityReqActivitySetting) String() string {
 func (*MerchantCreateActivityReqActivitySetting) ProtoMessage() {}
 
 func (x *MerchantCreateActivityReqActivitySetting) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[68]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[69]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4972,7 +5135,7 @@ type MerchantListBookRecordsResp_BookRecord struct {
 func (x *MerchantListBookRecordsResp_BookRecord) Reset() {
 	*x = MerchantListBookRecordsResp_BookRecord{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[69]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[70]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -4985,7 +5148,7 @@ func (x *MerchantListBookRecordsResp_BookRecord) String() string {
 func (*MerchantListBookRecordsResp_BookRecord) ProtoMessage() {}
 
 func (x *MerchantListBookRecordsResp_BookRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[69]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[70]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5091,7 +5254,7 @@ type MerchantListBookRecordsResp_BookRecords struct {
 func (x *MerchantListBookRecordsResp_BookRecords) Reset() {
 	*x = MerchantListBookRecordsResp_BookRecords{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[70]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[71]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5104,7 +5267,7 @@ func (x *MerchantListBookRecordsResp_BookRecords) String() string {
 func (*MerchantListBookRecordsResp_BookRecords) ProtoMessage() {}
 
 func (x *MerchantListBookRecordsResp_BookRecords) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[70]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[71]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5153,7 +5316,7 @@ type SystemListMerchantsResp_Item struct {
 func (x *SystemListMerchantsResp_Item) Reset() {
 	*x = SystemListMerchantsResp_Item{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ActiManage_core_api_common_proto_msgTypes[71]
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[72]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -5166,7 +5329,7 @@ func (x *SystemListMerchantsResp_Item) String() string {
 func (*SystemListMerchantsResp_Item) ProtoMessage() {}
 
 func (x *SystemListMerchantsResp_Item) ProtoReflect() protoreflect.Message {
-	mi := &file_ActiManage_core_api_common_proto_msgTypes[71]
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[72]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5194,6 +5357,250 @@ func (x *SystemListMerchantsResp_Item) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+type SystemGetDashboardResp_ViewItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Number int64 `protobuf:"varint,1,opt,name=number,proto3" form:"number" json:"number" query:"number"`
+	Time   int64 `protobuf:"varint,2,opt,name=time,proto3" form:"time" json:"time" query:"time"`
+}
+
+func (x *SystemGetDashboardResp_ViewItem) Reset() {
+	*x = SystemGetDashboardResp_ViewItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[73]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SystemGetDashboardResp_ViewItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemGetDashboardResp_ViewItem) ProtoMessage() {}
+
+func (x *SystemGetDashboardResp_ViewItem) ProtoReflect() protoreflect.Message {
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[73]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemGetDashboardResp_ViewItem.ProtoReflect.Descriptor instead.
+func (*SystemGetDashboardResp_ViewItem) Descriptor() ([]byte, []int) {
+	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{57, 0}
+}
+
+func (x *SystemGetDashboardResp_ViewItem) GetNumber() int64 {
+	if x != nil {
+		return x.Number
+	}
+	return 0
+}
+
+func (x *SystemGetDashboardResp_ViewItem) GetTime() int64 {
+	if x != nil {
+		return x.Time
+	}
+	return 0
+}
+
+type SystemGetDashboardResp_ActivityItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	Name   string `protobuf:"bytes,2,opt,name=name,proto3" form:"name" json:"name" query:"name"`
+	Number int64  `protobuf:"varint,3,opt,name=number,proto3" form:"number" json:"number" query:"number"`
+}
+
+func (x *SystemGetDashboardResp_ActivityItem) Reset() {
+	*x = SystemGetDashboardResp_ActivityItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[74]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SystemGetDashboardResp_ActivityItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemGetDashboardResp_ActivityItem) ProtoMessage() {}
+
+func (x *SystemGetDashboardResp_ActivityItem) ProtoReflect() protoreflect.Message {
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[74]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemGetDashboardResp_ActivityItem.ProtoReflect.Descriptor instead.
+func (*SystemGetDashboardResp_ActivityItem) Descriptor() ([]byte, []int) {
+	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{57, 1}
+}
+
+func (x *SystemGetDashboardResp_ActivityItem) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SystemGetDashboardResp_ActivityItem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SystemGetDashboardResp_ActivityItem) GetNumber() int64 {
+	if x != nil {
+		return x.Number
+	}
+	return 0
+}
+
+type SystemGetOverallDashboardResp_LineItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Number int64 `protobuf:"varint,1,opt,name=number,proto3" form:"number" json:"number" query:"number"`
+	Time   int64 `protobuf:"varint,2,opt,name=time,proto3" form:"time" json:"time" query:"time"`
+}
+
+func (x *SystemGetOverallDashboardResp_LineItem) Reset() {
+	*x = SystemGetOverallDashboardResp_LineItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[75]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SystemGetOverallDashboardResp_LineItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemGetOverallDashboardResp_LineItem) ProtoMessage() {}
+
+func (x *SystemGetOverallDashboardResp_LineItem) ProtoReflect() protoreflect.Message {
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[75]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemGetOverallDashboardResp_LineItem.ProtoReflect.Descriptor instead.
+func (*SystemGetOverallDashboardResp_LineItem) Descriptor() ([]byte, []int) {
+	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{59, 0}
+}
+
+func (x *SystemGetOverallDashboardResp_LineItem) GetNumber() int64 {
+	if x != nil {
+		return x.Number
+	}
+	return 0
+}
+
+func (x *SystemGetOverallDashboardResp_LineItem) GetTime() int64 {
+	if x != nil {
+		return x.Time
+	}
+	return 0
+}
+
+type SystemGetOverallDashboardResp_MerchantItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     string `protobuf:"bytes,1,opt,name=id,proto3" form:"id" json:"id" query:"id"`
+	Name   string `protobuf:"bytes,2,opt,name=name,proto3" form:"name" json:"name" query:"name"`
+	Logo   string `protobuf:"bytes,3,opt,name=logo,proto3" form:"logo" json:"logo" query:"logo"`
+	Number int64  `protobuf:"varint,4,opt,name=number,proto3" form:"number" json:"number" query:"number"`
+}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) Reset() {
+	*x = SystemGetOverallDashboardResp_MerchantItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ActiManage_core_api_common_proto_msgTypes[76]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemGetOverallDashboardResp_MerchantItem) ProtoMessage() {}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) ProtoReflect() protoreflect.Message {
+	mi := &file_ActiManage_core_api_common_proto_msgTypes[76]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemGetOverallDashboardResp_MerchantItem.ProtoReflect.Descriptor instead.
+func (*SystemGetOverallDashboardResp_MerchantItem) Descriptor() ([]byte, []int) {
+	return file_ActiManage_core_api_common_proto_rawDescGZIP(), []int{59, 1}
+}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) GetLogo() string {
+	if x != nil {
+		return x.Logo
+	}
+	return ""
+}
+
+func (x *SystemGetOverallDashboardResp_MerchantItem) GetNumber() int64 {
+	if x != nil {
+		return x.Number
+	}
+	return 0
 }
 
 var File_ActiManage_core_api_common_proto protoreflect.FileDescriptor
@@ -5384,7 +5791,7 @@ var file_ActiManage_core_api_common_proto_rawDesc = []byte{
 	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x23, 0x0a,
 	0x11, 0x43, 0x61, 0x6e, 0x63, 0x65, 0x6c, 0x46, 0x61, 0x76, 0x6f, 0x72, 0x69, 0x74, 0x65, 0x52,
 	0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
-	0x69, 0x64, 0x22, 0x86, 0x01, 0x0a, 0x10, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x6f, 0x6f,
+	0x69, 0x64, 0x22, 0xa6, 0x01, 0x0a, 0x10, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x42, 0x6f, 0x6f,
 	0x6b, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x12, 0x1e, 0x0a, 0x0a, 0x61, 0x63, 0x74, 0x69, 0x76,
 	0x69, 0x74, 0x79, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x61, 0x63, 0x74,
 	0x69, 0x76, 0x69, 0x74, 0x79, 0x49, 0x64, 0x12, 0x20, 0x0a, 0x0b, 0x72, 0x65, 0x73, 0x65, 0x72,
@@ -5392,7 +5799,9 @@ var file_ActiManage_core_api_common_proto_rawDesc = []byte{
 	0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x49, 0x64, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x72, 0x72,
 	0x69, 0x76, 0x61, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07, 0x61, 0x72, 0x72, 0x69,
 	0x76, 0x61, 0x6c, 0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x6d, 0x61, 0x72, 0x6b, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x6d, 0x61, 0x72, 0x6b, 0x22, 0x59, 0x0a, 0x13, 0x43,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x65, 0x6d, 0x61, 0x72, 0x6b, 0x12, 0x1e, 0x0a, 0x0a, 0x6d,
+	0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x49, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0a, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x49, 0x64, 0x22, 0x59, 0x0a, 0x13, 0x43,
 	0x61, 0x6e, 0x63, 0x65, 0x6c, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52,
 	0x65, 0x71, 0x12, 0x22, 0x0a, 0x0c, 0x62, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
 	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x62, 0x6f, 0x6f, 0x6b, 0x52, 0x65,
@@ -5772,47 +6181,127 @@ var file_ActiManage_core_api_common_proto_rawDesc = []byte{
 	0x65, 0x73, 0x18, 0x08, 0x20, 0x03, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x69, 0x63, 0x65, 0x6e, 0x63,
 	0x65, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x6f, 0x67, 0x6f, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x04, 0x6c, 0x6f, 0x67, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73,
-	0x18, 0x0a, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x27,
-	0x0a, 0x15, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x44, 0x61, 0x73, 0x68, 0x62,
-	0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x18, 0x0a, 0x16, 0x53, 0x79, 0x73, 0x74, 0x65,
-	0x6d, 0x47, 0x65, 0x74, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73,
-	0x70, 0x22, 0x1e, 0x0a, 0x1c, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x4f, 0x76,
-	0x65, 0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65,
-	0x71, 0x22, 0x1f, 0x0a, 0x1d, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x4f, 0x76,
-	0x65, 0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65,
-	0x73, 0x70, 0x22, 0x46, 0x0a, 0x14, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69,
-	0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x71, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x72,
-	0x65, 0x66, 0x69, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x72, 0x65, 0x66,
-	0x69, 0x78, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x02, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x06, 0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x22, 0x73, 0x0a, 0x15, 0x53, 0x74,
-	0x73, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52,
-	0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72, 0x6c, 0x12, 0x22, 0x0a, 0x0c, 0x73,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x0c, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22,
-	0x38, 0x0a, 0x0e, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65,
-	0x71, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x74, 0x65, 0x78, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x61, 0x6e, 0x67, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x04, 0x6c, 0x61, 0x6e, 0x67, 0x22, 0x4b, 0x0a, 0x0f, 0x53, 0x74, 0x73,
-	0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04,
-	0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65,
-	0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d,
-	0x73, 0x67, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x22, 0x64, 0x0a, 0x14, 0x53, 0x74, 0x73, 0x53, 0x65, 0x6e,
-	0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x12, 0x16,
-	0x0a, 0x06, 0x61, 0x75, 0x74, 0x68, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
-	0x61, 0x75, 0x74, 0x68, 0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x61, 0x75, 0x74, 0x68, 0x54, 0x79,
-	0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x61, 0x75, 0x74, 0x68, 0x54, 0x79,
-	0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x70, 0x75, 0x72, 0x70, 0x6f, 0x73, 0x65, 0x18, 0x03, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x07, 0x70, 0x75, 0x72, 0x70, 0x6f, 0x73, 0x65, 0x42, 0x48, 0x5a, 0x46,
-	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x78, 0x68, 0x2d, 0x70, 0x6f,
-	0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x41, 0x63, 0x74, 0x69, 0x4d, 0x61, 0x6e, 0x61, 0x67, 0x65,
-	0x2d, 0x63, 0x6f, 0x72, 0x65, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70,
-	0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x63, 0x6f,
-	0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x18, 0x0a, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x22, 0x83,
+	0x01, 0x0a, 0x15, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x44, 0x61, 0x73, 0x68,
+	0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x26, 0x0a, 0x0e, 0x76, 0x69, 0x65, 0x77,
+	0x44, 0x61, 0x74, 0x61, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x0e, 0x76, 0x69, 0x65, 0x77, 0x44, 0x61, 0x74, 0x61, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72,
+	0x12, 0x32, 0x0a, 0x14, 0x61, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x42, 0x79, 0x42, 0x6f,
+	0x6f, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x14,
+	0x61, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x42, 0x79, 0x42, 0x6f, 0x6f, 0x6b, 0x4e, 0x75,
+	0x6d, 0x62, 0x65, 0x72, 0x22, 0xc6, 0x02, 0x0a, 0x16, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47,
+	0x65, 0x74, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x12,
+	0x45, 0x0a, 0x08, 0x76, 0x69, 0x65, 0x77, 0x44, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x29, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x79, 0x73,
+	0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52,
+	0x65, 0x73, 0x70, 0x2e, 0x56, 0x69, 0x65, 0x77, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x08, 0x76, 0x69,
+	0x65, 0x77, 0x44, 0x61, 0x74, 0x61, 0x12, 0x61, 0x0a, 0x14, 0x61, 0x63, 0x74, 0x69, 0x76, 0x69,
+	0x74, 0x79, 0x42, 0x79, 0x42, 0x6f, 0x6f, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x02,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x2d, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e,
+	0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61,
+	0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x49,
+	0x74, 0x65, 0x6d, 0x52, 0x14, 0x61, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x42, 0x79, 0x42,
+	0x6f, 0x6f, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x1a, 0x36, 0x0a, 0x08, 0x56, 0x69, 0x65,
+	0x77, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x16, 0x0a, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a,
+	0x04, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x74, 0x69, 0x6d,
+	0x65, 0x1a, 0x4a, 0x0a, 0x0c, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x49, 0x74, 0x65,
+	0x6d, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
+	0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x22, 0x92, 0x02,
+	0x0a, 0x1c, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x4f, 0x76, 0x65, 0x72, 0x61,
+	0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x71, 0x12, 0x1e,
+	0x0a, 0x0a, 0x6c, 0x69, 0x6e, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x0a, 0x6c, 0x69, 0x6e, 0x65, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x3a,
+	0x0a, 0x18, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x56, 0x69, 0x65, 0x77,
+	0x52, 0x61, 0x6e, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x18, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x56, 0x69, 0x65, 0x77,
+	0x52, 0x61, 0x6e, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x46, 0x0a, 0x1e, 0x6d, 0x65,
+	0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x63, 0x6f,
+	0x72, 0x64, 0x52, 0x61, 0x6e, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x1e, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x42, 0x6f,
+	0x6f, 0x6b, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x61, 0x6e, 0x6b, 0x4e, 0x75, 0x6d, 0x62,
+	0x65, 0x72, 0x12, 0x4e, 0x0a, 0x22, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79,
+	0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x61,
+	0x6e, 0x6b, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x03, 0x52, 0x22,
+	0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69,
+	0x74, 0x79, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x6b, 0x4e, 0x75, 0x6d, 0x62,
+	0x65, 0x72, 0x22, 0xd7, 0x04, 0x0a, 0x1d, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74,
+	0x4f, 0x76, 0x65, 0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64,
+	0x52, 0x65, 0x73, 0x70, 0x12, 0x4c, 0x0a, 0x08, 0x6c, 0x69, 0x6e, 0x65, 0x44, 0x61, 0x74, 0x61,
+	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x30, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70,
+	0x69, 0x2e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x4f, 0x76, 0x65, 0x72, 0x61,
+	0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x2e,
+	0x4c, 0x69, 0x6e, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x08, 0x6c, 0x69, 0x6e, 0x65, 0x44, 0x61,
+	0x74, 0x61, 0x12, 0x64, 0x0a, 0x12, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79,
+	0x56, 0x69, 0x65, 0x77, 0x52, 0x61, 0x6e, 0x6b, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x34,
+	0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d,
+	0x47, 0x65, 0x74, 0x4f, 0x76, 0x65, 0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f,
+	0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74,
+	0x49, 0x74, 0x65, 0x6d, 0x52, 0x12, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79,
+	0x56, 0x69, 0x65, 0x77, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x70, 0x0a, 0x18, 0x6d, 0x65, 0x72, 0x63,
+	0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
+	0x52, 0x61, 0x6e, 0x6b, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x34, 0x2e, 0x63, 0x6f, 0x72,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x47, 0x65, 0x74, 0x4f,
+	0x76, 0x65, 0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52,
+	0x65, 0x73, 0x70, 0x2e, 0x4d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x49, 0x74, 0x65, 0x6d,
+	0x52, 0x18, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x42, 0x6f, 0x6f, 0x6b,
+	0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x78, 0x0a, 0x1c, 0x6d, 0x65,
+	0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x42, 0x79, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79,
+	0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x52, 0x61, 0x6e, 0x6b, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x34, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x47, 0x65, 0x74, 0x4f, 0x76, 0x65, 0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68,
+	0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x4d, 0x65, 0x72, 0x63, 0x68, 0x61,
+	0x6e, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x1c, 0x6d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74,
+	0x42, 0x79, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x4e, 0x75, 0x6d, 0x62, 0x65, 0x72,
+	0x52, 0x61, 0x6e, 0x6b, 0x1a, 0x36, 0x0a, 0x08, 0x4c, 0x69, 0x6e, 0x65, 0x49, 0x74, 0x65, 0x6d,
+	0x12, 0x16, 0x0a, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
+	0x52, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x69, 0x6d, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x74, 0x69, 0x6d, 0x65, 0x1a, 0x5e, 0x0a, 0x0c,
+	0x4d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x12, 0x12, 0x0a, 0x04, 0x6c, 0x6f, 0x67, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x6c, 0x6f, 0x67, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6e, 0x75, 0x6d, 0x62, 0x65, 0x72, 0x22, 0x46, 0x0a, 0x14,
+	0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72,
+	0x6c, 0x52, 0x65, 0x71, 0x12, 0x16, 0x0a, 0x06, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x72, 0x65, 0x66, 0x69, 0x78, 0x12, 0x16, 0x0a, 0x06,
+	0x73, 0x75, 0x66, 0x66, 0x69, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x75,
+	0x66, 0x66, 0x69, 0x78, 0x22, 0x73, 0x0a, 0x15, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c, 0x79,
+	0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a,
+	0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64,
+	0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
+	0x6d, 0x73, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x03, 0x75, 0x72, 0x6c, 0x12, 0x22, 0x0a, 0x0c, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x73, 0x65, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x38, 0x0a, 0x0e, 0x53, 0x74, 0x73,
+	0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65, 0x71, 0x12, 0x12, 0x0a, 0x04, 0x74,
+	0x65, 0x78, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x12,
+	0x12, 0x0a, 0x04, 0x6c, 0x61, 0x6e, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6c,
+	0x61, 0x6e, 0x67, 0x22, 0x4b, 0x0a, 0x0f, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69,
+	0x66, 0x79, 0x52, 0x65, 0x73, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x73,
+	0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6d, 0x73, 0x67, 0x12, 0x12, 0x0a, 0x04,
+	0x74, 0x65, 0x78, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74,
+	0x22, 0x64, 0x0a, 0x14, 0x53, 0x74, 0x73, 0x53, 0x65, 0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66,
+	0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x75, 0x74, 0x68,
+	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x61, 0x75, 0x74, 0x68, 0x49, 0x64,
+	0x12, 0x1a, 0x0a, 0x08, 0x61, 0x75, 0x74, 0x68, 0x54, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x08, 0x61, 0x75, 0x74, 0x68, 0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07,
+	0x70, 0x75, 0x72, 0x70, 0x6f, 0x73, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x70,
+	0x75, 0x72, 0x70, 0x6f, 0x73, 0x65, 0x22, 0x3c, 0x0a, 0x0a, 0x53, 0x74, 0x73, 0x56, 0x69, 0x65,
+	0x77, 0x52, 0x65, 0x71, 0x12, 0x1a, 0x0a, 0x08, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x49, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x49, 0x64,
+	0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04,
+	0x74, 0x79, 0x70, 0x65, 0x42, 0x48, 0x5a, 0x46, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
+	0x6f, 0x6d, 0x2f, 0x78, 0x68, 0x2d, 0x70, 0x6f, 0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x41, 0x63,
+	0x74, 0x69, 0x4d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x2d, 0x63, 0x6f, 0x72, 0x65, 0x2d, 0x61, 0x70,
+	0x69, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -5827,128 +6316,139 @@ func file_ActiManage_core_api_common_proto_rawDescGZIP() []byte {
 	return file_ActiManage_core_api_common_proto_rawDescData
 }
 
-var file_ActiManage_core_api_common_proto_msgTypes = make([]protoimpl.MessageInfo, 72)
+var file_ActiManage_core_api_common_proto_msgTypes = make([]protoimpl.MessageInfo, 77)
 var file_ActiManage_core_api_common_proto_goTypes = []interface{}{
-	(*Reserver)(nil),                                 // 0: core_api.Reserver
-	(*ActivitySetting)(nil),                          // 1: core_api.ActivitySetting
-	(*Header)(nil),                                   // 2: core_api.Header
-	(*Footer)(nil),                                   // 3: core_api.Footer
-	(*Cover)(nil),                                    // 4: core_api.Cover
-	(*Location)(nil),                                 // 5: core_api.Location
-	(*Opening)(nil),                                  // 6: core_api.Opening
-	(*Response)(nil),                                 // 7: core_api.Response
-	(*LoginReq)(nil),                                 // 8: core_api.LoginReq
-	(*LoginResp)(nil),                                // 9: core_api.LoginResp
-	(*SignUpReq)(nil),                                // 10: core_api.SignUpReq
-	(*SignUpResp)(nil),                               // 11: core_api.SignUpResp
-	(*GetSettingReq)(nil),                            // 12: core_api.GetSettingReq
-	(*GetSettingResp)(nil),                           // 13: core_api.GetSettingResp
-	(*ListActivitiesReq)(nil),                        // 14: core_api.ListActivitiesReq
-	(*ListActivitiesResp)(nil),                       // 15: core_api.ListActivitiesResp
-	(*GetActivityReq)(nil),                           // 16: core_api.GetActivityReq
-	(*GetActivityResp)(nil),                          // 17: core_api.GetActivityResp
-	(*DoFavoriteReq)(nil),                            // 18: core_api.DoFavoriteReq
-	(*CancelFavoriteReq)(nil),                        // 19: core_api.CancelFavoriteReq
-	(*CreateBookingReq)(nil),                         // 20: core_api.CreateBookingReq
-	(*CancelBookRecordReq)(nil),                      // 21: core_api.CancelBookRecordReq
-	(*ListReserversReq)(nil),                         // 22: core_api.ListReserversReq
-	(*ListReserversResp)(nil),                        // 23: core_api.ListReserversResp
-	(*CreateReserverReq)(nil),                        // 24: core_api.CreateReserverReq
-	(*DeleteReserverReq)(nil),                        // 25: core_api.DeleteReserverReq
-	(*GetUserInfoReq)(nil),                           // 26: core_api.GetUserInfoReq
-	(*GetUserInfoResp)(nil),                          // 27: core_api.GetUserInfoResp
-	(*UpdateUserInfoReq)(nil),                        // 28: core_api.UpdateUserInfoReq
-	(*UpdateNoticeReq)(nil),                          // 29: core_api.UpdateNoticeReq
-	(*ListActivitiesByBookRecordsReq)(nil),           // 30: core_api.ListActivitiesByBookRecordsReq
-	(*ListActivitiesByBookRecordsResp)(nil),          // 31: core_api.ListActivitiesByBookRecordsResp
-	(*MerchantListActivitiesReq)(nil),                // 32: core_api.MerchantListActivitiesReq
-	(*MerchantListActivitiesResp)(nil),               // 33: core_api.MerchantListActivitiesResp
-	(*MerchantCreateActivityReq)(nil),                // 34: core_api.MerchantCreateActivityReq
-	(*MerchantDeleteActivityReq)(nil),                // 35: core_api.MerchantDeleteActivityReq
-	(*MerchantTopActivityReq)(nil),                   // 36: core_api.MerchantTopActivityReq
-	(*MerchantLoginReq)(nil),                         // 37: core_api.MerchantLoginReq
-	(*MerchantLoginResp)(nil),                        // 38: core_api.MerchantLoginResp
-	(*MerchantGetSettingReq)(nil),                    // 39: core_api.MerchantGetSettingReq
-	(*MerchantGetSettingResp)(nil),                   // 40: core_api.MerchantGetSettingResp
-	(*MerchantUpdateSettingReq)(nil),                 // 41: core_api.MerchantUpdateSettingReq
-	(*MerchantListBookRecordsReq)(nil),               // 42: core_api.MerchantListBookRecordsReq
-	(*MerchantListBookRecordsResp)(nil),              // 43: core_api.MerchantListBookRecordsResp
-	(*MerchantUpdateInfoReq)(nil),                    // 44: core_api.MerchantUpdateInfoReq
-	(*MerchantGetInfoReq)(nil),                       // 45: core_api.MerchantGetInfoReq
-	(*MerchantGetInfoResp)(nil),                      // 46: core_api.MerchantGetInfoResp
-	(*MerchantSetPasswordReq)(nil),                   // 47: core_api.MerchantSetPasswordReq
-	(*SystemLoginReq)(nil),                           // 48: core_api.SystemLoginReq
-	(*SystemLoginResp)(nil),                          // 49: core_api.SystemLoginResp
-	(*SystemListMerchantsReq)(nil),                   // 50: core_api.SystemListMerchantsReq
-	(*SystemListMerchantsResp)(nil),                  // 51: core_api.SystemListMerchantsResp
-	(*SystemGetMerchantReq)(nil),                     // 52: core_api.SystemGetMerchantReq
-	(*SystemGetMerchantResp)(nil),                    // 53: core_api.SystemGetMerchantResp
-	(*SystemCreateMerchantReq)(nil),                  // 54: core_api.SystemCreateMerchantReq
-	(*SystemUpdateMerchantReq)(nil),                  // 55: core_api.SystemUpdateMerchantReq
-	(*SystemGetDashboardReq)(nil),                    // 56: core_api.SystemGetDashboardReq
-	(*SystemGetDashboardResp)(nil),                   // 57: core_api.SystemGetDashboardResp
-	(*SystemGetOverallDashboardReq)(nil),             // 58: core_api.SystemGetOverallDashboardReq
-	(*SystemGetOverallDashboardResp)(nil),            // 59: core_api.SystemGetOverallDashboardResp
-	(*StsApplySignedUrlReq)(nil),                     // 60: core_api.StsApplySignedUrlReq
-	(*StsApplySignedUrlResp)(nil),                    // 61: core_api.StsApplySignedUrlResp
-	(*StsAIModifyReq)(nil),                           // 62: core_api.StsAIModifyReq
-	(*StsAIModifyResp)(nil),                          // 63: core_api.StsAIModifyResp
-	(*StsSendVerifyCodeReq)(nil),                     // 64: core_api.StsSendVerifyCodeReq
-	(*ListActivitiesResp_Item)(nil),                  // 65: core_api.ListActivitiesResp.Item
-	(*ListActivitiesByBookRecordsResp_Item)(nil),     // 66: core_api.ListActivitiesByBookRecordsResp.Item
-	(*MerchantListActivitiesResp_Item)(nil),          // 67: core_api.MerchantListActivitiesResp.Item
-	(*MerchantCreateActivityReqActivitySetting)(nil), // 68: core_api.MerchantCreateActivityReq.activitySetting
-	(*MerchantListBookRecordsResp_BookRecord)(nil),   // 69: core_api.MerchantListBookRecordsResp.BookRecord
-	(*MerchantListBookRecordsResp_BookRecords)(nil),  // 70: core_api.MerchantListBookRecordsResp.BookRecords
-	(*SystemListMerchantsResp_Item)(nil),             // 71: core_api.SystemListMerchantsResp.Item
-	(*basic.Paging)(nil),                             // 72: basic.Paging
+	(*Reserver)(nil),                                   // 0: core_api.Reserver
+	(*ActivitySetting)(nil),                            // 1: core_api.ActivitySetting
+	(*Header)(nil),                                     // 2: core_api.Header
+	(*Footer)(nil),                                     // 3: core_api.Footer
+	(*Cover)(nil),                                      // 4: core_api.Cover
+	(*Location)(nil),                                   // 5: core_api.Location
+	(*Opening)(nil),                                    // 6: core_api.Opening
+	(*Response)(nil),                                   // 7: core_api.Response
+	(*LoginReq)(nil),                                   // 8: core_api.LoginReq
+	(*LoginResp)(nil),                                  // 9: core_api.LoginResp
+	(*SignUpReq)(nil),                                  // 10: core_api.SignUpReq
+	(*SignUpResp)(nil),                                 // 11: core_api.SignUpResp
+	(*GetSettingReq)(nil),                              // 12: core_api.GetSettingReq
+	(*GetSettingResp)(nil),                             // 13: core_api.GetSettingResp
+	(*ListActivitiesReq)(nil),                          // 14: core_api.ListActivitiesReq
+	(*ListActivitiesResp)(nil),                         // 15: core_api.ListActivitiesResp
+	(*GetActivityReq)(nil),                             // 16: core_api.GetActivityReq
+	(*GetActivityResp)(nil),                            // 17: core_api.GetActivityResp
+	(*DoFavoriteReq)(nil),                              // 18: core_api.DoFavoriteReq
+	(*CancelFavoriteReq)(nil),                          // 19: core_api.CancelFavoriteReq
+	(*CreateBookingReq)(nil),                           // 20: core_api.CreateBookingReq
+	(*CancelBookRecordReq)(nil),                        // 21: core_api.CancelBookRecordReq
+	(*ListReserversReq)(nil),                           // 22: core_api.ListReserversReq
+	(*ListReserversResp)(nil),                          // 23: core_api.ListReserversResp
+	(*CreateReserverReq)(nil),                          // 24: core_api.CreateReserverReq
+	(*DeleteReserverReq)(nil),                          // 25: core_api.DeleteReserverReq
+	(*GetUserInfoReq)(nil),                             // 26: core_api.GetUserInfoReq
+	(*GetUserInfoResp)(nil),                            // 27: core_api.GetUserInfoResp
+	(*UpdateUserInfoReq)(nil),                          // 28: core_api.UpdateUserInfoReq
+	(*UpdateNoticeReq)(nil),                            // 29: core_api.UpdateNoticeReq
+	(*ListActivitiesByBookRecordsReq)(nil),             // 30: core_api.ListActivitiesByBookRecordsReq
+	(*ListActivitiesByBookRecordsResp)(nil),            // 31: core_api.ListActivitiesByBookRecordsResp
+	(*MerchantListActivitiesReq)(nil),                  // 32: core_api.MerchantListActivitiesReq
+	(*MerchantListActivitiesResp)(nil),                 // 33: core_api.MerchantListActivitiesResp
+	(*MerchantCreateActivityReq)(nil),                  // 34: core_api.MerchantCreateActivityReq
+	(*MerchantDeleteActivityReq)(nil),                  // 35: core_api.MerchantDeleteActivityReq
+	(*MerchantTopActivityReq)(nil),                     // 36: core_api.MerchantTopActivityReq
+	(*MerchantLoginReq)(nil),                           // 37: core_api.MerchantLoginReq
+	(*MerchantLoginResp)(nil),                          // 38: core_api.MerchantLoginResp
+	(*MerchantGetSettingReq)(nil),                      // 39: core_api.MerchantGetSettingReq
+	(*MerchantGetSettingResp)(nil),                     // 40: core_api.MerchantGetSettingResp
+	(*MerchantUpdateSettingReq)(nil),                   // 41: core_api.MerchantUpdateSettingReq
+	(*MerchantListBookRecordsReq)(nil),                 // 42: core_api.MerchantListBookRecordsReq
+	(*MerchantListBookRecordsResp)(nil),                // 43: core_api.MerchantListBookRecordsResp
+	(*MerchantUpdateInfoReq)(nil),                      // 44: core_api.MerchantUpdateInfoReq
+	(*MerchantGetInfoReq)(nil),                         // 45: core_api.MerchantGetInfoReq
+	(*MerchantGetInfoResp)(nil),                        // 46: core_api.MerchantGetInfoResp
+	(*MerchantSetPasswordReq)(nil),                     // 47: core_api.MerchantSetPasswordReq
+	(*SystemLoginReq)(nil),                             // 48: core_api.SystemLoginReq
+	(*SystemLoginResp)(nil),                            // 49: core_api.SystemLoginResp
+	(*SystemListMerchantsReq)(nil),                     // 50: core_api.SystemListMerchantsReq
+	(*SystemListMerchantsResp)(nil),                    // 51: core_api.SystemListMerchantsResp
+	(*SystemGetMerchantReq)(nil),                       // 52: core_api.SystemGetMerchantReq
+	(*SystemGetMerchantResp)(nil),                      // 53: core_api.SystemGetMerchantResp
+	(*SystemCreateMerchantReq)(nil),                    // 54: core_api.SystemCreateMerchantReq
+	(*SystemUpdateMerchantReq)(nil),                    // 55: core_api.SystemUpdateMerchantReq
+	(*SystemGetDashboardReq)(nil),                      // 56: core_api.SystemGetDashboardReq
+	(*SystemGetDashboardResp)(nil),                     // 57: core_api.SystemGetDashboardResp
+	(*SystemGetOverallDashboardReq)(nil),               // 58: core_api.SystemGetOverallDashboardReq
+	(*SystemGetOverallDashboardResp)(nil),              // 59: core_api.SystemGetOverallDashboardResp
+	(*StsApplySignedUrlReq)(nil),                       // 60: core_api.StsApplySignedUrlReq
+	(*StsApplySignedUrlResp)(nil),                      // 61: core_api.StsApplySignedUrlResp
+	(*StsAIModifyReq)(nil),                             // 62: core_api.StsAIModifyReq
+	(*StsAIModifyResp)(nil),                            // 63: core_api.StsAIModifyResp
+	(*StsSendVerifyCodeReq)(nil),                       // 64: core_api.StsSendVerifyCodeReq
+	(*StsViewReq)(nil),                                 // 65: core_api.StsViewReq
+	(*ListActivitiesResp_Item)(nil),                    // 66: core_api.ListActivitiesResp.Item
+	(*ListActivitiesByBookRecordsResp_Item)(nil),       // 67: core_api.ListActivitiesByBookRecordsResp.Item
+	(*MerchantListActivitiesResp_Item)(nil),            // 68: core_api.MerchantListActivitiesResp.Item
+	(*MerchantCreateActivityReqActivitySetting)(nil),   // 69: core_api.MerchantCreateActivityReq.activitySetting
+	(*MerchantListBookRecordsResp_BookRecord)(nil),     // 70: core_api.MerchantListBookRecordsResp.BookRecord
+	(*MerchantListBookRecordsResp_BookRecords)(nil),    // 71: core_api.MerchantListBookRecordsResp.BookRecords
+	(*SystemListMerchantsResp_Item)(nil),               // 72: core_api.SystemListMerchantsResp.Item
+	(*SystemGetDashboardResp_ViewItem)(nil),            // 73: core_api.SystemGetDashboardResp.ViewItem
+	(*SystemGetDashboardResp_ActivityItem)(nil),        // 74: core_api.SystemGetDashboardResp.ActivityItem
+	(*SystemGetOverallDashboardResp_LineItem)(nil),     // 75: core_api.SystemGetOverallDashboardResp.LineItem
+	(*SystemGetOverallDashboardResp_MerchantItem)(nil), // 76: core_api.SystemGetOverallDashboardResp.MerchantItem
+	(*basic.Paging)(nil),                               // 77: basic.Paging
 }
 var file_ActiManage_core_api_common_proto_depIdxs = []int32{
 	2,  // 0: core_api.GetSettingResp.header:type_name -> core_api.Header
 	3,  // 1: core_api.GetSettingResp.footer:type_name -> core_api.Footer
 	4,  // 2: core_api.GetSettingResp.cover:type_name -> core_api.Cover
-	72, // 3: core_api.ListActivitiesReq.paging:type_name -> basic.Paging
-	65, // 4: core_api.ListActivitiesResp.activities:type_name -> core_api.ListActivitiesResp.Item
+	77, // 3: core_api.ListActivitiesReq.paging:type_name -> basic.Paging
+	66, // 4: core_api.ListActivitiesResp.activities:type_name -> core_api.ListActivitiesResp.Item
 	1,  // 5: core_api.GetActivityResp.setting:type_name -> core_api.ActivitySetting
 	5,  // 6: core_api.GetActivityResp.location:type_name -> core_api.Location
-	72, // 7: core_api.ListReserversReq.paging:type_name -> basic.Paging
+	77, // 7: core_api.ListReserversReq.paging:type_name -> basic.Paging
 	0,  // 8: core_api.ListReserversResp.reservers:type_name -> core_api.Reserver
-	72, // 9: core_api.ListActivitiesByBookRecordsReq.paging:type_name -> basic.Paging
-	66, // 10: core_api.ListActivitiesByBookRecordsResp.activities:type_name -> core_api.ListActivitiesByBookRecordsResp.Item
-	72, // 11: core_api.MerchantListActivitiesReq.paging:type_name -> basic.Paging
-	67, // 12: core_api.MerchantListActivitiesResp.activities:type_name -> core_api.MerchantListActivitiesResp.Item
+	77, // 9: core_api.ListActivitiesByBookRecordsReq.paging:type_name -> basic.Paging
+	67, // 10: core_api.ListActivitiesByBookRecordsResp.activities:type_name -> core_api.ListActivitiesByBookRecordsResp.Item
+	77, // 11: core_api.MerchantListActivitiesReq.paging:type_name -> basic.Paging
+	68, // 12: core_api.MerchantListActivitiesResp.activities:type_name -> core_api.MerchantListActivitiesResp.Item
 	5,  // 13: core_api.MerchantCreateActivityReq.location:type_name -> core_api.Location
-	68, // 14: core_api.MerchantCreateActivityReq.activitySettings:type_name -> core_api.MerchantCreateActivityReq.activitySetting
+	69, // 14: core_api.MerchantCreateActivityReq.activitySettings:type_name -> core_api.MerchantCreateActivityReq.activitySetting
 	2,  // 15: core_api.MerchantGetSettingResp.header:type_name -> core_api.Header
 	3,  // 16: core_api.MerchantGetSettingResp.footer:type_name -> core_api.Footer
 	4,  // 17: core_api.MerchantGetSettingResp.cover:type_name -> core_api.Cover
 	2,  // 18: core_api.MerchantUpdateSettingReq.header:type_name -> core_api.Header
 	3,  // 19: core_api.MerchantUpdateSettingReq.footer:type_name -> core_api.Footer
 	4,  // 20: core_api.MerchantUpdateSettingReq.cover:type_name -> core_api.Cover
-	72, // 21: core_api.MerchantListBookRecordsReq.paging:type_name -> basic.Paging
-	70, // 22: core_api.MerchantListBookRecordsResp.bookRecords:type_name -> core_api.MerchantListBookRecordsResp.BookRecords
+	77, // 21: core_api.MerchantListBookRecordsReq.paging:type_name -> basic.Paging
+	71, // 22: core_api.MerchantListBookRecordsResp.bookRecords:type_name -> core_api.MerchantListBookRecordsResp.BookRecords
 	5,  // 23: core_api.MerchantUpdateInfoReq.location:type_name -> core_api.Location
 	6,  // 24: core_api.MerchantUpdateInfoReq.openings:type_name -> core_api.Opening
 	6,  // 25: core_api.MerchantGetInfoResp.openings:type_name -> core_api.Opening
 	5,  // 26: core_api.MerchantGetInfoResp.location:type_name -> core_api.Location
-	72, // 27: core_api.SystemListMerchantsReq.paging:type_name -> basic.Paging
-	71, // 28: core_api.SystemListMerchantsResp.merchants:type_name -> core_api.SystemListMerchantsResp.Item
+	77, // 27: core_api.SystemListMerchantsReq.paging:type_name -> basic.Paging
+	72, // 28: core_api.SystemListMerchantsResp.merchants:type_name -> core_api.SystemListMerchantsResp.Item
 	5,  // 29: core_api.SystemGetMerchantResp.location:type_name -> core_api.Location
 	6,  // 30: core_api.SystemGetMerchantResp.openings:type_name -> core_api.Opening
 	5,  // 31: core_api.SystemCreateMerchantReq.location:type_name -> core_api.Location
 	6,  // 32: core_api.SystemCreateMerchantReq.openings:type_name -> core_api.Opening
 	5,  // 33: core_api.SystemUpdateMerchantReq.location:type_name -> core_api.Location
 	6,  // 34: core_api.SystemUpdateMerchantReq.openings:type_name -> core_api.Opening
-	1,  // 35: core_api.ListActivitiesResp.Item.setting:type_name -> core_api.ActivitySetting
-	5,  // 36: core_api.ListActivitiesResp.Item.location:type_name -> core_api.Location
-	1,  // 37: core_api.ListActivitiesByBookRecordsResp.Item.setting:type_name -> core_api.ActivitySetting
-	5,  // 38: core_api.ListActivitiesByBookRecordsResp.Item.location:type_name -> core_api.Location
-	69, // 39: core_api.MerchantListBookRecordsResp.BookRecords.bookRecords:type_name -> core_api.MerchantListBookRecordsResp.BookRecord
-	40, // [40:40] is the sub-list for method output_type
-	40, // [40:40] is the sub-list for method input_type
-	40, // [40:40] is the sub-list for extension type_name
-	40, // [40:40] is the sub-list for extension extendee
-	0,  // [0:40] is the sub-list for field type_name
+	73, // 35: core_api.SystemGetDashboardResp.viewData:type_name -> core_api.SystemGetDashboardResp.ViewItem
+	74, // 36: core_api.SystemGetDashboardResp.activityByBookNumber:type_name -> core_api.SystemGetDashboardResp.ActivityItem
+	75, // 37: core_api.SystemGetOverallDashboardResp.lineData:type_name -> core_api.SystemGetOverallDashboardResp.LineItem
+	76, // 38: core_api.SystemGetOverallDashboardResp.merchantByViewRank:type_name -> core_api.SystemGetOverallDashboardResp.MerchantItem
+	76, // 39: core_api.SystemGetOverallDashboardResp.merchantByBookRecordRank:type_name -> core_api.SystemGetOverallDashboardResp.MerchantItem
+	76, // 40: core_api.SystemGetOverallDashboardResp.merchantByActivityNumberRank:type_name -> core_api.SystemGetOverallDashboardResp.MerchantItem
+	1,  // 41: core_api.ListActivitiesResp.Item.setting:type_name -> core_api.ActivitySetting
+	5,  // 42: core_api.ListActivitiesResp.Item.location:type_name -> core_api.Location
+	1,  // 43: core_api.ListActivitiesByBookRecordsResp.Item.setting:type_name -> core_api.ActivitySetting
+	5,  // 44: core_api.ListActivitiesByBookRecordsResp.Item.location:type_name -> core_api.Location
+	70, // 45: core_api.MerchantListBookRecordsResp.BookRecords.bookRecords:type_name -> core_api.MerchantListBookRecordsResp.BookRecord
+	46, // [46:46] is the sub-list for method output_type
+	46, // [46:46] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func file_ActiManage_core_api_common_proto_init() {
@@ -6737,7 +7237,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[65].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListActivitiesResp_Item); i {
+			switch v := v.(*StsViewReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6749,7 +7249,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[66].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListActivitiesByBookRecordsResp_Item); i {
+			switch v := v.(*ListActivitiesResp_Item); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6761,7 +7261,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[67].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MerchantListActivitiesResp_Item); i {
+			switch v := v.(*ListActivitiesByBookRecordsResp_Item); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6773,7 +7273,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[68].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MerchantCreateActivityReqActivitySetting); i {
+			switch v := v.(*MerchantListActivitiesResp_Item); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6785,7 +7285,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[69].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MerchantListBookRecordsResp_BookRecord); i {
+			switch v := v.(*MerchantCreateActivityReqActivitySetting); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6797,7 +7297,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[70].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MerchantListBookRecordsResp_BookRecords); i {
+			switch v := v.(*MerchantListBookRecordsResp_BookRecord); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6809,7 +7309,67 @@ func file_ActiManage_core_api_common_proto_init() {
 			}
 		}
 		file_ActiManage_core_api_common_proto_msgTypes[71].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*MerchantListBookRecordsResp_BookRecords); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ActiManage_core_api_common_proto_msgTypes[72].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SystemListMerchantsResp_Item); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ActiManage_core_api_common_proto_msgTypes[73].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SystemGetDashboardResp_ViewItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ActiManage_core_api_common_proto_msgTypes[74].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SystemGetDashboardResp_ActivityItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ActiManage_core_api_common_proto_msgTypes[75].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SystemGetOverallDashboardResp_LineItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ActiManage_core_api_common_proto_msgTypes[76].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SystemGetOverallDashboardResp_MerchantItem); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -6832,7 +7392,7 @@ func file_ActiManage_core_api_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ActiManage_core_api_common_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   72,
+			NumMessages:   77,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

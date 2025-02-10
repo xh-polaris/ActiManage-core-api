@@ -276,6 +276,7 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 		ReserverIds: req.ReserverIds,
 		Arrival:     req.Arrival,
 		Remark:      req.Remark,
+		MerchantId:  req.MerchantId,
 	})
 	if err != nil || response.Code != 0 {
 		return nil, err
