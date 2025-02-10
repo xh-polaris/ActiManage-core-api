@@ -18,10 +18,12 @@ type Auth struct {
 
 type Config struct {
 	service.ServiceConf
-	ListenOn string
-	Auth     Auth
-	GLMKey   string
-	GLMModel string
+	ListenOn           string
+	Auth               Auth
+	GLMKey             string
+	GLMModel           string
+	OSSAccessKeyID     string
+	OSSAccessKeySecret string
 }
 
 func NewConfig() (*Config, error) {

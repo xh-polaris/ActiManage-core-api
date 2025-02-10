@@ -2,10 +2,14 @@ package service
 
 import (
 	"context"
+	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/google/uuid"
 	"github.com/google/wire"
 	gensystem "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/system"
 	genuser "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/user"
+	"github.com/xh-polaris/ActiManage-core-api/biz/adaptor"
 	"github.com/xh-polaris/ActiManage-core-api/biz/application/dto/core_api"
+	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/config"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/consts"
 	rpcsystem "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/system"
 	rpcuser "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/user"
@@ -29,11 +33,44 @@ var StsServiceSet = wire.NewSet(
 )
 
 func (s *StsService) StsApplySignedUrl(ctx context.Context, req *core_api.StsApplySignedUrlReq) (resp *core_api.StsApplySignedUrlResp, err error) {
-	// TODO 向COS申请url
-	return &core_api.StsApplySignedUrlResp{}, nil
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+	clientOptions := []oss.ClientOption{oss.Region("cn-hongkong")}
+	client, err := oss.New("https://oss-cn-hongkong.aliyuncs.com", config.GetConfig().OSSAccessKeyID, config.GetConfig().OSSAccessKeySecret, clientOptions...)
+	if err != nil {
+		log.Error("oss client init fail", err)
+		return nil, err
+	}
+	bucketName := "actimanage-statics"
+	bucket, err := client.Bucket(bucketName)
+	if err != nil {
+		log.Error("oss client get bucket fail", err)
+		return nil, err
+	}
+	if req.Prefix != "" {
+		req.Prefix += "/"
+	}
+	path := "actimanage/" + userId + "/" + req.Prefix + uuid.New().String() + req.GetSuffix()
+	// 有效期30s
+	signedURL, err := bucket.SignURL(path, oss.HTTPPut, 30)
+	if err != nil {
+		log.Error("oss client sign url fail", err)
+		return nil, err
+	}
+	return &core_api.StsApplySignedUrlResp{
+		Code: 0,
+		Msg:  "success",
+		Url:  signedURL,
+	}, nil
 }
 
 func (s *StsService) StsAIModify(ctx context.Context, req *core_api.StsAIModifyReq) (resp *core_api.StsAIModifyResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
 	httpClient := util.NewHttpClient()
 	response, err := httpClient.CallGLM(req.Text, req.Lang)
 	if err != nil {
@@ -65,6 +102,10 @@ func (s *StsService) StsSendVerifyCode(ctx context.Context, req *core_api.StsSen
 }
 
 func (s *StsService) StsView(ctx context.Context, req *core_api.StsViewReq) (resp *core_api.Response, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
 	response, err := s.UserRpc.CreateView(ctx, &genuser.CreateViewReq{
 		TargetId: req.TargetId,
 		Type:     req.Type,
