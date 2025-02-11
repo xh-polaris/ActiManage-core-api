@@ -109,7 +109,7 @@ func SystemGetDashboard(ctx context.Context, c *app.RequestContext) {
 }
 
 // SystemGetOverallDashboard .
-// @router /system/dashboard/overall [GET]
+// @router /system/dashboard/overall [POST]
 func SystemGetOverallDashboard(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req core_api.SystemGetOverallDashboardReq

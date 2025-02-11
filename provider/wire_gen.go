@@ -33,9 +33,13 @@ func NewProvider() (*Provider, error) {
 		UserRpc:   actiManageUser,
 		Config:    configConfig,
 	}
-	stsService := service.StsService{}
+	stsService := service.StsService{
+		SystemRpc: actiManageSystem,
+		UserRpc:   actiManageUser,
+	}
 	systemService := service.SystemService{
 		SystemRpc: actiManageSystem,
+		UserRpc:   actiManageUser,
 		Config:    configConfig,
 	}
 	userService := service.UserService{

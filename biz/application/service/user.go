@@ -76,6 +76,7 @@ func (s UserService) Login(ctx context.Context, req *core_api.LoginReq) (resp *c
 }
 
 func (s UserService) SignUp(ctx context.Context, req *core_api.SignUpReq) (resp *core_api.SignUpResp, err error) {
+	// TODO 校验验证码
 	response, err := s.UserRpc.UserSignUp(ctx, &genuser.UserSignUpReq{
 		MerchantId: req.MerchantId,
 		Name:       &req.Name,
@@ -108,21 +109,17 @@ func (s UserService) GetSetting(ctx context.Context, req *core_api.GetSettingReq
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	resp = &core_api.GetSettingResp{}
-	err = copier.Copy(&resp.Header, &response.Setting.Header)
+	resp = &core_api.GetSettingResp{
+		Code:   0,
+		Msg:    "success",
+		Header: &core_api.Header{},
+		Footer: &core_api.Footer{},
+		Cover:  &core_api.Cover{},
+	}
+	err = copier.Copy(&resp, &response.Setting)
 	if err != nil {
 		return nil, err
 	}
-	err = copier.Copy(&resp.Cover, &response.Setting.Cover)
-	if err != nil {
-		return nil, err
-	}
-	err = copier.Copy(&resp.Footer, &response.Setting.Footer)
-	if err != nil {
-		return nil, err
-	}
-	resp.Code = 0
-	resp.Msg = "success"
 	return resp, nil
 }
 
@@ -132,7 +129,6 @@ func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActiv
 			Page:  req.Paging.Page,
 			Limit: req.Paging.Limit,
 		},
-		Type: 0,
 	}
 	if req.Type != nil {
 		rpcReq.Type = *req.Type
@@ -144,27 +140,20 @@ func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActiv
 	activities := make([]*core_api.ListActivitiesResp_Item, 0)
 	for _, v := range response.Activities {
 		activity := &core_api.ListActivitiesResp_Item{
-			Id:         v.Id,
-			Name:       v.Name,
-			Cover:      v.Cover,
-			Book:       v.Book,
-			Top:        v.Top,
-			CreateTime: v.CreateTime,
-			UpdateTime: v.UpdateTime,
-			Status:     v.Status,
+			Setting:  &core_api.ActivitySetting{},
+			Location: &core_api.Location{},
+		}
+		// 活动设置
+		err = copier.Copy(&activity, &v)
+		if err != nil {
+			return nil, err
 		}
 		// 预约设置
 		if v.Book == 1 {
 			activity.BookStart = v.BookStart
 			activity.BookEnd = v.BookEnd
 		}
-		// 活动设置
-		err = copier.Copy(&activity.Setting, &v.Setting)
-		if err != nil {
-			return nil, err
-		}
-		// 活动地点
-		err = copier.Copy(&activity.Location, &v.Location)
+
 		// 点赞数和浏览数
 		fvResp, err := s.UserRpc.GetFavoriteAndViewOfActivity(ctx, &genuser.GetFavoriteAndViewOfActivityReq{
 			ActivityId: v.Id,
@@ -195,33 +184,21 @@ func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityR
 	}
 	v := response.Activity
 	resp = &core_api.GetActivityResp{
-		Code:        0,
-		Msg:         "success",
-		Id:          v.Id,
-		MerchantId:  v.MerchantId,
-		Name:        v.Name,
-		Cover:       v.Cover,
-		Book:        v.Book,
-		Top:         v.Top,
-		Phone:       v.Phone,
-		Description: v.Description,
-		Notice:      v.Notice,
-		CreateTime:  v.CreateTime,
-		UpdateTime:  v.UpdateTime,
-		Status:      v.Status,
+		Code:     0,
+		Msg:      "success",
+		Setting:  &core_api.ActivitySetting{},
+		Location: &core_api.Location{},
+	}
+	err = copier.Copy(&resp, &v)
+	if err != nil {
+		return nil, err
 	}
 	// 预约设置
 	if v.Book == 1 {
 		resp.BookStart = v.BookStart
 		resp.BookEnd = v.BookEnd
 	}
-	// 活动设置
-	err = copier.Copy(&resp.Setting, &v.Setting)
-	if err != nil {
-		return nil, err
-	}
-	// 活动地点
-	err = copier.Copy(&resp.Location, &v.Location)
+
 	// 点赞数和浏览数
 	fvResp, err := s.UserRpc.GetFavoriteAndViewOfActivity(ctx, &genuser.GetFavoriteAndViewOfActivityReq{
 		ActivityId: v.Id,
@@ -315,7 +292,7 @@ func (s UserService) ListActivitiesByBookRecords(ctx context.Context, req *core_
 	if err != nil || bookResp.Code != 0 {
 		return nil, err
 	}
-	activities := make([]*core_api.ListActivitiesByBookRecordsResp_Item, len(bookResp.Records))
+	activities := make([]*core_api.ListActivitiesByBookRecordsResp_Item, 0, len(bookResp.Records))
 	for _, r := range bookResp.Records {
 		response, err := s.SystemRpc.GetActivity(ctx, &gensystem.GetActivityReq{
 			Id: r.ActivityId,
@@ -325,27 +302,19 @@ func (s UserService) ListActivitiesByBookRecords(ctx context.Context, req *core_
 		}
 		v := response.Activity
 		activity := &core_api.ListActivitiesByBookRecordsResp_Item{
-			Id:         v.Id,
-			Name:       v.Name,
-			Cover:      v.Cover,
-			Book:       v.Book,
-			Top:        v.Top,
-			CreateTime: v.CreateTime,
-			UpdateTime: v.UpdateTime,
-			Status:     v.Status,
+			Setting:  &core_api.ActivitySetting{},
+			Location: &core_api.Location{},
+		}
+		err = copier.Copy(&activity, &v)
+		if err != nil {
+			return nil, err
 		}
 		// 预约设置
 		if v.Book == 1 {
 			activity.BookStart = v.BookStart
 			activity.BookEnd = v.BookEnd
 		}
-		// 活动设置
-		err = copier.Copy(&activity.Setting, &v.Setting)
-		if err != nil {
-			return nil, err
-		}
-		// 活动地点
-		err = copier.Copy(&activity.Location, &v.Location)
+
 		// 点赞数和浏览数
 		fvResp, err := s.UserRpc.GetFavoriteAndViewOfActivity(ctx, &genuser.GetFavoriteAndViewOfActivityReq{
 			ActivityId: v.Id,
@@ -462,14 +431,18 @@ func (s UserService) UpdateUserInfo(ctx context.Context, req *core_api.UpdateUse
 	if err != nil || userId == "" {
 		return nil, consts.ErrNotAuthentication
 	}
-	response, err := s.UserRpc.UpdateUserInfo(ctx, &genuser.UpdateUserInfoReq{
+	rpcReq := &genuser.UpdateUserInfoReq{
 		Id:          userId,
 		Name:        req.Name,
 		Gender:      req.Gender,
-		Birth:       &req.Birth,
+		Birth:       nil,
 		Description: req.Description,
 		Avatar:      req.Avatar,
-	})
+	}
+	if req.Birth != nil {
+		rpcReq.Birth = req.Birth
+	}
+	response, err := s.UserRpc.UpdateUserInfo(ctx, rpcReq)
 	if err != nil || response.Code != 0 {
 		return nil, consts.ErrUpdate
 	}

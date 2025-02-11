@@ -70,7 +70,7 @@ func makeResponse(resp any) map[string]any {
 		v = v.Elem()
 		if v.Kind() == reflect.Struct {
 			// 构建返回数据
-			response := make(map[string]any, 3)
+			response := make(map[string]any)
 			response["code"] = v.FieldByName("Code").Int()
 			response["msg"] = v.FieldByName("Msg").String()
 
@@ -78,17 +78,13 @@ func makeResponse(resp any) map[string]any {
 				return response
 			}
 
-			data := make(map[string]interface{}, v.NumField()-2)
+			data := make(map[string]interface{})
 			for i := 0; i < v.NumField(); i++ {
 				field := v.Type().Field(i)
 				fieldValue := v.Field(i)
 				jsonTag := field.Tag.Get("json")
-				if field.Name == "code" || field.Name == "msg" {
+				if jsonTag == "" || field.Name == "Code" || field.Name == "Msg" {
 					continue
-				}
-				// 获取 json 标签名，空值则用字段名
-				if jsonTag == "" {
-					jsonTag = field.Name
 				}
 
 				// 过滤零值字段，避免返回不必要的字段
@@ -96,7 +92,9 @@ func makeResponse(resp any) map[string]any {
 					data[jsonTag] = fieldValue.Interface()
 				}
 			}
-			response["data"] = data
+			if len(data) > 0 {
+				response["data"] = data
+			}
 			return response
 		}
 	}

@@ -68,7 +68,7 @@ func Register(r *server.Hertz) {
 		{
 			_dashboard := _system.Group("/dashboard", _dashboardMw()...)
 			_dashboard.POST("/one", append(_systemgetdashboardMw(), core_api.SystemGetDashboard)...)
-			_dashboard.GET("/overall", append(_systemgetoveralldashboardMw(), core_api.SystemGetOverallDashboard)...)
+			_dashboard.POST("/overall", append(_systemgetoveralldashboardMw(), core_api.SystemGetOverallDashboard)...)
 		}
 		{
 			_merchant0 := _system.Group("/merchant", _merchant0Mw()...)

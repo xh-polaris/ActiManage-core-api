@@ -44,17 +44,22 @@ var MerchantServiceSet = wire.NewSet(
 )
 
 func (s *MerchantService) MerchantListActivities(ctx context.Context, req *core_api.MerchantListActivitiesReq) (resp *core_api.MerchantListActivitiesResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
 	listResp, err := s.SystemRpc.ListActivities(ctx, &gensystem.ListActivitiesReq{
 		Paging: &genbasic.Paging{
 			Page:  req.Paging.Page,
 			Limit: req.Paging.Limit,
 		},
-		Type: *req.Type,
+		Type:       *req.Type,
+		MerchantId: userId,
 	})
 	if err != nil {
 		return nil, err
 	}
-	activities := make([]*core_api.MerchantListActivitiesResp_Item, len(listResp.Activities))
+	activities := make([]*core_api.MerchantListActivitiesResp_Item, 0, len(listResp.Activities))
 	for _, v := range listResp.Activities {
 		activities = append(activities, &core_api.MerchantListActivitiesResp_Item{
 			Id:   v.Id,
@@ -80,12 +85,14 @@ func (s *MerchantService) MerchantCreateActivity(ctx context.Context, req *core_
 		MerchantId:  userId,
 		Name:        req.Name,
 		Book:        req.Type,
-		Top:         0,
+		Setting:     make([]*gensystem.ActivitySetting, 0, len(req.ActivitySettings)),
+		Location:    &gensystem.Location{},
+		Top:         req.Type,
 		Phone:       req.Phone,
 		Description: req.Description,
 		Cover:       req.Cover,
 	}
-	// 预约时间
+	// 活动，有预约时间
 	if req.Type == 1 {
 		if req.BookStart != nil {
 			rpcReq.BookStart = req.GetBookStart()
@@ -168,7 +175,14 @@ func (s *MerchantService) MerchantGetSetting(ctx context.Context, req *core_api.
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	resp = &core_api.MerchantGetSettingResp{}
+	resp = &core_api.MerchantGetSettingResp{
+		Code:   0,
+		Msg:    "success",
+		Header: &core_api.Header{},
+		Footer: &core_api.Footer{},
+		Cover:  &core_api.Cover{},
+		Id:     response.Setting.Id,
+	}
 	err = copier.Copy(&resp.Header, &response.Setting.Header)
 	if err != nil {
 		return nil, err
@@ -181,14 +195,15 @@ func (s *MerchantService) MerchantGetSetting(ctx context.Context, req *core_api.
 	if err != nil {
 		return nil, err
 	}
-	resp.Code = 0
-	resp.Msg = "success"
 	return resp, nil
 }
 
 func (s *MerchantService) MerchantUpdateSetting(ctx context.Context, req *core_api.MerchantUpdateSettingReq) (resp *core_api.Response, err error) {
 	rpcReq := &gensystem.UpdateSettingReq{
-		Id: req.Id,
+		Id:     req.Id,
+		Header: &gensystem.Header{},
+		Cover:  &gensystem.Cover{},
+		Footer: &gensystem.Footer{},
 	}
 	err = copier.Copy(&rpcReq.Header, &req.Header)
 	if err != nil {
@@ -210,17 +225,22 @@ func (s *MerchantService) MerchantUpdateSetting(ctx context.Context, req *core_a
 }
 
 func (s *MerchantService) MerchantListBookRecords(ctx context.Context, req *core_api.MerchantListBookRecordsReq) (resp *core_api.MerchantListBookRecordsResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
 	activitiesResp, err := s.SystemRpc.ListActivities(ctx, &gensystem.ListActivitiesReq{
 		Paging: &genbasic.Paging{
 			Page:  req.Paging.Page,
 			Limit: req.Paging.Limit,
 		},
-		Type: 0,
+		Type:       0,
+		MerchantId: userId,
 	})
 	if err != nil {
 		return nil, err
 	}
-	dtos := make([]*core_api.MerchantListBookRecordsResp_BookRecords, len(activitiesResp.Activities))
+	dtos := make([]*core_api.MerchantListBookRecordsResp_BookRecords, 0, len(activitiesResp.Activities))
 	for _, activity := range activitiesResp.Activities {
 		// 这里虽然分页，但是其实是拿到了所有的
 		records, err := s.UserRpc.ListBookRecordsByActivity(ctx, &genuser.ListBookRecordsByActivityReq{
@@ -233,7 +253,7 @@ func (s *MerchantService) MerchantListBookRecords(ctx context.Context, req *core
 		if err != nil {
 			return nil, err
 		}
-		recordDtos := make([]*core_api.MerchantListBookRecordsResp_BookRecord, len(records.Records))
+		recordDtos := make([]*core_api.MerchantListBookRecordsResp_BookRecord, 0, len(records.Records))
 		for _, record := range records.Records {
 			var dto core_api.MerchantListBookRecordsResp_BookRecord
 			err := copier.Copy(&dto, &record)
@@ -268,6 +288,8 @@ func (s *MerchantService) MerchantUpdateInfo(ctx context.Context, req *core_api.
 		Logo:        req.Name,
 		Description: req.Description,
 		Licences:    req.Licences,
+		Openings:    make([]*gensystem.Opening, 0, len(req.Openings)),
+		Location:    &gensystem.Location{},
 	}
 	err = copier.Copy(&rpcReq.Openings, &req.Openings)
 	if err != nil {
@@ -295,17 +317,16 @@ func (s *MerchantService) MerchantGetInfo(ctx context.Context, req *core_api.Mer
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	resp = &core_api.MerchantGetInfoResp{}
-	err = copier.Copy(&resp.Openings, &resp.Openings)
+	resp = &core_api.MerchantGetInfoResp{
+		Code:     0,
+		Msg:      "success",
+		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
+		Location: &core_api.Location{},
+	}
+	err = copier.Copy(&resp, &response)
 	if err != nil {
 		return nil, err
 	}
-	err = copier.Copy(&resp.Location, &resp.Location)
-	if err != nil {
-		return nil, err
-	}
-	resp.Code = 0
-	resp.Msg = "success"
 	return resp, nil
 }
 

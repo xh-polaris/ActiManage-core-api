@@ -72,7 +72,7 @@ func (s SystemService) SystemListMerchant(ctx context.Context, req *core_api.Sys
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	dtos := make([]*core_api.SystemListMerchantsResp_Item, len(response.Merchants))
+	dtos := make([]*core_api.SystemListMerchantsResp_Item, 0, len(response.Merchants))
 	for _, merchant := range response.Merchants {
 		dto := &core_api.SystemListMerchantsResp_Item{
 			Id:   merchant.Id,
@@ -96,17 +96,16 @@ func (s SystemService) SystemGetMerchant(ctx context.Context, req *core_api.Syst
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	resp = &core_api.SystemGetMerchantResp{}
-	err = copier.Copy(&resp.Openings, &resp.Openings)
+	resp = &core_api.SystemGetMerchantResp{
+		Code:     0,
+		Msg:      "success",
+		Location: &core_api.Location{},
+		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
+	}
+	err = copier.Copy(&resp, &response)
 	if err != nil {
 		return nil, err
 	}
-	err = copier.Copy(&resp.Openings, &resp.Location)
-	if err != nil {
-		return nil, err
-	}
-	resp.Code = 0
-	resp.Msg = "success"
 	return resp, nil
 }
 
@@ -121,13 +120,11 @@ func (s SystemService) SystemCreateMerchant(ctx context.Context, req *core_api.S
 		Phone:       req.Phone,
 		Description: req.Description,
 		Licences:    req.Licences,
+		Location:    &gensystem.Location{},
+		Openings:    make([]*gensystem.Opening, 0, len(req.Openings)),
 		Logo:        req.Logo,
 	}
-	err = copier.Copy(&rpcReq.Openings, &req.Openings)
-	if err != nil {
-		return nil, consts.ErrInvalidParameter
-	}
-	err = copier.Copy(&rpcReq.Location, &req.Location)
+	err = copier.Copy(&rpcReq, &req)
 	if err != nil {
 		return nil, consts.ErrInvalidParameter
 	}
@@ -146,20 +143,12 @@ func (s SystemService) SystemUpdateMerchant(ctx context.Context, req *core_api.S
 	rpcReq := &gensystem.UpdateMerchantReq{
 		AdminId: userId,
 		Merchant: &gensystem.Merchant{
-			Id:          req.MerchantId,
-			Name:        req.Name,
-			Logo:        req.Logo,
-			Phone:       req.Phone,
-			Description: req.Description,
-			Licences:    req.Licences,
-			Status:      req.Status,
+			Id:       req.MerchantId,
+			Location: &gensystem.Location{},
+			Openings: make([]*gensystem.Opening, 0, len(req.Openings)),
 		},
 	}
-	err = copier.Copy(&rpcReq.Merchant.Openings, &req.Openings)
-	if err != nil {
-		return nil, consts.ErrInvalidParameter
-	}
-	err = copier.Copy(&rpcReq.Merchant.Location, &req.Location)
+	err = copier.Copy(&rpcReq.Merchant, &req)
 	if err != nil {
 		return nil, consts.ErrInvalidParameter
 	}
@@ -186,7 +175,6 @@ func (s SystemService) SystemGetDashboard(ctx context.Context, req *core_api.Sys
 			Time:   v.Time,
 		})
 	}
-
 	// 根据预约量获取活动id
 	activityIdResp, err := s.UserRpc.ListActivityIdByBookRecordRank(ctx, &genuser.ListActivityIdsByBookRecordRankReq{Number: req.ActivityByBookNumber, MerchantId: req.Id})
 	if err != nil {
@@ -210,6 +198,8 @@ func (s SystemService) SystemGetDashboard(ctx context.Context, req *core_api.Sys
 	}
 
 	resp = &core_api.SystemGetDashboardResp{
+		Code:                 0,
+		Msg:                  "success",
 		ViewData:             views,
 		ActivityByBookNumber: activitiesByBookRecordNumber,
 	}
@@ -293,6 +283,8 @@ func (s SystemService) SystemGetOverallDashboard(ctx context.Context, req *core_
 	}
 
 	resp = &core_api.SystemGetOverallDashboardResp{
+		Code:                         0,
+		Msg:                          "success",
 		LineData:                     totals,
 		MerchantByViewRank:           merchantByView,
 		MerchantByBookRecordRank:     merchantByBookRecord,
