@@ -20,7 +20,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -66,7 +66,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: arc-runner-set
     needs: build
     if: github.event_name == 'push'
     steps:
