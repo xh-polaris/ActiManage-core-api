@@ -43,7 +43,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
-          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          password: $SECRET_DOCKERHUB_ACCESS_TOKEN
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -73,12 +73,12 @@ jobs:
       - name: Setup Kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: ${{ vars.KUBE_VERSION }}
+          version: $VAR_KUBE_VERSION
 
       - name: Deploy
         run: |
           mkdir $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
-          kubectl get deployment ${{ env.IMAGE_NAME }} -n ${{ vars.BASE_TEST_NAMESPACE }} -o yaml |\
+          echo "$SECRET_KUBE_CONFIG" > $HOME/.kube/config
+          kubectl get deployment ${{ env.IMAGE_NAME }} -n $VAR_BASE_TEST_NAMESPACE -o yaml |\
           sed 's/\(image: ${{ env.USERNAME }}\/${{ env.IMAGE_NAME }}:\).*$/\1${{ needs.build.outputs.version }}/' |\
           kubectl apply -f -
