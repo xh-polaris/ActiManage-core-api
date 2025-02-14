@@ -17,6 +17,12 @@ env:
   REGISTRY: docker.io
   USERNAME: xhpolaris
   IMAGE_NAME: actimanage-core-api
+  VAR_KUBE_VERSION: $VAR_KUBE_VERSION
+  VAR_BASE_TEST_NAMESPACE: $VAR_BASE_TEST_NAMESPACE
+  SECRET_GITHUB_SSH_KEY: $SECRET_GITHUB_SSH_KEY
+  SECRET_DOCKERHUB_ACCESS_TOKEN: $SECRET_DOCKERHUB_ACCESS_TOKEN
+  SECRET_KUBE_CONFIG: $SECRET_KUBE_CONFIG
+  
 
 jobs:
   build:
@@ -27,7 +33,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ssh-key: $SECRET_GITHUB_SSH_KEY
+          ssh-key: ${{ env.SECRET_GITHUB_SSH_KEY }}
 
       - name: Bump Version
         id: version
@@ -45,7 +51,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
-          password: $SECRET_DOCKERHUB_ACCESS_TOKEN
+          password: ${{ env.SECRET_DOCKERHUB_ACCESS_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -75,12 +81,12 @@ jobs:
       - name: Setup Kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: $VAR_KUBE_VERSION
+          version: ${ env.VAR_KUBE_VERSION }}
 
       - name: Deploy
         run: |
           mkdir $HOME/.kube
-          echo "$SECRET_KUBE_CONFIG" > $HOME/.kube/config
-          kubectl get deployment ${{ env.IMAGE_NAME }} -n $VAR_BASE_TEST_NAMESPACE -o yaml |\
+          echo "${{ env.SECRET_KUBE_CONFIG }}" > $HOME/.kube/config
+          kubectl get deployment ${{ env.IMAGE_NAME }} -n ${{ env.VAR_BASE_TEST_NAMESPACE }} -o yaml |\
           sed 's/\(image: ${{ env.USERNAME }}\/${{ env.IMAGE_NAME }}:\).*$/\1${{ needs.build.outputs.version }}/' |\
           kubectl apply -f -
