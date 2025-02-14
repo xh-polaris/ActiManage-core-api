@@ -27,7 +27,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ssh-key: '$SECRET_GITHUB_SSH_KEY'
+          ssh-key: $SECRET_GITHUB_SSH_KEY
 
       - name: Bump Version
         id: version
