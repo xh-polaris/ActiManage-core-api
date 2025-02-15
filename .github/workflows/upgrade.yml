@@ -17,11 +17,30 @@ env:
   REGISTRY: docker.io
   USERNAME: xhpolaris
   IMAGE_NAME: actimanage-core-api
-  VAR_KUBE_VERSION: $VAR_KUBE_VERSION
-  VAR_BASE_TEST_NAMESPACE: $VAR_BASE_TEST_NAMESPACE
-  SECRET_GITHUB_SSH_KEY: $SECRET_GITHUB_SSH_KEY
-  SECRET_DOCKERHUB_ACCESS_TOKEN: $SECRET_DOCKERHUB_ACCESS_TOKEN
-  SECRET_KUBE_CONFIG: $SECRET_KUBE_CONFIG
+  VAR_KUBE_VERSION: v1.29.3
+  VAR_BASE_TEST_NAMESPACE: xh-polaris-test
+  SECRET_GITHUB_SSH_KEY: b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQRZLfX061JFSZ4y8Dws74RpjH//Sk28 +XEj6MGw/b65JcVFTXSPMC6jeeX6GakMn02N5FCeuP5OH3KPdDkt1Di4AAAAsPilmWz4pZlsAAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFkt9fTrUkVJnjLwPCzvhGmMf/9KTbz5cSPowbD9vrklxUVNdI8wLqN55foZqQyfTY3kUJ64/k4fco90OS3UOLgAAAAgSZWkV7zZSM/qbUjqk74oQqLSrg4gJL2iHf0OLqqeF1oAAAAWYnl0ZWRhbmNlQEMwMkZUME5QTUQ2VgEC
+  SECRET_DOCKERHUB_ACCESS_TOKEN: dckr_pat_qHQI4DAhkB9aIBs8o_yd-Mpu1P0
+  SECRET_KUBE_CONFIG: |
+    apiVersion: v1
+    kind: Config
+    clusters:
+      - name: "local"
+        cluster:
+          server: "https://rancher.xhpolaris.com/k8s/clusters/local"
+    users:
+      - name: "local"
+        user:
+          token: "kubeconfig-user-f4dcfc2ljg:ph6wvj72czcwcq5n9pdxl6l2h2qlvfbqctcwzcdbm9jwlb98rxszc2"
+    contexts:
+      - name: "local"
+        context:
+          user: "local"
+          cluster: "local"
+
+
+
+current-context: "local"
   
 
 jobs:
