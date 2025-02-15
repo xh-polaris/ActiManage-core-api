@@ -76,7 +76,11 @@ func (s UserService) Login(ctx context.Context, req *core_api.LoginReq) (resp *c
 }
 
 func (s UserService) SignUp(ctx context.Context, req *core_api.SignUpReq) (resp *core_api.SignUpResp, err error) {
-	// TODO 校验验证码
+	// 参数校验,authId不能为空
+	if req.AuthId == "" {
+		return nil, consts.ErrSignUp
+	}
+
 	response, err := s.UserRpc.UserSignUp(ctx, &genuser.UserSignUpReq{
 		MerchantId: req.MerchantId,
 		Name:       &req.Name,

@@ -229,51 +229,30 @@ func (s *MerchantService) MerchantListBookRecords(ctx context.Context, req *core
 	if err != nil || userId == "" {
 		return nil, consts.ErrNotAuthentication
 	}
-	activitiesResp, err := s.SystemRpc.ListActivities(ctx, &gensystem.ListActivitiesReq{
+	records, err := s.UserRpc.ListBookRecordsByActivity(ctx, &genuser.ListBookRecordsByActivityReq{
+		ActivityId: req.ActivityId,
 		Paging: &genbasic.Paging{
 			Page:  req.Paging.Page,
 			Limit: req.Paging.Limit,
 		},
-		Type:       0,
-		MerchantId: userId,
 	})
 	if err != nil {
 		return nil, err
 	}
-	dtos := make([]*core_api.MerchantListBookRecordsResp_BookRecords, 0, len(activitiesResp.Activities))
-	for _, activity := range activitiesResp.Activities {
-		// 这里虽然分页，但是其实是拿到了所有的
-		records, err := s.UserRpc.ListBookRecordsByActivity(ctx, &genuser.ListBookRecordsByActivityReq{
-			ActivityId: activity.Id,
-			Paging: &genbasic.Paging{
-				Page:  req.Paging.Page,
-				Limit: req.Paging.Limit,
-			},
-		})
+	recordDtos := make([]*core_api.MerchantListBookRecordsResp_BookRecord, 0, len(records.Records))
+	for _, record := range records.Records {
+		var dto core_api.MerchantListBookRecordsResp_BookRecord
+		err = copier.Copy(&dto, &record)
 		if err != nil {
 			return nil, err
 		}
-		recordDtos := make([]*core_api.MerchantListBookRecordsResp_BookRecord, 0, len(records.Records))
-		for _, record := range records.Records {
-			var dto core_api.MerchantListBookRecordsResp_BookRecord
-			err := copier.Copy(&dto, &record)
-			if err != nil {
-				return nil, err
-			}
-			recordDtos = append(recordDtos, &dto)
-		}
-		dto := &core_api.MerchantListBookRecordsResp_BookRecords{
-			ActivityName: activity.Name,
-			BookRecords:  recordDtos,
-			Total:        records.Total,
-		}
-		dtos = append(dtos, dto)
+		recordDtos = append(recordDtos, &dto)
 	}
 	return &core_api.MerchantListBookRecordsResp{
 		Code:        0,
 		Msg:         "success",
-		BookRecords: dtos,
-		Total:       activitiesResp.Total,
+		BookRecords: recordDtos,
+		Total:       records.Total,
 	}, nil
 }
 
