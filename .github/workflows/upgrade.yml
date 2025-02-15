@@ -37,10 +37,7 @@ env:
         context:
           user: "local"
           cluster: "local"
-
-
-
-current-context: "local"
+    current-context: "local"
   
 
 jobs:
