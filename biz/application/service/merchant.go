@@ -30,6 +30,9 @@ type IMerchantService interface {
 	MerchantUpdateInfo(ctx context.Context, req *core_api.MerchantUpdateInfoReq) (resp *core_api.Response, err error)
 	MerchantGetInfo(ctx context.Context, req *core_api.MerchantGetInfoReq) (resp *core_api.MerchantGetInfoResp, err error)
 	MerchantSetPassword(ctx context.Context, req *core_api.MerchantSetPasswordReq) (resp *core_api.Response, err error)
+	GetMerchantInfoByUri(ctx context.Context, c *core_api.GetMerchantInfoByUriReq) (resp *core_api.GetMerchantInfoByUriResp, err error)
+	GetAd(ctx context.Context, c *core_api.GetAdReq) (resp *core_api.GetAdResp, err error)
+	SetAd(ctx context.Context, c *core_api.SetAdReq) (resp *core_api.Response, err error)
 }
 
 type MerchantService struct {
@@ -323,4 +326,59 @@ func (s *MerchantService) MerchantSetPassword(ctx context.Context, req *core_api
 		return nil, err
 	}
 	return util.SuccessResp("密码修改成功")
+}
+
+func (s *MerchantService) GetMerchantInfoByUri(ctx context.Context, req *core_api.GetMerchantInfoByUriReq) (resp *core_api.GetMerchantInfoByUriResp, err error) {
+	response, err := s.SystemRpc.GetMerchantInfoByUri(ctx, &gensystem.GetMerchantInfoByUriReq{
+		Uri: req.Uri,
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp = &core_api.GetMerchantInfoByUriResp{
+		Code:       0,
+		Msg:        "success",
+		MerchantId: response.MerchantId,
+		Ad:         &core_api.Ad{},
+	}
+	err = copier.Copy(&resp.Ad, &response.Ad)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *MerchantService) GetAd(ctx context.Context, req *core_api.GetAdReq) (resp *core_api.GetAdResp, err error) {
+	response, err := s.SystemRpc.GetAd(ctx, &gensystem.GetAdReq{
+		MerchantId: req.MerchantId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp = &core_api.GetAdResp{
+		Code: 0,
+		Msg:  "success",
+		Ad:   &core_api.Ad{},
+	}
+	err = copier.Copy(&resp.Ad, &response.Ad)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *MerchantService) SetAd(ctx context.Context, req *core_api.SetAdReq) (resp *core_api.Response, err error) {
+	rpcReq := &gensystem.SetAdReq{
+		MerchantId: req.MerchantId,
+		Ad:         &gensystem.Ad{},
+	}
+	err = copier.Copy(&rpcReq.Ad, &req.Ad)
+	if err != nil {
+		return nil, err
+	}
+	response, err := s.SystemRpc.SetAd(ctx, rpcReq)
+	if err != nil || response.Code != 0 {
+		return nil, err
+	}
+	return util.SuccessResp(response.Msg)
 }

@@ -305,3 +305,23 @@ func _stsviewMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _adMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getadMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _setadMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getmerchantinfobyuriMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

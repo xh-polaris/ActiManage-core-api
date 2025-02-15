@@ -28,6 +28,11 @@ func Register(r *server.Hertz) {
 			_activity.POST("/top", append(_merchanttopactivityMw(), core_api.MerchantTopActivity)...)
 		}
 		{
+			_ad := _merchant.Group("/ad", _adMw()...)
+			_ad.POST("/get", append(_getadMw(), core_api.GetAd)...)
+			_ad.POST("/update", append(_setadMw(), core_api.SetAd)...)
+		}
+		{
 			_book := _merchant.Group("/book", _bookMw()...)
 			_book.POST("/list", append(_merchantlistbookrecordsMw(), core_api.MerchantListBookRecords)...)
 		}
@@ -35,6 +40,7 @@ func Register(r *server.Hertz) {
 			_info := _merchant.Group("/info", _infoMw()...)
 			_info.GET("/get", append(_merchantgetinfoMw(), core_api.MerchantGetInfo)...)
 			_info.POST("/update", append(_merchantupdateinfoMw(), core_api.MerchantUpdateInfo)...)
+			_info.POST("/uri", append(_getmerchantinfobyuriMw(), core_api.GetMerchantInfoByUri)...)
 		}
 		{
 			_password := _merchant.Group("/password", _passwordMw()...)
