@@ -133,6 +133,7 @@ func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActiv
 			Page:  req.Paging.Page,
 			Limit: req.Paging.Limit,
 		},
+		MerchantId: req.MerchantId,
 	}
 	if req.Type != nil {
 		rpcReq.Type = *req.Type
