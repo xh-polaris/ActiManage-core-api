@@ -54,7 +54,7 @@ func (s *StsService) StsApplySignedUrl(ctx context.Context, req *core_api.StsApp
 	}
 	path := "actimanage/" + userId + "/" + req.Prefix + uuid.New().String() + req.GetSuffix()
 	// 有效期30s
-	signedURL, err := bucket.SignURL(path, oss.HTTPPut, 30)
+	signedURL, err := bucket.SignURL(path, oss.HTTPPut, 60)
 	if err != nil {
 		log.Error("oss client sign url fail", err)
 		return nil, err

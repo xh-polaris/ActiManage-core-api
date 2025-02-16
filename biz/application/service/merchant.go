@@ -90,7 +90,7 @@ func (s *MerchantService) MerchantCreateActivity(ctx context.Context, req *core_
 		Book:        req.Type,
 		Setting:     make([]*gensystem.ActivitySetting, 0, len(req.ActivitySettings)),
 		Location:    &gensystem.Location{},
-		Top:         req.Type,
+		Top:         req.Top,
 		Phone:       req.Phone,
 		Description: req.Description,
 		Cover:       req.Cover,
