@@ -27,12 +27,12 @@ build_and_run:
 wire:
 	wire ./provider
 update:
-	hz.exe update $(IDL_OPTIONS) --mod $(MODULE_NAME) $(EXTRA_OPTIONS)
+	hz update $(IDL_OPTIONS) --mod $(MODULE_NAME) $(EXTRA_OPTIONS)
 	@files=$$(find biz/application/dto -type f); \
 	for file in $$files; do \
   	  sed -i  -e 's/func init\(\).*//' $$file; \
   	done
 new:
-	hz.exe new $(IDL_OPTIONS) $(OUTPUT_OPTIONS) --service $(SERVICE_NAME) --mod $(MODULE_NAME) $(EXTRA_OPTIONS)
+	hz new $(IDL_OPTIONS) $(OUTPUT_OPTIONS) --service $(SERVICE_NAME) --mod $(MODULE_NAME) $(EXTRA_OPTIONS)
 clean:
 	rm -r ./output

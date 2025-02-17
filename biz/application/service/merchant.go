@@ -304,6 +304,7 @@ func (s *MerchantService) MerchantGetInfo(ctx context.Context, req *core_api.Mer
 		Msg:      "success",
 		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
 		Location: &core_api.Location{},
+		Uri:      response.Uri,
 	}
 	err = copier.Copy(&resp, &response)
 	if err != nil {
