@@ -222,7 +222,7 @@ func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityR
 	// 预约判断
 	bookResp, err := s.UserRpc.CheckBookRecordByUserIdAndActivityId(ctx, &genuser.CheckBookRecordByUserIdAndActivityIdReq{
 		UserId:     userId,
-		ActivityId: "",
+		ActivityId: v.Id,
 	})
 	if err != nil {
 		return nil, err
