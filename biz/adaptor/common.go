@@ -88,9 +88,8 @@ func makeResponse(resp any) map[string]any {
 				}
 
 				// 过滤零值字段，避免返回不必要的字段
-				if !fieldValue.IsZero() {
-					data[jsonTag] = fieldValue.Interface()
-				}
+				data[jsonTag] = fieldValue.Interface()
+
 			}
 			if len(data) > 0 {
 				response["data"] = data
