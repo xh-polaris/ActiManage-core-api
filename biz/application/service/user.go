@@ -181,6 +181,11 @@ func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActiv
 }
 
 func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityReq) (resp *core_api.GetActivityResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
 	response, err := s.SystemRpc.GetActivity(ctx, &gensystem.GetActivityReq{
 		Id: req.Id,
 	})
@@ -214,6 +219,15 @@ func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityR
 	resp.Favorite = fvResp.Favorite
 	resp.View = fvResp.View
 
+	// 预约判断
+	bookResp, err := s.UserRpc.CheckBookRecordByUserIdAndActivityId(ctx, &genuser.CheckBookRecordByUserIdAndActivityIdReq{
+		UserId:     userId,
+		ActivityId: "",
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp.Booked = bookResp.Booked
 	return resp, nil
 }
 

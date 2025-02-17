@@ -386,6 +386,8 @@ github.com/twitchyliquid64/golang-asm v0.15.1 h1:SU5vSMR7hnwNxj24w34ZyCi/FmDZTkS
 github.com/twitchyliquid64/golang-asm v0.15.1/go.mod h1:a1lVb/DtPvCB8fslRZhAngC2+aY1QWCk3Cedj/Gdt08=
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250217005655-b86b202c3ccc h1:p9iSEqAROQOdl4QQIyVNt/wmtiBkiQhx8urp3KCdRhk=
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250217005655-b86b202c3ccc/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250217140024-4195d7938bf6 h1:LDrbbshPFHIQshtHgQqT/ydn01zU90WsnsckXOGCph0=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250217140024-4195d7938bf6/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
 github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40 h1:22FjO5frXk5jdv0bsGq8wTiK28MpKYnlFtizlFE7I+Q=
 github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40/go.mod h1:iuTX4c9raQCv45PeZ1s6Ixy1/CP37kSjOxHpkhiNQLc=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
