@@ -325,3 +325,18 @@ func _getmerchantinfobyuriMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _merchant1Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _info1Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getmerchantinfoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

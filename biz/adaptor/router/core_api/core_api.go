@@ -114,6 +114,13 @@ func Register(r *server.Hertz) {
 			_info0.POST("/update", append(_updateuserinfoMw(), core_api.UpdateUserInfo)...)
 		}
 		{
+			_merchant1 := _user.Group("/merchant", _merchant1Mw()...)
+			{
+				_info1 := _merchant1.Group("/info", _info1Mw()...)
+				_info1.GET("/get", append(_getmerchantinfoMw(), core_api.GetMerchantInfo)...)
+			}
+		}
+		{
 			_reserver := _user.Group("/reserver", _reserverMw()...)
 			_reserver.POST("/create", append(_createreserverMw(), core_api.CreateReserver)...)
 			_reserver.POST("/delete", append(_deletereserverMw(), core_api.DeleteReserver)...)

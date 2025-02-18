@@ -267,3 +267,19 @@ func UpdateNotice(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.UserService.UpdateNotice(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// GetMerchantInfo .
+// @router /user/merchant/info/get [GET]
+func GetMerchantInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.GetMerchantInfoReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.GetMerchantInfo(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

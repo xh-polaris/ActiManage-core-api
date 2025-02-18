@@ -34,6 +34,7 @@ type IUserService interface {
 	GetUserInfo(ctx context.Context, req *core_api.GetUserInfoReq) (resp *core_api.GetUserInfoResp, err error)
 	UpdateUserInfo(ctx context.Context, req *core_api.UpdateUserInfoReq) (resp *core_api.Response, err error)
 	UpdateNotice(ctx context.Context, req *core_api.UpdateNoticeReq) (resp *core_api.Response, err error)
+	GetMerchantInfo(ctx context.Context, req *core_api.GetMerchantInfoReq) (resp *core_api.GetMerchantInfoResp, err error)
 }
 
 type UserService struct {
@@ -480,4 +481,28 @@ func (s UserService) UpdateNotice(ctx context.Context, req *core_api.UpdateNotic
 		return nil, err
 	}
 	return util.SuccessResp("success")
+}
+
+func (s UserService) GetMerchantInfo(ctx context.Context, req *core_api.GetMerchantInfoReq) (resp *core_api.GetMerchantInfoResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+	response, err := s.SystemRpc.GetMerchantInfo(ctx, &gensystem.GetMerchantInfoReq{
+		Id: req.MerchantId,
+	})
+	if err != nil || response.Code != 0 {
+		return nil, err
+	}
+	resp = &core_api.GetMerchantInfoResp{
+		Code:     0,
+		Msg:      "success",
+		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
+		Location: &core_api.Location{},
+	}
+	err = copier.Copy(&resp, &response)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
