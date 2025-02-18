@@ -49,11 +49,28 @@ var UserServiceSet = wire.NewSet(
 )
 
 func (s UserService) Login(ctx context.Context, req *core_api.LoginReq) (resp *core_api.LoginResp, err error) {
+	// 参数校验,authId不能为空
+	if req.AuthId == "" {
+		return nil, consts.ErrSignUp
+	}
+
+	// 校验验证码
+	verifyCheck := "false"
+	if req.VerifyCode != nil {
+		checkResp, err := s.SystemRpc.StsCheckVerifyCode(ctx, &gensystem.StsCheckVerifyCodeReq{
+			VerifyId:   "verify:" + req.MerchantId + ":" + req.AuthId,
+			VerifyCode: *req.VerifyCode,
+		})
+		if err != nil || checkResp.Code != 0 {
+			return nil, consts.ErrVerifyCode
+		}
+		verifyCheck = "true"
+	}
 
 	response, err := s.UserRpc.UserLogin(ctx, &genuser.UserLoginReq{
 		AuthId:     req.AuthId,
 		AuthType:   req.AuthType,
-		VerifyCode: req.VerifyCode,
+		VerifyCode: &verifyCheck,
 		Password:   req.Password,
 		MerchantId: req.MerchantId,
 	})
@@ -82,12 +99,23 @@ func (s UserService) SignUp(ctx context.Context, req *core_api.SignUpReq) (resp 
 		return nil, consts.ErrSignUp
 	}
 
+	// 校验验证码
+	verifyCheck := "false"
+	checkResp, err := s.SystemRpc.StsCheckVerifyCode(ctx, &gensystem.StsCheckVerifyCodeReq{
+		VerifyId:   "verify:" + req.MerchantId + ":" + req.AuthId,
+		VerifyCode: req.VerifyCode,
+	})
+	if err != nil || checkResp.Code != 0 {
+		return nil, consts.ErrVerifyCode
+	}
+	verifyCheck = "true"
+
 	response, err := s.UserRpc.UserSignUp(ctx, &genuser.UserSignUpReq{
 		MerchantId: req.MerchantId,
 		Name:       &req.Name,
 		AuthId:     req.AuthId,
 		AuthType:   req.AuthType,
-		VerifyCode: req.VerifyCode,
+		VerifyCode: verifyCheck,
 		Password:   req.Password,
 		Gender:     0,
 	})

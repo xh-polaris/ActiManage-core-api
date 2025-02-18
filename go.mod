@@ -11,7 +11,7 @@ require (
 	github.com/hertz-contrib/monitor-prometheus v0.1.3
 	github.com/hertz-contrib/obs-opentelemetry/tracing v0.4.1
 	github.com/jinzhu/copier v0.3.5
-	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250217140024-4195d7938bf6
+	github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250218140541-407d2b3fd94d
 	github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40
 	github.com/zeromicro/go-zero v1.7.2
 	go.opentelemetry.io/contrib/propagators/b3 v1.20.0
