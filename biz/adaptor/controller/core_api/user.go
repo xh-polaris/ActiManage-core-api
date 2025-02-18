@@ -269,7 +269,7 @@ func UpdateNotice(ctx context.Context, c *app.RequestContext) {
 }
 
 // GetMerchantInfo .
-// @router /user/merchant/info/get [GET]
+// @router /user/merchant/info/get [POST]
 func GetMerchantInfo(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req core_api.GetMerchantInfoReq
@@ -279,7 +279,7 @@ func GetMerchantInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	p := provider.Get()
-	resp, err := p.UserService.GetMerchantInfo(ctx, &req)
-	adaptor.PostProcess(ctx, c, &req, resp, err)
+	resp := new(core_api.GetMerchantInfoResp)
+
+	c.JSON(consts.StatusOK, resp)
 }

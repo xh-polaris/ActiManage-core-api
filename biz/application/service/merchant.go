@@ -242,13 +242,25 @@ func (s *MerchantService) MerchantListBookRecords(ctx context.Context, req *core
 	if err != nil {
 		return nil, err
 	}
-	recordDtos := make([]*core_api.MerchantListBookRecordsResp_BookRecord, 0, len(records.Records))
+	recordDtos := make([]*core_api.MerchantListBookRecordsResp_BookItem, 0, len(records.Records))
 	for _, record := range records.Records {
-		var dto core_api.MerchantListBookRecordsResp_BookRecord
+		var dto core_api.MerchantListBookRecordsResp_BookItem
 		err = copier.Copy(&dto, &record)
 		if err != nil {
 			return nil, err
 		}
+		// 复制预约人
+		rs := make([]*core_api.MerchantListBookRecordsResp_Item, 0, len(record.Reservers))
+		for _, reserver := range record.Reservers {
+			r := &core_api.MerchantListBookRecordsResp_Item{
+				ReserverId: reserver.ReserverId,
+				Cancel:     reserver.Cancel,
+				Name:       reserver.Name,
+				Phone:      reserver.Phone,
+			}
+			rs = append(rs, r)
+		}
+		dto.Reservers = rs
 		recordDtos = append(recordDtos, &dto)
 	}
 	return &core_api.MerchantListBookRecordsResp{

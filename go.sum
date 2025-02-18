@@ -390,6 +390,8 @@ github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250215120903-ef9889fa20b8 h1:c
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250215120903-ef9889fa20b8/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250218140541-407d2b3fd94d h1:OW0cSdoHw2nNNCVDKvJXS58S8BdeEivbcHtN+MF3H38=
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250218140541-407d2b3fd94d/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250218145735-ca815aed2452 h1:N0dCCg0pySuEH1MCgrUt9WckZW8CSEkLtqE3EQP7h6U=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250218145735-ca815aed2452/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
 github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40 h1:22FjO5frXk5jdv0bsGq8wTiK28MpKYnlFtizlFE7I+Q=
 github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40/go.mod h1:iuTX4c9raQCv45PeZ1s6Ixy1/CP37kSjOxHpkhiNQLc=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

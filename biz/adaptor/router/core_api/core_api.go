@@ -117,7 +117,7 @@ func Register(r *server.Hertz) {
 			_merchant1 := _user.Group("/merchant", _merchant1Mw()...)
 			{
 				_info1 := _merchant1.Group("/info", _info1Mw()...)
-				_info1.GET("/get", append(_getmerchantinfoMw(), core_api.GetMerchantInfo)...)
+				_info1.POST("/get", append(_getmerchantinfoMw(), core_api.GetMerchantInfo)...)
 			}
 		}
 		{
