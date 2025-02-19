@@ -55,6 +55,7 @@ func (s UserService) Login(ctx context.Context, req *core_api.LoginReq) (resp *c
 		return nil, consts.ErrSignUp
 	}
 
+	// 这里的逻辑其实有点乱，先验证验证码再验证密码就好，懒得改了
 	// 校验验证码
 	verifyCheck := "false"
 	if req.VerifyCode != nil {

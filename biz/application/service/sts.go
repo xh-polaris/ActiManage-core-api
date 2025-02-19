@@ -109,6 +109,7 @@ func (s *StsService) StsView(ctx context.Context, req *core_api.StsViewReq) (res
 	response, err := s.UserRpc.CreateView(ctx, &genuser.CreateViewReq{
 		TargetId: req.TargetId,
 		Type:     req.Type,
+		UserId:   userId,
 	})
 	if err != nil || response.Code != 0 {
 		log.Error("记录访问失败:", err)
