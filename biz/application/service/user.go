@@ -548,7 +548,7 @@ func (s UserService) ListActivitiesByView(ctx context.Context, req *core_api.Lis
 			Limit: req.Paging.Limit,
 		},
 	})
-	if err != nil || viewResp {
+	if err != nil {
 		return nil, err
 	}
 
