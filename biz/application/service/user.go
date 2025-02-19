@@ -68,13 +68,18 @@ func (s UserService) Login(ctx context.Context, req *core_api.LoginReq) (resp *c
 		verifyCheck = "true"
 	}
 
-	response, err := s.UserRpc.UserLogin(ctx, &genuser.UserLoginReq{
+	rpcReq := &genuser.UserLoginReq{
 		AuthId:     req.AuthId,
 		AuthType:   req.AuthType,
 		VerifyCode: &verifyCheck,
 		Password:   req.Password,
 		MerchantId: req.MerchantId,
-	})
+	}
+	if verifyCheck == "false" && req.Password != nil {
+		rpcReq.VerifyCode = nil
+	}
+	response, err := s.UserRpc.UserLogin(ctx, rpcReq)
+
 	if err != nil || response.Id == "" {
 		log.Error("Login error: ", err)
 		return nil, consts.ErrLogin
