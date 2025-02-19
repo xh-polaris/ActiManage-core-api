@@ -35,6 +35,7 @@ type IUserService interface {
 	UpdateUserInfo(ctx context.Context, req *core_api.UpdateUserInfoReq) (resp *core_api.Response, err error)
 	UpdateNotice(ctx context.Context, req *core_api.UpdateNoticeReq) (resp *core_api.Response, err error)
 	GetMerchantInfo(ctx context.Context, req *core_api.GetMerchantInfoReq) (resp *core_api.GetMerchantInfoResp, err error)
+	ListActivitiesByView(ctx context.Context, req *core_api.ListActivitiesByViewReq) (resp *core_api.ListActivitiesByViewResp, err error)
 }
 
 type UserService struct {
@@ -533,4 +534,62 @@ func (s UserService) GetMerchantInfo(ctx context.Context, req *core_api.GetMerch
 		return nil, err
 	}
 	return resp, nil
+}
+
+func (s UserService) ListActivitiesByView(ctx context.Context, req *core_api.ListActivitiesByViewReq) (resp *core_api.ListActivitiesByViewResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+	viewResp, err := s.UserRpc.ListActivityIdsByView(ctx, &genuser.ListActivityIdsByViewReq{
+		UserId: userId,
+		Paging: &genbasic.Paging{
+			Page:  req.Paging.Page,
+			Limit: req.Paging.Limit,
+		},
+	})
+	if err != nil || viewResp {
+		return nil, err
+	}
+
+	activities := make([]*core_api.ListActivitiesByViewResp_Item, 0, len(viewResp.Ids))
+	for _, id := range viewResp.Ids {
+		response, err := s.SystemRpc.GetActivity(ctx, &gensystem.GetActivityReq{
+			Id: id,
+		})
+		if err != nil || response.Code != 0 {
+			return nil, err
+		}
+		v := response.Activity
+		activity := &core_api.ListActivitiesByViewResp_Item{
+			Setting:  &core_api.ActivitySetting{},
+			Location: &core_api.Location{},
+		}
+		err = copier.Copy(&activity, &v)
+		if err != nil {
+			return nil, err
+		}
+		// 预约设置
+		if v.Book == 1 {
+			activity.BookStart = v.BookStart
+			activity.BookEnd = v.BookEnd
+		}
+
+		// 点赞数和浏览数
+		fvResp, err := s.UserRpc.GetFavoriteAndViewOfActivity(ctx, &genuser.GetFavoriteAndViewOfActivityReq{
+			ActivityId: v.Id,
+		})
+		if err != nil {
+			return nil, err
+		}
+		activity.Favorite = fvResp.Favorite
+		activity.View = fvResp.View
+		activities = append(activities, activity)
+	}
+	return &core_api.ListActivitiesByViewResp{
+		Code:       0,
+		Msg:        "success",
+		Activities: activities,
+		Total:      viewResp.Total,
+	}, nil
 }

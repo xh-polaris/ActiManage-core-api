@@ -130,5 +130,12 @@ func Register(r *server.Hertz) {
 			_settings := _user.Group("/settings", _settingsMw()...)
 			_settings.POST("/get", append(_getsettingMw(), core_api.GetSetting)...)
 		}
+		{
+			_view := _user.Group("/view", _viewMw()...)
+			{
+				_list0 := _view.Group("/list", _list0Mw()...)
+				_list0.POST("/activity", append(_listactivitiesbyviewMw(), core_api.ListActivitiesByView)...)
+			}
+		}
 	}
 }

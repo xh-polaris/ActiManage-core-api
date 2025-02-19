@@ -279,7 +279,23 @@ func GetMerchantInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(core_api.GetMerchantInfoResp)
+	p := provider.Get()
+	resp, err := p.UserService.GetMerchantInfo(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
 
-	c.JSON(consts.StatusOK, resp)
+// ListActivitiesByView .
+// @router /user/view/list/activity [POST]
+func ListActivitiesByView(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.ListActivitiesByViewReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.ListActivitiesByView(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }

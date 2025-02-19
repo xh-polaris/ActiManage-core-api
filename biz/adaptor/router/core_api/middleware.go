@@ -340,3 +340,18 @@ func _getmerchantinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _viewMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _list0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listactivitiesbyviewMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
