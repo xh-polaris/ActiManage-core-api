@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/wire"
 	"github.com/jinzhu/copier"
 	genbasic "github.com/xh-polaris/ActiManage-IDL-gen/kitex_gen/basic"
@@ -15,6 +16,7 @@ import (
 	rpcuser "github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/rpc/user"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/util"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/util/log"
+	"time"
 )
 
 type IUserService interface {
@@ -302,7 +304,18 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 	if err != nil || userId == "" {
 		return nil, consts.ErrNotAuthentication
 	}
-	response, err := s.UserRpc.CreateBookRecord(ctx, &genuser.CreateBookRecordReq{
+
+	// 获取活动
+	actiResp, err := s.SystemRpc.GetActivity(ctx, &gensystem.GetActivityReq{
+		Id: req.ActivityId,
+	})
+	if err != nil || actiResp.Code != 0 {
+		return nil, err
+	}
+	activity := actiResp.Activity
+
+	// 创建预约
+	bookResp, err := s.UserRpc.CreateBookRecord(ctx, &genuser.CreateBookRecordReq{
 		UserId:      userId,
 		ActivityId:  req.ActivityId,
 		ReserverIds: req.ReserverIds,
@@ -310,9 +323,20 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 		Remark:      req.Remark,
 		MerchantId:  req.MerchantId,
 	})
-	if err != nil || response.Code != 0 {
+	if err != nil || bookResp.Code != 0 {
 		return nil, err
 	}
+
+	// 创建回执
+	receiptResp, err := s.UserRpc.CreateReceipt(ctx, &genuser.CreateReceiptReq{
+		UserId:     userId,
+		ActivityId: req.ActivityId,
+		Msg:        fmt.Sprintf("活动预约成功!\n\r活动时间为%s-%s,活动地点为%s,预约到店时间为%s,请按时到达", time.Unix(activity.Setting.Start, 0).String(), time.Unix(activity.Setting.End, 0).String(), activity.Location.Text, time.Unix(req.Arrival, 0).String()),
+	})
+	if err != nil || receiptResp.Code != 0 {
+		log.Error("回执创建失败:", err)
+	}
+
 	return util.SuccessResp("预约成功")
 }
 
