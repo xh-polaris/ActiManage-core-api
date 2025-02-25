@@ -57,8 +57,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          ssh-key: ${{ env.SECRET_GITHUB_SSH_KEY }}
+
 
       - name: Bump Version
         id: version
