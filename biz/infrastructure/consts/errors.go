@@ -50,4 +50,7 @@ var (
 	ErrCall        = NewErrno(3001, errors.New("调用模型失败"))
 	ErrSend        = NewErrno(3002, errors.New("验证码发送失败"))
 	ErrVerifyCode  = NewErrno(3003, errors.New("验证码错误"))
+	ErrRepeatBook  = NewErrno(4001, errors.New("已预约过"))
+	ErrFullBook    = NewErrno(4002, errors.New("预约人数已满"))
+	ErrExpireBook  = NewErrno(4003, errors.New("不在预约时间内"))
 )

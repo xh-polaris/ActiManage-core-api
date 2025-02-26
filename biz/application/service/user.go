@@ -330,6 +330,8 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 		return nil, consts.ErrNotAuthentication
 	}
 
+	now := time.Now().Unix()
+
 	// 获取活动
 	actiResp, err := s.SystemRpc.GetActivity(ctx, &gensystem.GetActivityReq{
 		Id: req.ActivityId,
@@ -339,7 +341,27 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 	}
 	activity := actiResp.Activity
 
-	// TODO 判断是否可以预约，是否预约和预约是否已满，预约时间
+	check, err := s.UserRpc.CheckBookRecordByUserIdAndActivityId(ctx, &genuser.CheckBookRecordByUserIdAndActivityIdReq{
+		UserId:     userId,
+		ActivityId: activity.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	switch {
+	case activity.Book == 0:
+		fallthrough
+	// 预约时间判断
+	case activity.BookStart > now || now > activity.BookEnd:
+		return nil, consts.ErrExpireBook
+	// 重复预约
+	case check.Booked == 1:
+		return nil, consts.ErrRepeatBook
+	// 预约人数判断
+	case check.CurrentBooked+int64(len(req.ReserverIds)) > activity.Setting.Max:
+		return nil, consts.ErrFullBook
+	}
 
 	// 创建预约
 	bookResp, err := s.UserRpc.CreateBookRecord(ctx, &genuser.CreateBookRecordReq{
