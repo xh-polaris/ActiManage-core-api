@@ -17,118 +17,68 @@ env:
   REGISTRY: docker.io
   USERNAME: xhpolaris
   IMAGE_NAME: actimanage-core-api
-  VAR_KUBE_VERSION: v1.29.3
-  VAR_BASE_TEST_NAMESPACE: xh-polaris-test
-  SECRET_GITHUB_SSH_KEY: |
-    -----BEGIN OPENSSH PRIVATE KEY-----
-    b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS
-    1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQRZLfX061JFSZ4y8Dws74RpjH//Sk28
-    +XEj6MGw/b65JcVFTXSPMC6jeeX6GakMn02N5FCeuP5OH3KPdDkt1Di4AAAAsPilmWz4pZ
-    lsAAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFkt9fTrUkVJnjLw
-    PCzvhGmMf/9KTbz5cSPowbD9vrklxUVNdI8wLqN55foZqQyfTY3kUJ64/k4fco90OS3UOL
-    gAAAAgSZWkV7zZSM/qbUjqk74oQqLSrg4gJL2iHf0OLqqeF1oAAAAWYnl0ZWRhbmNlQEMw
-    MkZUME5QTUQ2VgEC
-    -----END OPENSSH PRIVATE KEY-----
-  SECRET_DOCKERHUB_ACCESS_TOKEN: dckr_pat_qHQI4DAhkB9aIBs8o_yd-Mpu1P0
-  SECRET_KUBE_CONFIG: |
-    apiVersion: v1
-    kind: Config
-    clusters:
-      - name: "local"
-        cluster:
-          server: "https://rancher.xhpolaris.com/k8s/clusters/local"
-    users:
-      - name: "local"
-        user:
-          token: "kubeconfig-user-f4dcfc2ljg:ph6wvj72czcwcq5n9pdxl6l2h2qlvfbqctcwzcdbm9jwlb98rxszc2"
-    contexts:
-      - name: "local"
-        context:
-          user: "local"
-          cluster: "local"
-    current-context: "local"
-
 
 jobs:
   build:
-    runs-on: arc-runner-set
+    runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-
       - name: Bump Version
         id: version
-        run: |
-          version=$(curl -s "https://hub.docker.com/v2/repositories/${{ env.USERNAME }}/${{ env.IMAGE_NAME }}/tags/" | jq -e '.results[].name' 2> /dev/null | grep  -oE  'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-          if [[ -z $version ]]; then
-            version=${version:-'v1.0.0'}
-          else
-            major_minor=$(echo "$version" | grep -Eo 'v[0-9]+\.[0-9]+')
-            patch=$(echo "$version" | grep -Eo '[0-9]+$')
-            next_patch=$((patch + 1))
-            version=$(echo "$major_minor.$next_patch")
-          fi
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
+        run: curl -s https://raw.githubusercontent.com/xh-polaris/chore/main/bump_version.sh | bash -s -- ${{ env.USERNAME }}/${{ env.IMAGE_NAME }}
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
-#      - name: Setup Docker buildx
-#        uses: docker/setup-buildx-action@v3
-#        with:
-#          version: latest
-#        env:
-#          DOCKER_BUILDKIT: 1
-#          BUILDKIT_STEP_LOG_MAX_SIZE: 10485760
-#          BUILDKIT_STEP_LOG_MAX_SPEED: 1000000
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name == 'push'
-        uses: docker/login-action@v3
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ env.USERNAME }}
-          password: ${{ env.SECRET_DOCKERHUB_ACCESS_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.USERNAME }}/${{ env.IMAGE_NAME }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
           context: .
           push: ${{ github.event_name == 'push' }}
           tags: ${{ env.REGISTRY }}/${{ env.USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            PROXY=http://clash.clash:7890
-          #cache-from: type=gha
-          #cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
-    runs-on: arc-runner-set
+    runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'push'
     steps:
       - name: Setup Kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: ${ env.VAR_KUBE_VERSION }}
+          version: ${{ vars.KUBE_VERSION }}
 
       - name: Deploy
         run: |
           mkdir $HOME/.kube
-          echo "${{ env.SECRET_KUBE_CONFIG }}" > $HOME/.kube/config
-          kubectl get deployment ${{ env.IMAGE_NAME }} -n ${{ env.VAR_BASE_TEST_NAMESPACE }} -o yaml |\
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+          kubectl get deployment ${{ env.IMAGE_NAME }} -n ${{ vars.BASE_TEST_NAMESPACE }} -o yaml |\
           sed 's/\(image: ${{ env.USERNAME }}\/${{ env.IMAGE_NAME }}:\).*$/\1${{ needs.build.outputs.version }}/' |\
           kubectl apply -f -
