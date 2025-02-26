@@ -11,7 +11,12 @@ WORKDIR /build
 
 ADD go.mod .
 ADD go.sum .
+# 设置国内 Go 模块代理
+ENV GOPROXY=https://goproxy.cn,direct
+
+# 下载依赖
 RUN go mod download
+
 COPY . .
 RUN sh ./build.sh
 
