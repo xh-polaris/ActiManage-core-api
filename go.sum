@@ -396,6 +396,12 @@ github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250219021920-ecc8e5de5b98 h1:H
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250219021920-ecc8e5de5b98/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250219022434-def40fd778a5 h1:EMdhqtGRPcwkaK8qurGXlM2AIEgzPLuEa/4OEZIz07M=
 github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250219022434-def40fd778a5/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250226064609-aa2cbd7b74ef h1:VQTOxnFPdY4UVaWtaSbcvZeL/c/elMaQRLLFTVcgOOk=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250226064609-aa2cbd7b74ef/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250226074428-9af03090afcf h1:C7o1OThmhyMbBmxTlID30kMnA8MBX/18iX5t7uWbWFo=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250226074428-9af03090afcf/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250226080401-869dabb0d079 h1:LvN8rDtLGL/BKmWHYJLK5I3Wsan1YPfN3OOCmeCJ4oE=
+github.com/xh-polaris/ActiManage-IDL-gen v0.0.0-20250226080401-869dabb0d079/go.mod h1:81Y27zvpJgP5JgzkT1KKltoks4vW+f7XJarxkQEbDtQ=
 github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40 h1:22FjO5frXk5jdv0bsGq8wTiK28MpKYnlFtizlFE7I+Q=
 github.com/xh-polaris/gopkg v0.0.0-20241125135731-24b5774f1e40/go.mod h1:iuTX4c9raQCv45PeZ1s6Ixy1/CP37kSjOxHpkhiNQLc=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

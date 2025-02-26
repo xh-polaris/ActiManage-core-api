@@ -264,10 +264,11 @@ func (s *MerchantService) MerchantListBookRecords(ctx context.Context, req *core
 		recordDtos = append(recordDtos, &dto)
 	}
 	return &core_api.MerchantListBookRecordsResp{
-		Code:        0,
-		Msg:         "success",
-		BookRecords: recordDtos,
-		Total:       records.Total,
+		Code:          0,
+		Msg:           "success",
+		BookRecords:   recordDtos,
+		Total:         records.Total,
+		CurrentBooked: records.CurrentBooked,
 	}, nil
 }
 

@@ -166,6 +166,11 @@ func (s UserService) GetSetting(ctx context.Context, req *core_api.GetSettingReq
 }
 
 func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActivitiesReq) (resp *core_api.ListActivitiesResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
 	rpcReq := &gensystem.ListActivitiesReq{
 		Paging: &genbasic.Paging{
 			Page:  req.Paging.Page,
@@ -206,6 +211,15 @@ func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActiv
 		}
 		activity.Favorite = fvResp.Favorite
 		activity.View = fvResp.View
+
+		// 是否收藏
+		favoriteResp, err := s.UserRpc.CheckFavorite(ctx, &genuser.CheckFavoriteReq{
+			UserId:     userId,
+			ActivityId: v.Id,
+		})
+		if err == nil && favoriteResp.Code == 0 {
+			activity.IsFavorite = 1
+		}
 
 		activities = append(activities, activity)
 	}
@@ -266,6 +280,17 @@ func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityR
 		return nil, err
 	}
 	resp.Booked = bookResp.Booked
+	// 预约总人数
+	resp.CurrentBooked = bookResp.CurrentBooked
+
+	// 是否收藏
+	favoriteResp, err := s.UserRpc.CheckFavorite(ctx, &genuser.CheckFavoriteReq{
+		UserId:     userId,
+		ActivityId: v.Id,
+	})
+	if err == nil && favoriteResp.Code == 0 {
+		resp.IsFavorite = 1
+	}
 	return resp, nil
 }
 
