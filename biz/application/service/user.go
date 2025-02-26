@@ -33,6 +33,7 @@ type IUserService interface {
 	ListReservers(ctx context.Context, req *core_api.ListReserversReq) (resp *core_api.ListReserversResp, err error)
 	CreateReserver(ctx context.Context, req *core_api.CreateReserverReq) (resp *core_api.Response, err error)
 	DeleteReserver(ctx context.Context, req *core_api.DeleteReserverReq) (resp *core_api.Response, err error)
+	UpdateReserver(ctx context.Context, req *core_api.UpdateReserverReq) (resp *core_api.Response, err error)
 	GetUserInfo(ctx context.Context, req *core_api.GetUserInfoReq) (resp *core_api.GetUserInfoResp, err error)
 	UpdateUserInfo(ctx context.Context, req *core_api.UpdateUserInfoReq) (resp *core_api.Response, err error)
 	UpdateNotice(ctx context.Context, req *core_api.UpdateNoticeReq) (resp *core_api.Response, err error)
@@ -349,6 +350,7 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 		return nil, err
 	}
 
+	// 校验活动能否预约
 	switch {
 	case activity.Book == 0:
 		fallthrough
@@ -530,6 +532,21 @@ func (s UserService) DeleteReserver(ctx context.Context, req *core_api.DeleteRes
 		return nil, consts.ErrDelete
 	}
 	return util.SuccessResp("删除成功")
+}
+
+func (s UserService) UpdateReserver(ctx context.Context, req *core_api.UpdateReserverReq) (resp *core_api.Response, err error) {
+	reserver := &genuser.Reserver{}
+	err = copier.Copy(reserver, &req.Reserver)
+	if err != nil {
+		return nil, err
+	}
+	response, err := s.UserRpc.UpdateReserver(ctx, &genuser.UpdateReserverReq{
+		Reserver: reserver,
+	})
+	if err != nil || response.Code != 0 {
+		return nil, consts.ErrUpdate
+	}
+	return util.SuccessResp("更新成功")
 }
 
 func (s UserService) GetUserInfo(ctx context.Context, req *core_api.GetUserInfoReq) (resp *core_api.GetUserInfoResp, err error) {

@@ -125,6 +125,7 @@ func Register(r *server.Hertz) {
 			_reserver.POST("/create", append(_createreserverMw(), core_api.CreateReserver)...)
 			_reserver.POST("/delete", append(_deletereserverMw(), core_api.DeleteReserver)...)
 			_reserver.POST("/list", append(_listreserversMw(), core_api.ListReservers)...)
+			_reserver.POST("/update", append(_updatereserverMw(), core_api.UpdateReserver)...)
 		}
 		{
 			_settings := _user.Group("/settings", _settingsMw()...)

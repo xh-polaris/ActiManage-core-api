@@ -355,3 +355,8 @@ func _listactivitiesbyviewMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updatereserverMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

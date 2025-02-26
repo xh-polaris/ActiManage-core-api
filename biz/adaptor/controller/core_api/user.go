@@ -299,3 +299,19 @@ func ListActivitiesByView(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.UserService.ListActivitiesByView(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// UpdateReserver .
+// @router /user/reserver/update [POST]
+func UpdateReserver(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.UpdateReserverReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.UserService.UpdateReserver(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
