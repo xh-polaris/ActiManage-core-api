@@ -314,6 +314,8 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 	}
 	activity := actiResp.Activity
 
+	// TODO 判断是否可以预约，是否预约和预约是否已满，预约时间
+
 	// 创建预约
 	bookResp, err := s.UserRpc.CreateBookRecord(ctx, &genuser.CreateBookRecordReq{
 		UserId:      userId,
