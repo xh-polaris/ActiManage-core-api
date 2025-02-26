@@ -22,6 +22,7 @@ type IMerchantService interface {
 	MerchantListActivities(ctx context.Context, req *core_api.MerchantListActivitiesReq) (resp *core_api.MerchantListActivitiesResp, err error)
 	MerchantCreateActivity(ctx context.Context, req *core_api.MerchantCreateActivityReq) (resp *core_api.Response, err error)
 	MerchantDeleteActivity(ctx context.Context, req *core_api.MerchantDeleteActivityReq) (resp *core_api.Response, err error)
+	MerchantUpdateActivity(ctx context.Context, req *core_api.MerchantUpdateActivityReq) (resp *core_api.Response, err error)
 	MerchantTopActivity(ctx context.Context, req *core_api.MerchantTopActivityReq) (resp *core_api.Response, err error)
 	MerchantLogin(ctx context.Context, req *core_api.MerchantLoginReq) (resp *core_api.MerchantLoginResp, err error)
 	MerchantGetSetting(ctx context.Context, req *core_api.MerchantGetSettingReq) (resp *core_api.MerchantGetSettingResp, err error)
@@ -131,6 +132,42 @@ func (s *MerchantService) MerchantDeleteActivity(ctx context.Context, req *core_
 		return nil, consts.ErrDelete
 	}
 	return util.SuccessResp("删除成功")
+}
+
+func (s *MerchantService) MerchantUpdateActivity(ctx context.Context, req *core_api.MerchantUpdateActivityReq) (resp *core_api.Response, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	notice := "暂无"
+	if req.Notice != nil {
+		notice = *req.Notice
+	}
+
+	response, err := s.SystemRpc.UpdateActivity(ctx, &gensystem.UpdateActivityReq{
+		MerchantId: userId,
+		Activity: &gensystem.Activity{
+			Id:         req.Id,
+			MerchantId: userId,
+			Name:       req.Name,
+			Cover:      req.Cover,
+			Setting: &gensystem.ActivitySetting{
+				Max: req.Max,
+			},
+			Location: &gensystem.Location{
+				Text:      req.Location.Text,
+				Longitude: req.Location.Longitude,
+				Latitude:  req.Location.Latitude,
+			},
+			Description: req.Description,
+			Notice:      notice,
+		},
+	})
+	if err != nil || response.Code != 0 {
+		return nil, consts.ErrUpdate
+	}
+	return util.SuccessResp("更新成功")
 }
 
 func (s *MerchantService) MerchantTopActivity(ctx context.Context, req *core_api.MerchantTopActivityReq) (resp *core_api.Response, err error) {

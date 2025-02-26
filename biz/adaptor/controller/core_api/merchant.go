@@ -235,3 +235,19 @@ func SetAd(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.MerchantService.SetAd(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// MerchantUpdateActivity .
+// @router /merchant/activity/update [POST]
+func MerchantUpdateActivity(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantUpdateActivityReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantUpdateActivity(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
