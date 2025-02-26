@@ -2,8 +2,8 @@ FROM golang:1.22-alpine AS builder
 
 LABEL stage=gobuilder
 # Set proxy environment variables
-ARG PROXY
-RUN export HTTPS_PROXY=$PROXY && export HTTP_PROXY=$PROXY
+#ARG PROXY
+#RUN export HTTPS_PROXY=$PROXY && export HTTP_PROXY=$PROXY
 
 ENV CGO_ENABLED 0
 
