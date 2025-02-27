@@ -365,3 +365,13 @@ func _merchantupdateactivityMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getactivity0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _merchantgetactivityMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

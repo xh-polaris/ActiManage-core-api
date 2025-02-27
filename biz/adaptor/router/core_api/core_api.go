@@ -24,6 +24,7 @@ func Register(r *server.Hertz) {
 			_activity := _merchant.Group("/activity", _activityMw()...)
 			_activity.POST("/create", append(_merchantcreateactivityMw(), core_api.MerchantCreateActivity)...)
 			_activity.POST("/delete", append(_merchantdeleteactivityMw(), core_api.MerchantDeleteActivity)...)
+			_activity.POST("/get", append(_merchantgetactivityMw(), core_api.MerchantGetActivity)...)
 			_activity.POST("/list", append(_merchantlistactivitiesMw(), core_api.MerchantListActivities)...)
 			_activity.POST("/top", append(_merchanttopactivityMw(), core_api.MerchantTopActivity)...)
 			_activity.POST("/update", append(_merchantupdateactivityMw(), core_api.MerchantUpdateActivity)...)

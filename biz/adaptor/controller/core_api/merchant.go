@@ -251,3 +251,19 @@ func MerchantUpdateActivity(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.MerchantService.MerchantUpdateActivity(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// MerchantGetActivity .
+// @router /merchant/activity/get [POST]
+func MerchantGetActivity(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantGetActivityReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantGetActivity(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

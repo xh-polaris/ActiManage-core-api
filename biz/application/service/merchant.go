@@ -23,6 +23,7 @@ type IMerchantService interface {
 	MerchantCreateActivity(ctx context.Context, req *core_api.MerchantCreateActivityReq) (resp *core_api.Response, err error)
 	MerchantDeleteActivity(ctx context.Context, req *core_api.MerchantDeleteActivityReq) (resp *core_api.Response, err error)
 	MerchantUpdateActivity(ctx context.Context, req *core_api.MerchantUpdateActivityReq) (resp *core_api.Response, err error)
+	MerchantGetActivity(ctx context.Context, req *core_api.MerchantGetActivityReq) (resp *core_api.MerchantGetActivityResp, err error)
 	MerchantTopActivity(ctx context.Context, req *core_api.MerchantTopActivityReq) (resp *core_api.Response, err error)
 	MerchantLogin(ctx context.Context, req *core_api.MerchantLoginReq) (resp *core_api.MerchantLoginResp, err error)
 	MerchantGetSetting(ctx context.Context, req *core_api.MerchantGetSettingReq) (resp *core_api.MerchantGetSettingResp, err error)
@@ -168,6 +169,58 @@ func (s *MerchantService) MerchantUpdateActivity(ctx context.Context, req *core_
 		return nil, consts.ErrUpdate
 	}
 	return util.SuccessResp("更新成功")
+}
+
+func (s *MerchantService) MerchantGetActivity(ctx context.Context, req *core_api.MerchantGetActivityReq) (resp *core_api.MerchantGetActivityResp, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	response, err := s.SystemRpc.GetActivity(ctx, &gensystem.GetActivityReq{
+		Id: req.Id,
+	})
+	if err != nil || response.Code != 0 {
+		return nil, err
+	}
+	v := response.Activity
+	resp = &core_api.MerchantGetActivityResp{
+		Code:     0,
+		Msg:      "success",
+		Setting:  &core_api.ActivitySetting{},
+		Location: &core_api.Location{},
+	}
+	err = copier.Copy(&resp, &v)
+	if err != nil {
+		return nil, err
+	}
+	// 预约设置
+	if v.Book == 1 {
+		resp.BookStart = v.BookStart
+		resp.BookEnd = v.BookEnd
+	}
+
+	// 点赞数和浏览数
+	fvResp, err := s.UserRpc.GetFavoriteAndViewOfActivity(ctx, &genuser.GetFavoriteAndViewOfActivityReq{
+		ActivityId: v.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	resp.Favorite = fvResp.Favorite
+	resp.View = fvResp.View
+
+	// 复用预约判断
+	bookResp, err := s.UserRpc.CheckBookRecordByUserIdAndActivityId(ctx, &genuser.CheckBookRecordByUserIdAndActivityIdReq{
+		UserId:     userId,
+		ActivityId: v.Id,
+	})
+	if err != nil {
+		return nil, err
+	}
+	// 预约总人数
+	resp.CurrentBooked = bookResp.CurrentBooked
+	return resp, nil
 }
 
 func (s *MerchantService) MerchantTopActivity(ctx context.Context, req *core_api.MerchantTopActivityReq) (resp *core_api.Response, err error) {
