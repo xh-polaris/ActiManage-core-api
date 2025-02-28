@@ -74,6 +74,7 @@ func (s *StsService) StsAIModify(ctx context.Context, req *core_api.StsAIModifyR
 	httpClient := util.NewHttpClient()
 	response, err := httpClient.CallGLM(req.Text, req.Lang)
 	if err != nil {
+		log.Error("模型调用失败", err)
 		return nil, consts.ErrCall
 	}
 	message := response["choices"].([]interface{})[0].(map[string]interface{})["message"].(map[string]interface{})
