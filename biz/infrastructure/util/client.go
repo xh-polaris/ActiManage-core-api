@@ -2,6 +2,7 @@ package util
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/config"
@@ -19,8 +20,12 @@ type HttpClient struct {
 
 // NewHttpClient 创建一个新的 HttpClient 实例
 func NewHttpClient() *HttpClient {
+	// 创建一个禁用TLS验证的Transport
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
 	return &HttpClient{
-		Client: &http.Client{},
+		Client: &http.Client{Transport: transport},
 	}
 }
 
