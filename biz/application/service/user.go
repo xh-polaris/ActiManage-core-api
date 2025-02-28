@@ -247,12 +247,28 @@ func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityR
 	}
 	v := response.Activity
 	resp = &core_api.GetActivityResp{
-		Code:     0,
-		Msg:      "success",
-		Setting:  &core_api.ActivitySetting{},
-		Location: &core_api.Location{},
+		Code:        0,
+		Msg:         "success",
+		Id:          v.Id,
+		MerchantId:  v.MerchantId,
+		Name:        v.Name,
+		Cover:       v.Cover,
+		Book:        v.Book,
+		Setting:     &core_api.ActivitySetting{},
+		Location:    &core_api.Location{},
+		Top:         v.Top,
+		Phone:       v.Phone,
+		Description: v.Description,
+		Notice:      v.Notice,
+		CreateTime:  v.CreateTime,
+		UpdateTime:  v.UpdateTime,
+		Status:      v.Status,
 	}
-	err = copier.Copy(&resp, &v)
+	err = copier.Copy(&resp.Setting, &v.Setting)
+	if err != nil {
+		return nil, err
+	}
+	err = copier.Copy(&resp.Location, &v.Location)
 	if err != nil {
 		return nil, err
 	}
