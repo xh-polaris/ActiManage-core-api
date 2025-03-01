@@ -267,3 +267,83 @@ func MerchantGetActivity(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.MerchantService.MerchantGetActivity(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// MerchantListUsers .
+// @router /merchant/user/list [POST]
+func MerchantListUsers(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantListUsersReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(core_api.MerchantListUsersResp)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// MerchantListReservers .
+// @router /merchant/reserver/list [POST]
+func MerchantListReservers(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantListReserversReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(core_api.MerchantListReserversResp)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// MerchantListViews .
+// @router /merchant/view/list [POST]
+func MerchantListViews(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantListViewsReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(core_api.MerchantListViewsResp)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// MerchantListFavorites .
+// @router /merchant/favorite/list [POST]
+func MerchantListFavorites(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantListFavoritesReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(core_api.MerchantListFavoritesResp)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// MerchantListAllBookRecords .
+// @router /merchant/book/list_all [POST]
+func MerchantListAllBookRecords(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantListAllBookRecordsReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(core_api.MerchantListAllBookRecordsResp)
+
+	c.JSON(consts.StatusOK, resp)
+}

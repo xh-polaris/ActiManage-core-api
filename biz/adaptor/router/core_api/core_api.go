@@ -37,6 +37,11 @@ func Register(r *server.Hertz) {
 		{
 			_book := _merchant.Group("/book", _bookMw()...)
 			_book.POST("/list", append(_merchantlistbookrecordsMw(), core_api.MerchantListBookRecords)...)
+			_book.POST("/list_all", append(_merchantlistallbookrecordsMw(), core_api.MerchantListAllBookRecords)...)
+		}
+		{
+			_favorite := _merchant.Group("/favorite", _favoriteMw()...)
+			_favorite.POST("/list", append(_merchantlistfavoritesMw(), core_api.MerchantListFavorites)...)
 		}
 		{
 			_info := _merchant.Group("/info", _infoMw()...)
@@ -49,9 +54,21 @@ func Register(r *server.Hertz) {
 			_password.POST("/set", append(_merchantsetpasswordMw(), core_api.MerchantSetPassword)...)
 		}
 		{
+			_reserver := _merchant.Group("/reserver", _reserverMw()...)
+			_reserver.POST("/list", append(_merchantlistreserversMw(), core_api.MerchantListReservers)...)
+		}
+		{
 			_setting := _merchant.Group("/setting", _settingMw()...)
 			_setting.GET("/get", append(_merchantgetsettingMw(), core_api.MerchantGetSetting)...)
 			_setting.POST("/update", append(_merchantupdatesettingMw(), core_api.MerchantUpdateSetting)...)
+		}
+		{
+			_user := _merchant.Group("/user", _userMw()...)
+			_user.POST("/list", append(_merchantlistusersMw(), core_api.MerchantListUsers)...)
+		}
+		{
+			_view := _merchant.Group("/view", _viewMw()...)
+			_view.POST("/list", append(_merchantlistviewsMw(), core_api.MerchantListViews)...)
 		}
 	}
 	{
@@ -87,16 +104,16 @@ func Register(r *server.Hertz) {
 		}
 	}
 	{
-		_user := root.Group("/user", _userMw()...)
-		_user.POST("/login", append(_loginMw(), core_api.Login)...)
-		_user.POST("/signup", append(_signupMw(), core_api.SignUp)...)
+		_user0 := root.Group("/user", _user0Mw()...)
+		_user0.POST("/login", append(_loginMw(), core_api.Login)...)
+		_user0.POST("/signup", append(_signupMw(), core_api.SignUp)...)
 		{
-			_activity0 := _user.Group("/activity", _activity0Mw()...)
+			_activity0 := _user0.Group("/activity", _activity0Mw()...)
 			_activity0.POST("/get", append(_getactivityMw(), core_api.GetActivity)...)
 			_activity0.POST("/list", append(_listactivitiesMw(), core_api.ListActivities)...)
 		}
 		{
-			_book0 := _user.Group("/book", _book0Mw()...)
+			_book0 := _user0.Group("/book", _book0Mw()...)
 			_book0.POST("/cancel", append(_cancelbookrecordMw(), core_api.CancelBookRecord)...)
 			_book0.POST("/create", append(_createbookingMw(), core_api.CreateBooking)...)
 			{
@@ -105,38 +122,38 @@ func Register(r *server.Hertz) {
 			}
 		}
 		{
-			_favorite := _user.Group("/favorite", _favoriteMw()...)
-			_favorite.POST("/cancel", append(_cancelfavoriteMw(), core_api.CancelFavorite)...)
-			_favorite.POST("/do", append(_dofavoriteMw(), core_api.DoFavorite)...)
+			_favorite0 := _user0.Group("/favorite", _favorite0Mw()...)
+			_favorite0.POST("/cancel", append(_cancelfavoriteMw(), core_api.CancelFavorite)...)
+			_favorite0.POST("/do", append(_dofavoriteMw(), core_api.DoFavorite)...)
 		}
 		{
-			_info0 := _user.Group("/info", _info0Mw()...)
+			_info0 := _user0.Group("/info", _info0Mw()...)
 			_info0.GET("/get", append(_getuserinfoMw(), core_api.GetUserInfo)...)
 			_info0.POST("/notice", append(_updatenoticeMw(), core_api.UpdateNotice)...)
 			_info0.POST("/update", append(_updateuserinfoMw(), core_api.UpdateUserInfo)...)
 		}
 		{
-			_merchant1 := _user.Group("/merchant", _merchant1Mw()...)
+			_merchant1 := _user0.Group("/merchant", _merchant1Mw()...)
 			{
 				_info1 := _merchant1.Group("/info", _info1Mw()...)
 				_info1.POST("/get", append(_getmerchantinfoMw(), core_api.GetMerchantInfo)...)
 			}
 		}
 		{
-			_reserver := _user.Group("/reserver", _reserverMw()...)
-			_reserver.POST("/create", append(_createreserverMw(), core_api.CreateReserver)...)
-			_reserver.POST("/delete", append(_deletereserverMw(), core_api.DeleteReserver)...)
-			_reserver.POST("/list", append(_listreserversMw(), core_api.ListReservers)...)
-			_reserver.POST("/update", append(_updatereserverMw(), core_api.UpdateReserver)...)
+			_reserver0 := _user0.Group("/reserver", _reserver0Mw()...)
+			_reserver0.POST("/create", append(_createreserverMw(), core_api.CreateReserver)...)
+			_reserver0.POST("/delete", append(_deletereserverMw(), core_api.DeleteReserver)...)
+			_reserver0.POST("/list", append(_listreserversMw(), core_api.ListReservers)...)
+			_reserver0.POST("/update", append(_updatereserverMw(), core_api.UpdateReserver)...)
 		}
 		{
-			_settings := _user.Group("/settings", _settingsMw()...)
+			_settings := _user0.Group("/settings", _settingsMw()...)
 			_settings.POST("/get", append(_getsettingMw(), core_api.GetSetting)...)
 		}
 		{
-			_view := _user.Group("/view", _viewMw()...)
+			_view0 := _user0.Group("/view", _view0Mw()...)
 			{
-				_list0 := _view.Group("/list", _list0Mw()...)
+				_list0 := _view0.Group("/list", _list0Mw()...)
 				_list0.POST("/activity", append(_listactivitiesbyviewMw(), core_api.ListActivitiesByView)...)
 			}
 		}

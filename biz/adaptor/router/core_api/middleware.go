@@ -375,3 +375,48 @@ func _merchantgetactivityMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _merchantlistallbookrecordsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _merchantlistfavoritesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _merchantlistreserversMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _merchantlistusersMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _merchantlistviewsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _user0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _favorite0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _reserver0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _view0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -319,6 +319,7 @@ func (s UserService) DoFavorite(ctx context.Context, req *core_api.DoFavoriteReq
 	response, err := s.UserRpc.DoFavorite(ctx, &genuser.DoFavoriteReq{
 		UserId:     userId,
 		ActivityId: req.Id,
+		MerchantId: req.MerchantId,
 	})
 	if err != nil || response.Code != 0 {
 		return nil, err
@@ -526,13 +527,14 @@ func (s UserService) CreateReserver(ctx context.Context, req *core_api.CreateRes
 		return nil, consts.ErrNotAuthentication
 	}
 	response, err := s.UserRpc.CreateReserver(ctx, &genuser.CreateReserverReq{
-		UserId:   userId,
-		Name:     req.Name,
-		Gender:   req.Gender,
-		Relation: req.Relation,
-		Phone:    req.Phone,
-		Email:    req.Email,
-		Birth:    req.Birth,
+		UserId:     userId,
+		Name:       req.Name,
+		Gender:     req.Gender,
+		Relation:   req.Relation,
+		Phone:      req.Phone,
+		Email:      req.Email,
+		Birth:      req.Birth,
+		MerchantId: req.MerchantId,
 	})
 	if err != nil || response.Code != 0 {
 		return nil, consts.ErrCreate
