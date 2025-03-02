@@ -420,3 +420,18 @@ func _view0Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _merchantgetactivitynumberMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _merchantgetnewusernumberMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _dashboard0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

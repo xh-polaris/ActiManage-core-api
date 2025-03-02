@@ -279,9 +279,9 @@ func MerchantListUsers(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(core_api.MerchantListUsersResp)
-
-	c.JSON(consts.StatusOK, resp)
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantListUsers(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
 // MerchantListReservers .
@@ -294,10 +294,9 @@ func MerchantListReservers(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(core_api.MerchantListReserversResp)
-
-	c.JSON(consts.StatusOK, resp)
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantListReservers(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
 // MerchantListViews .
@@ -310,10 +309,9 @@ func MerchantListViews(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(core_api.MerchantListViewsResp)
-
-	c.JSON(consts.StatusOK, resp)
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantListViews(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
 // MerchantListFavorites .
@@ -326,10 +324,9 @@ func MerchantListFavorites(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(core_api.MerchantListFavoritesResp)
-
-	c.JSON(consts.StatusOK, resp)
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantListFavorites(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
 
 // MerchantListAllBookRecords .
@@ -343,7 +340,39 @@ func MerchantListAllBookRecords(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(core_api.MerchantListAllBookRecordsResp)
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantListAllBookRecords(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
 
-	c.JSON(consts.StatusOK, resp)
+// MerchantGetNewUserNumber .
+// @router /merchant/dashboard/new_user [POST]
+func MerchantGetNewUserNumber(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantGetNewUserNumberReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantGetNewUserNumber(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// MerchantGetActivityNumber .
+// @router /merchant/dashboard/activity_number [POST]
+func MerchantGetActivityNumber(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.MerchantGetActivityNumberReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.MerchantService.MerchantGetActivityNumber(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
 }

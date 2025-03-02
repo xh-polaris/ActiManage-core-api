@@ -40,6 +40,11 @@ func Register(r *server.Hertz) {
 			_book.POST("/list_all", append(_merchantlistallbookrecordsMw(), core_api.MerchantListAllBookRecords)...)
 		}
 		{
+			_dashboard := _merchant.Group("/dashboard", _dashboardMw()...)
+			_dashboard.POST("/activity_number", append(_merchantgetactivitynumberMw(), core_api.MerchantGetActivityNumber)...)
+			_dashboard.POST("/new_user", append(_merchantgetnewusernumberMw(), core_api.MerchantGetNewUserNumber)...)
+		}
+		{
 			_favorite := _merchant.Group("/favorite", _favoriteMw()...)
 			_favorite.POST("/list", append(_merchantlistfavoritesMw(), core_api.MerchantListFavorites)...)
 		}
@@ -91,9 +96,9 @@ func Register(r *server.Hertz) {
 		_system := root.Group("/system", _systemMw()...)
 		_system.POST("/login", append(_systemloginMw(), core_api.SystemLogin)...)
 		{
-			_dashboard := _system.Group("/dashboard", _dashboardMw()...)
-			_dashboard.POST("/one", append(_systemgetdashboardMw(), core_api.SystemGetDashboard)...)
-			_dashboard.POST("/overall", append(_systemgetoveralldashboardMw(), core_api.SystemGetOverallDashboard)...)
+			_dashboard0 := _system.Group("/dashboard", _dashboard0Mw()...)
+			_dashboard0.POST("/one", append(_systemgetdashboardMw(), core_api.SystemGetDashboard)...)
+			_dashboard0.POST("/overall", append(_systemgetoveralldashboardMw(), core_api.SystemGetOverallDashboard)...)
 		}
 		{
 			_merchant0 := _system.Group("/merchant", _merchant0Mw()...)

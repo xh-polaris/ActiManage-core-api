@@ -32,9 +32,16 @@ type IMerchantService interface {
 	MerchantUpdateInfo(ctx context.Context, req *core_api.MerchantUpdateInfoReq) (resp *core_api.Response, err error)
 	MerchantGetInfo(ctx context.Context, req *core_api.MerchantGetInfoReq) (resp *core_api.MerchantGetInfoResp, err error)
 	MerchantSetPassword(ctx context.Context, req *core_api.MerchantSetPasswordReq) (resp *core_api.Response, err error)
-	GetMerchantInfoByUri(ctx context.Context, c *core_api.GetMerchantInfoByUriReq) (resp *core_api.GetMerchantInfoByUriResp, err error)
-	GetAd(ctx context.Context, c *core_api.GetAdReq) (resp *core_api.GetAdResp, err error)
-	SetAd(ctx context.Context, c *core_api.SetAdReq) (resp *core_api.Response, err error)
+	GetMerchantInfoByUri(ctx context.Context, req *core_api.GetMerchantInfoByUriReq) (resp *core_api.GetMerchantInfoByUriResp, err error)
+	GetAd(ctx context.Context, req *core_api.GetAdReq) (resp *core_api.GetAdResp, err error)
+	SetAd(ctx context.Context, req *core_api.SetAdReq) (resp *core_api.Response, err error)
+	MerchantListUsers(ctx context.Context, req *core_api.MerchantListUsersReq) (resp *core_api.MerchantListUsersResp, err error)
+	MerchantListReservers(ctx context.Context, req *core_api.MerchantListReserversReq) (resp *core_api.MerchantListReserversResp, err error)
+	MerchantListViews(ctx context.Context, req *core_api.MerchantListViewsReq) (resp *core_api.MerchantListViewsResp, err error)
+	MerchantListFavorites(ctx context.Context, req *core_api.MerchantListFavoritesReq) (resp *core_api.MerchantListFavoritesResp, err error)
+	MerchantListAllBookRecords(ctx context.Context, req *core_api.MerchantListAllBookRecordsReq) (resp *core_api.MerchantListAllBookRecordsResp, err error)
+	MerchantGetNewUserNumber(ctx context.Context, req *core_api.MerchantGetNewUserNumberReq) (resp *core_api.MerchantGetNewUserNumberResp, err error)
+	MerchantGetActivityNumber(ctx context.Context, req *core_api.MerchantGetActivityNumberReq) (resp *core_api.MerchantGetActivityNumberResp, err error)
 }
 
 type MerchantService struct {
@@ -485,4 +492,328 @@ func (s *MerchantService) SetAd(ctx context.Context, req *core_api.SetAdReq) (re
 		return nil, err
 	}
 	return util.SuccessResp(response.Msg)
+}
+
+func (s *MerchantService) MerchantListUsers(ctx context.Context, req *core_api.MerchantListUsersReq) (resp *core_api.MerchantListUsersResp, err error) {
+	resp = &core_api.MerchantListUsersResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	uResp, err := s.UserRpc.MerchantListUsers(ctx, &genuser.MerchantListUsersReq{
+		Paging: &genbasic.Paging{
+			Page:  req.Paging.Page,
+			Limit: req.Paging.Limit,
+		},
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantListUsersResp_Item, 0, len(uResp.Users))
+	for _, v := range uResp.Users {
+		dto := &core_api.MerchantListUsersResp_Item{
+			Id:         v.Id,
+			Name:       v.Name,
+			Avatar:     v.Avatar,
+			LoginTime:  v.UpdateTime,
+			CreateTime: v.CreateTime,
+		}
+		dtos = append(dtos, dto)
+	}
+	resp.Total = uResp.Total
+	resp.Users = dtos
+	return resp, nil
+
+}
+func (s *MerchantService) MerchantListReservers(ctx context.Context, req *core_api.MerchantListReserversReq) (resp *core_api.MerchantListReserversResp, err error) {
+	resp = &core_api.MerchantListReserversResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	rResp, err := s.UserRpc.MerchantListReservers(ctx, &genuser.MerchantListReserversReq{
+		Paging: &genbasic.Paging{
+			Page:  req.Paging.Page,
+			Limit: req.Paging.Limit,
+		},
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantListReserversResp_Item, 0, len(rResp.Reservers))
+	for _, v := range rResp.Reservers {
+		r := v.Reserver
+		dto := &core_api.MerchantListReserversResp_Item{
+			Reserver: &core_api.Reserver{
+				Id:         r.Id,
+				UserId:     r.UserId,
+				Name:       r.Name,
+				Gender:     r.Gender,
+				Relation:   r.Relation,
+				Phone:      r.Phone,
+				Email:      r.Email,
+				Birth:      r.Birth,
+				CreateTime: r.CreateTime,
+				UpdateTime: r.UpdateTime,
+				Status:     r.Status,
+			},
+			Name:   v.Name,
+			Avatar: v.Avatar,
+		}
+		dtos = append(dtos, dto)
+	}
+	resp.Total = rResp.Total
+	resp.Reservers = dtos
+	return resp, nil
+}
+func (s *MerchantService) MerchantListViews(ctx context.Context, req *core_api.MerchantListViewsReq) (resp *core_api.MerchantListViewsResp, err error) {
+	resp = &core_api.MerchantListViewsResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	vResp, err := s.UserRpc.MerchantListViews(ctx, &genuser.MerchantListViewsReq{
+		Paging: &genbasic.Paging{
+			Page:  req.Paging.Page,
+			Limit: req.Paging.Limit,
+		},
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantListViewsResp_Item, 0, len(vResp.Views))
+	ids := make([]string, 0, len(vResp.Views))
+	for _, v := range vResp.Views {
+		ids = append(ids, v.TargetId)
+		dto := &core_api.MerchantListViewsResp_Item{
+			Id:         v.Id,
+			ActivityId: v.TargetId,
+			UserId:     v.UserId,
+			CreateTime: v.CreateTime,
+			Username:   v.Username,
+			Avatar:     v.Avatar,
+		}
+		dtos = append(dtos, dto)
+	}
+
+	aResp, err := s.SystemRpc.ListActivityByActivityId(ctx, &gensystem.ListActivitiesByActivityIdReq{
+		Ids: ids,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for i, v := range aResp.Items {
+		dtos[i].ActivityName = v.Name
+	}
+
+	resp.Total = vResp.Total
+	resp.Views = dtos
+
+	return resp, nil
+}
+func (s *MerchantService) MerchantListFavorites(ctx context.Context, req *core_api.MerchantListFavoritesReq) (resp *core_api.MerchantListFavoritesResp, err error) {
+	resp = &core_api.MerchantListFavoritesResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	fResp, err := s.UserRpc.MerchantListFavorites(ctx, &genuser.MerchantListFavoritesReq{
+		Paging: &genbasic.Paging{
+			Page:  req.Paging.Page,
+			Limit: req.Paging.Limit,
+		},
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantListFavoritesResp_Item, 0, len(fResp.Favorites))
+	ids := make([]string, 0, len(fResp.Favorites))
+	for _, v := range fResp.Favorites {
+		ids = append(ids, v.ActivityId)
+		dto := &core_api.MerchantListFavoritesResp_Item{
+			Id:         v.Id,
+			ActivityId: v.ActivityId,
+			UserId:     v.UserId,
+			CreateTime: v.CreateTime,
+			Username:   v.Username,
+			Avatar:     v.Avtar,
+		}
+		dtos = append(dtos, dto)
+	}
+
+	aResp, err := s.SystemRpc.ListActivityByActivityId(ctx, &gensystem.ListActivitiesByActivityIdReq{
+		Ids: ids,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for i, v := range aResp.Items {
+		dtos[i].ActivityName = v.Name
+	}
+
+	resp.Total = fResp.Total
+	resp.Favorites = dtos
+
+	return resp, nil
+}
+
+func (s *MerchantService) MerchantListAllBookRecords(ctx context.Context, req *core_api.MerchantListAllBookRecordsReq) (resp *core_api.MerchantListAllBookRecordsResp, err error) {
+	resp = &core_api.MerchantListAllBookRecordsResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	bResp, err := s.UserRpc.MerchantListAllBookRecords(ctx, &genuser.MerchantListAllBookRecordsReq{
+		Paging: &genbasic.Paging{
+			Page:  req.Paging.Page,
+			Limit: req.Paging.Limit,
+		},
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantListAllBookRecordsResp_BookItem, 0, len(bResp.BookRecords))
+	ids := make([]string, 0, len(bResp.BookRecords))
+	for _, v := range bResp.BookRecords {
+		ids = append(ids, v.ActivityId)
+		dto := &core_api.MerchantListAllBookRecordsResp_BookItem{
+			Id:         v.Id,
+			ActivityId: v.ActivityId,
+			UserId:     v.UserId,
+			Reservers:  nil,
+			Arrival:    v.Arrival,
+			Remark:     v.Remark,
+			CreateTime: v.CreateTime,
+			UpdateTime: v.UpdateTime,
+			Status:     v.Status,
+			Name:       v.Name,
+			Avatar:     v.Avatar,
+		}
+		rs := make([]*core_api.MerchantListAllBookRecordsResp_Item, 0, len(v.Reservers))
+		for _, r := range v.Reservers {
+			aR := &core_api.MerchantListAllBookRecordsResp_Item{
+				ReserverId: r.ReserverId,
+				Cancel:     r.Cancel,
+				Name:       r.Name,
+				Phone:      r.Phone,
+			}
+			rs = append(rs, aR)
+		}
+		dto.Reservers = rs
+		dtos = append(dtos, dto)
+	}
+
+	aResp, err := s.SystemRpc.ListActivityByActivityId(ctx, &gensystem.ListActivitiesByActivityIdReq{
+		Ids: ids,
+	})
+	if err != nil {
+		return nil, err
+	}
+	for i, v := range aResp.Items {
+		dtos[i].ActivityName = v.Name
+	}
+
+	resp.Total = bResp.Total
+	resp.BookRecords = dtos
+
+	return resp, nil
+}
+
+func (s *MerchantService) MerchantGetNewUserNumber(ctx context.Context, req *core_api.MerchantGetNewUserNumberReq) (resp *core_api.MerchantGetNewUserNumberResp, err error) {
+	resp = &core_api.MerchantGetNewUserNumberResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	nResp, err := s.UserRpc.MerchantGetNewUserNumber(ctx, &genuser.MerchantGetNewUserNumberReq{
+		From:       req.From,
+		To:         req.To,
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantGetNewUserNumberResp_Item, 0, len(nResp.Items))
+	for _, v := range nResp.Items {
+		dto := &core_api.MerchantGetNewUserNumberResp_Item{
+			Number:    v.Number,
+			Timestamp: v.Timestamp,
+		}
+		dtos = append(dtos, dto)
+	}
+	resp.Items = dtos
+	return resp, nil
+}
+
+func (s *MerchantService) MerchantGetActivityNumber(ctx context.Context, req *core_api.MerchantGetActivityNumberReq) (resp *core_api.MerchantGetActivityNumberResp, err error) {
+	resp = &core_api.MerchantGetActivityNumberResp{
+		Code: 0,
+		Msg:  "success",
+	}
+
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	nResp, err := s.SystemRpc.MerchantGetActivityNumber(ctx, &gensystem.MerchantGetActivityNumberReq{
+		From:       req.From,
+		To:         req.To,
+		MerchantId: userId,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	dtos := make([]*core_api.MerchantGetActivityNumberResp_Item, 0, len(nResp.Items))
+	for _, v := range nResp.Items {
+		dto := &core_api.MerchantGetActivityNumberResp_Item{
+			Number:    v.Number,
+			Timestamp: v.Timestamp,
+		}
+		dtos = append(dtos, dto)
+	}
+	resp.Items = dtos
+	return resp, nil
 }
