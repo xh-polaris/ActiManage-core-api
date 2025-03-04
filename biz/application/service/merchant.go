@@ -827,6 +827,8 @@ func (s *MerchantService) GetMerchantMoreInfo(ctx context.Context, req *core_api
 		return nil, err
 	}
 	resp = &core_api.GetMerchantMoreInfoResp{
+		Code:             0,
+		Msg:              "success",
 		Questions:        response.Questions,
 		PrivacyAgreement: response.PrivacyAgreement,
 		UserAgreement:    response.UserAgreement,
@@ -849,7 +851,6 @@ func (s *MerchantService) UpdateMerchantMoreInfo(ctx context.Context, req *core_
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	resp.Code = 0
-	resp.Msg = "success"
-	return
+	resp = &core_api.Response{Code: 0, Msg: "success"}
+	return resp, nil
 }

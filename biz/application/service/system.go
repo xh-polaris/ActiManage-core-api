@@ -307,7 +307,9 @@ func (s SystemService) ResetMerchantPassword(ctx context.Context, req *core_api.
 	if err != nil || response.Code != 0 {
 		return nil, err
 	}
-	resp.Code = 0
-	resp.Msg = "success"
+	resp = &core_api.Response{
+		Code: 0,
+		Msg:  "success",
+	}
 	return resp, nil
 }
