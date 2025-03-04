@@ -517,13 +517,16 @@ func (s *MerchantService) MerchantListUsers(ctx context.Context, req *core_api.M
 	}
 
 	dtos := make([]*core_api.MerchantListUsersResp_Item, 0, len(uResp.Users))
-	for _, v := range uResp.Users {
+	for i, v := range uResp.Users {
 		dto := &core_api.MerchantListUsersResp_Item{
 			Id:         v.Id,
 			Name:       v.Name,
 			Avatar:     v.Avatar,
 			LoginTime:  v.UpdateTime,
 			CreateTime: v.CreateTime,
+			Book:       uResp.Infos[i].Book,
+			View:       uResp.Infos[i].View,
+			Favorite:   uResp.Infos[i].Favorite,
 		}
 		dtos = append(dtos, dto)
 	}
