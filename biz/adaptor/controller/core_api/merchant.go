@@ -376,3 +376,35 @@ func MerchantGetActivityNumber(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.MerchantService.MerchantGetActivityNumber(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// GetMerchantMoreInfo .
+// @router /merchant/more/get [POST]
+func GetMerchantMoreInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.GetMerchantMoreInfoReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.MerchantService.GetMerchantMoreInfo(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}
+
+// UpdateMerchantMoreInfo .
+// @router /merchant/more/update [POST]
+func UpdateMerchantMoreInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.UpdateMerchantMoreInfoReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.MerchantService.UpdateMerchantMoreInfo(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

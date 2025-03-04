@@ -55,6 +55,11 @@ func Register(r *server.Hertz) {
 			_info.POST("/uri", append(_getmerchantinfobyuriMw(), core_api.GetMerchantInfoByUri)...)
 		}
 		{
+			_more := _merchant.Group("/more", _moreMw()...)
+			_more.POST("/get", append(_getmerchantmoreinfoMw(), core_api.GetMerchantMoreInfo)...)
+			_more.POST("/update", append(_updatemerchantmoreinfoMw(), core_api.UpdateMerchantMoreInfo)...)
+		}
+		{
 			_password := _merchant.Group("/password", _passwordMw()...)
 			_password.POST("/set", append(_merchantsetpasswordMw(), core_api.MerchantSetPassword)...)
 		}

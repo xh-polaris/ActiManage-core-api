@@ -435,3 +435,18 @@ func _dashboard0Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _moreMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getmerchantmoreinfoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updatemerchantmoreinfoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

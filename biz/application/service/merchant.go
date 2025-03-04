@@ -820,3 +820,36 @@ func (s *MerchantService) MerchantGetActivityNumber(ctx context.Context, req *co
 	resp.Items = dtos
 	return resp, nil
 }
+
+func (s *MerchantService) GetMerchantMoreInfo(ctx context.Context, req *core_api.GetMerchantMoreInfoReq) (resp *core_api.GetMerchantMoreInfoResp, err error) {
+	response, err := s.SystemRpc.GetMerchantMoreInfo(ctx, &gensystem.GetMerchantMoreInfoReq{MerchantId: req.MerchantId})
+	if err != nil {
+		return nil, err
+	}
+	resp = &core_api.GetMerchantMoreInfoResp{
+		Questions:        response.Questions,
+		PrivacyAgreement: response.PrivacyAgreement,
+		UserAgreement:    response.UserAgreement,
+	}
+	return resp, err
+}
+
+func (s *MerchantService) UpdateMerchantMoreInfo(ctx context.Context, req *core_api.UpdateMerchantMoreInfoReq) (resp *core_api.Response, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	response, err := s.SystemRpc.UpdateMerchantMoreInfo(ctx, &gensystem.UpdateMerchantMoreInfoReq{
+		MerchantId:       userId,
+		Questions:        req.Questions,
+		PrivacyAgreement: req.PrivacyAgreement,
+		UserAgreement:    req.UserAgreement,
+	})
+	if err != nil || response.Code != 0 {
+		return nil, err
+	}
+	resp.Code = 0
+	resp.Msg = "success"
+	return
+}
