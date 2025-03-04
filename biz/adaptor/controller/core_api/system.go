@@ -123,3 +123,19 @@ func SystemGetOverallDashboard(ctx context.Context, c *app.RequestContext) {
 	resp, err := p.SystemService.SystemGetOverallDashboard(ctx, &req)
 	adaptor.PostProcess(ctx, c, &req, resp, err)
 }
+
+// ResetMerchantPassword .
+// @router /system/merchant/reset [POST]
+func ResetMerchantPassword(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req core_api.ResetMerchantPasswordReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	p := provider.Get()
+	resp, err := p.SystemService.ResetMerchantPassword(ctx, &req)
+	adaptor.PostProcess(ctx, c, &req, resp, err)
+}

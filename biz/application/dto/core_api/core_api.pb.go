@@ -322,7 +322,7 @@ var file_core_api_proto_rawDesc = []byte{
 	0x1a, 0x12, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0xd2, 0xc1, 0x18, 0x15, 0x2f, 0x6d, 0x65, 0x72, 0x63, 0x68,
 	0x61, 0x6e, 0x74, 0x2f, 0x6d, 0x6f, 0x72, 0x65, 0x2f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x32,
-	0x9e, 0x06, 0x0a, 0x06, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x12, 0x55, 0x0a, 0x0b, 0x53, 0x79,
+	0x8b, 0x07, 0x0a, 0x06, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x12, 0x55, 0x0a, 0x0b, 0x53, 0x79,
 	0x73, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x12, 0x18, 0x2e, 0x63, 0x6f, 0x72, 0x65,
 	0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x69, 0x6e,
 	0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53,
@@ -372,34 +372,41 @@ var file_core_api_proto_rawDesc = []byte{
 	0x72, 0x61, 0x6c, 0x6c, 0x44, 0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73,
 	0x70, 0x22, 0x1d, 0xd2, 0xc1, 0x18, 0x19, 0x2f, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2f, 0x64,
 	0x61, 0x73, 0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2f, 0x6f, 0x76, 0x65, 0x72, 0x61, 0x6c, 0x6c,
-	0x32, 0xea, 0x02, 0x0a, 0x03, 0x73, 0x74, 0x73, 0x12, 0x68, 0x0a, 0x11, 0x53, 0x74, 0x73, 0x41,
-	0x70, 0x70, 0x6c, 0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x12, 0x1e, 0x2e,
-	0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c,
-	0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x1f, 0x2e,
-	0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c,
-	0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x22, 0x12,
-	0xd2, 0xc1, 0x18, 0x0e, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x2f, 0x61, 0x70, 0x70,
-	0x6c, 0x79, 0x12, 0x56, 0x0a, 0x0b, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66,
-	0x79, 0x12, 0x18, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73,
-	0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x63, 0x6f,
-	0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69,
-	0x66, 0x79, 0x52, 0x65, 0x73, 0x70, 0x22, 0x12, 0xd2, 0xc1, 0x18, 0x0e, 0x2f, 0x73, 0x74, 0x73,
-	0x2f, 0x61, 0x69, 0x2f, 0x6d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x12, 0x5d, 0x0a, 0x11, 0x53, 0x74,
-	0x73, 0x53, 0x65, 0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x12,
-	0x1e, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x53, 0x65,
-	0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x1a,
-	0x12, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x14, 0xd2, 0xc1, 0x18, 0x10, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x76, 0x65,
-	0x72, 0x69, 0x66, 0x79, 0x2f, 0x73, 0x65, 0x6e, 0x64, 0x12, 0x42, 0x0a, 0x07, 0x53, 0x74, 0x73,
-	0x56, 0x69, 0x65, 0x77, 0x12, 0x14, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e,
-	0x53, 0x74, 0x73, 0x56, 0x69, 0x65, 0x77, 0x52, 0x65, 0x71, 0x1a, 0x12, 0x2e, 0x63, 0x6f, 0x72,
-	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0d,
-	0xd2, 0xc1, 0x18, 0x09, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x76, 0x69, 0x65, 0x77, 0x42, 0x48, 0x5a,
-	0x46, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x78, 0x68, 0x2d, 0x70,
-	0x6f, 0x6c, 0x61, 0x72, 0x69, 0x73, 0x2f, 0x41, 0x63, 0x74, 0x69, 0x4d, 0x61, 0x6e, 0x61, 0x67,
-	0x65, 0x2d, 0x63, 0x6f, 0x72, 0x65, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61,
-	0x70, 0x70, 0x6c, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x63,
-	0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x12, 0x6b, 0x0a, 0x15, 0x52, 0x65, 0x73, 0x65, 0x74, 0x4d, 0x65, 0x72, 0x63, 0x68, 0x61, 0x6e,
+	0x74, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x12, 0x22, 0x2e, 0x63, 0x6f, 0x72, 0x65,
+	0x5f, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x65, 0x74, 0x4d, 0x65, 0x72, 0x63, 0x68, 0x61,
+	0x6e, 0x74, 0x50, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x52, 0x65, 0x71, 0x1a, 0x12, 0x2e,
+	0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x1a, 0xd2, 0xc1, 0x18, 0x16, 0x2f, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2f, 0x6d,
+	0x65, 0x72, 0x63, 0x68, 0x61, 0x6e, 0x74, 0x2f, 0x72, 0x65, 0x73, 0x65, 0x74, 0x32, 0xea, 0x02,
+	0x0a, 0x03, 0x73, 0x74, 0x73, 0x12, 0x68, 0x0a, 0x11, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c,
+	0x79, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x12, 0x1e, 0x2e, 0x63, 0x6f, 0x72,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69,
+	0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x1f, 0x2e, 0x63, 0x6f, 0x72,
+	0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x70, 0x70, 0x6c, 0x79, 0x53, 0x69,
+	0x67, 0x6e, 0x65, 0x64, 0x55, 0x72, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x22, 0x12, 0xd2, 0xc1, 0x18,
+	0x0e, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x63, 0x6f, 0x73, 0x2f, 0x61, 0x70, 0x70, 0x6c, 0x79, 0x12,
+	0x56, 0x0a, 0x0b, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x12, 0x18,
+	0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d,
+	0x6f, 0x64, 0x69, 0x66, 0x79, 0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f,
+	0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x41, 0x49, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x52,
+	0x65, 0x73, 0x70, 0x22, 0x12, 0xd2, 0xc1, 0x18, 0x0e, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x61, 0x69,
+	0x2f, 0x6d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x12, 0x5d, 0x0a, 0x11, 0x53, 0x74, 0x73, 0x53, 0x65,
+	0x6e, 0x64, 0x56, 0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x1e, 0x2e, 0x63,
+	0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73, 0x53, 0x65, 0x6e, 0x64, 0x56,
+	0x65, 0x72, 0x69, 0x66, 0x79, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x12, 0x2e, 0x63,
+	0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x14, 0xd2, 0xc1, 0x18, 0x10, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x76, 0x65, 0x72, 0x69, 0x66,
+	0x79, 0x2f, 0x73, 0x65, 0x6e, 0x64, 0x12, 0x42, 0x0a, 0x07, 0x53, 0x74, 0x73, 0x56, 0x69, 0x65,
+	0x77, 0x12, 0x14, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x74, 0x73,
+	0x56, 0x69, 0x65, 0x77, 0x52, 0x65, 0x71, 0x1a, 0x12, 0x2e, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x61,
+	0x70, 0x69, 0x2e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0d, 0xd2, 0xc1, 0x18,
+	0x09, 0x2f, 0x73, 0x74, 0x73, 0x2f, 0x76, 0x69, 0x65, 0x77, 0x42, 0x48, 0x5a, 0x46, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x78, 0x68, 0x2d, 0x70, 0x6f, 0x6c, 0x61,
+	0x72, 0x69, 0x73, 0x2f, 0x41, 0x63, 0x74, 0x69, 0x4d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x2d, 0x63,
+	0x6f, 0x72, 0x65, 0x2d, 0x61, 0x70, 0x69, 0x2f, 0x62, 0x69, 0x7a, 0x2f, 0x61, 0x70, 0x70, 0x6c,
+	0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x64, 0x74, 0x6f, 0x2f, 0x63, 0x6f, 0x72, 0x65,
+	0x5f, 0x61, 0x70, 0x69, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var file_core_api_proto_goTypes = []interface{}{
@@ -454,43 +461,44 @@ var file_core_api_proto_goTypes = []interface{}{
 	(*SystemUpdateMerchantReq)(nil),         // 48: core_api.SystemUpdateMerchantReq
 	(*SystemGetDashboardReq)(nil),           // 49: core_api.SystemGetDashboardReq
 	(*SystemGetOverallDashboardReq)(nil),    // 50: core_api.SystemGetOverallDashboardReq
-	(*StsApplySignedUrlReq)(nil),            // 51: core_api.StsApplySignedUrlReq
-	(*StsAIModifyReq)(nil),                  // 52: core_api.StsAIModifyReq
-	(*StsSendVerifyCodeReq)(nil),            // 53: core_api.StsSendVerifyCodeReq
-	(*StsViewReq)(nil),                      // 54: core_api.StsViewReq
-	(*LoginResp)(nil),                       // 55: core_api.LoginResp
-	(*SignUpResp)(nil),                      // 56: core_api.SignUpResp
-	(*GetSettingResp)(nil),                  // 57: core_api.GetSettingResp
-	(*ListActivitiesResp)(nil),              // 58: core_api.ListActivitiesResp
-	(*GetActivityResp)(nil),                 // 59: core_api.GetActivityResp
-	(*Response)(nil),                        // 60: core_api.Response
-	(*ListActivitiesByBookRecordsResp)(nil), // 61: core_api.ListActivitiesByBookRecordsResp
-	(*ListReserversResp)(nil),               // 62: core_api.ListReserversResp
-	(*GetUserInfoResp)(nil),                 // 63: core_api.GetUserInfoResp
-	(*GetMerchantInfoResp)(nil),             // 64: core_api.GetMerchantInfoResp
-	(*ListActivitiesByViewResp)(nil),        // 65: core_api.ListActivitiesByViewResp
-	(*MerchantListActivitiesResp)(nil),      // 66: core_api.MerchantListActivitiesResp
-	(*MerchantGetActivityResp)(nil),         // 67: core_api.MerchantGetActivityResp
-	(*MerchantLoginResp)(nil),               // 68: core_api.MerchantLoginResp
-	(*MerchantGetSettingResp)(nil),          // 69: core_api.MerchantGetSettingResp
-	(*MerchantListBookRecordsResp)(nil),     // 70: core_api.MerchantListBookRecordsResp
-	(*MerchantGetInfoResp)(nil),             // 71: core_api.MerchantGetInfoResp
-	(*GetMerchantInfoByUriResp)(nil),        // 72: core_api.GetMerchantInfoByUriResp
-	(*GetAdResp)(nil),                       // 73: core_api.GetAdResp
-	(*MerchantListUsersResp)(nil),           // 74: core_api.MerchantListUsersResp
-	(*MerchantListReserversResp)(nil),       // 75: core_api.MerchantListReserversResp
-	(*MerchantListViewsResp)(nil),           // 76: core_api.MerchantListViewsResp
-	(*MerchantListFavoritesResp)(nil),       // 77: core_api.MerchantListFavoritesResp
-	(*MerchantListAllBookRecordsResp)(nil),  // 78: core_api.MerchantListAllBookRecordsResp
-	(*MerchantGetNewUserNumberResp)(nil),    // 79: core_api.MerchantGetNewUserNumberResp
-	(*MerchantGetActivityNumberResp)(nil),   // 80: core_api.MerchantGetActivityNumberResp
-	(*GetMerchantMoreInfoResp)(nil),         // 81: core_api.GetMerchantMoreInfoResp
-	(*SystemLoginResp)(nil),                 // 82: core_api.SystemLoginResp
-	(*SystemGetMerchantResp)(nil),           // 83: core_api.SystemGetMerchantResp
-	(*SystemGetDashboardResp)(nil),          // 84: core_api.SystemGetDashboardResp
-	(*SystemGetOverallDashboardResp)(nil),   // 85: core_api.SystemGetOverallDashboardResp
-	(*StsApplySignedUrlResp)(nil),           // 86: core_api.StsApplySignedUrlResp
-	(*StsAIModifyResp)(nil),                 // 87: core_api.StsAIModifyResp
+	(*ResetMerchantPasswordReq)(nil),        // 51: core_api.ResetMerchantPasswordReq
+	(*StsApplySignedUrlReq)(nil),            // 52: core_api.StsApplySignedUrlReq
+	(*StsAIModifyReq)(nil),                  // 53: core_api.StsAIModifyReq
+	(*StsSendVerifyCodeReq)(nil),            // 54: core_api.StsSendVerifyCodeReq
+	(*StsViewReq)(nil),                      // 55: core_api.StsViewReq
+	(*LoginResp)(nil),                       // 56: core_api.LoginResp
+	(*SignUpResp)(nil),                      // 57: core_api.SignUpResp
+	(*GetSettingResp)(nil),                  // 58: core_api.GetSettingResp
+	(*ListActivitiesResp)(nil),              // 59: core_api.ListActivitiesResp
+	(*GetActivityResp)(nil),                 // 60: core_api.GetActivityResp
+	(*Response)(nil),                        // 61: core_api.Response
+	(*ListActivitiesByBookRecordsResp)(nil), // 62: core_api.ListActivitiesByBookRecordsResp
+	(*ListReserversResp)(nil),               // 63: core_api.ListReserversResp
+	(*GetUserInfoResp)(nil),                 // 64: core_api.GetUserInfoResp
+	(*GetMerchantInfoResp)(nil),             // 65: core_api.GetMerchantInfoResp
+	(*ListActivitiesByViewResp)(nil),        // 66: core_api.ListActivitiesByViewResp
+	(*MerchantListActivitiesResp)(nil),      // 67: core_api.MerchantListActivitiesResp
+	(*MerchantGetActivityResp)(nil),         // 68: core_api.MerchantGetActivityResp
+	(*MerchantLoginResp)(nil),               // 69: core_api.MerchantLoginResp
+	(*MerchantGetSettingResp)(nil),          // 70: core_api.MerchantGetSettingResp
+	(*MerchantListBookRecordsResp)(nil),     // 71: core_api.MerchantListBookRecordsResp
+	(*MerchantGetInfoResp)(nil),             // 72: core_api.MerchantGetInfoResp
+	(*GetMerchantInfoByUriResp)(nil),        // 73: core_api.GetMerchantInfoByUriResp
+	(*GetAdResp)(nil),                       // 74: core_api.GetAdResp
+	(*MerchantListUsersResp)(nil),           // 75: core_api.MerchantListUsersResp
+	(*MerchantListReserversResp)(nil),       // 76: core_api.MerchantListReserversResp
+	(*MerchantListViewsResp)(nil),           // 77: core_api.MerchantListViewsResp
+	(*MerchantListFavoritesResp)(nil),       // 78: core_api.MerchantListFavoritesResp
+	(*MerchantListAllBookRecordsResp)(nil),  // 79: core_api.MerchantListAllBookRecordsResp
+	(*MerchantGetNewUserNumberResp)(nil),    // 80: core_api.MerchantGetNewUserNumberResp
+	(*MerchantGetActivityNumberResp)(nil),   // 81: core_api.MerchantGetActivityNumberResp
+	(*GetMerchantMoreInfoResp)(nil),         // 82: core_api.GetMerchantMoreInfoResp
+	(*SystemLoginResp)(nil),                 // 83: core_api.SystemLoginResp
+	(*SystemGetMerchantResp)(nil),           // 84: core_api.SystemGetMerchantResp
+	(*SystemGetDashboardResp)(nil),          // 85: core_api.SystemGetDashboardResp
+	(*SystemGetOverallDashboardResp)(nil),   // 86: core_api.SystemGetOverallDashboardResp
+	(*StsApplySignedUrlResp)(nil),           // 87: core_api.StsApplySignedUrlResp
+	(*StsAIModifyResp)(nil),                 // 88: core_api.StsAIModifyResp
 }
 var file_core_api_proto_depIdxs = []int32{
 	0,  // 0: core_api.user.Login:input_type -> core_api.LoginReq
@@ -544,67 +552,69 @@ var file_core_api_proto_depIdxs = []int32{
 	48, // 48: core_api.system.SystemUpdateMerchant:input_type -> core_api.SystemUpdateMerchantReq
 	49, // 49: core_api.system.SystemGetDashboard:input_type -> core_api.SystemGetDashboardReq
 	50, // 50: core_api.system.SystemGetOverallDashboard:input_type -> core_api.SystemGetOverallDashboardReq
-	51, // 51: core_api.sts.StsApplySignedUrl:input_type -> core_api.StsApplySignedUrlReq
-	52, // 52: core_api.sts.StsAIModify:input_type -> core_api.StsAIModifyReq
-	53, // 53: core_api.sts.StsSendVerifyCode:input_type -> core_api.StsSendVerifyCodeReq
-	54, // 54: core_api.sts.StsView:input_type -> core_api.StsViewReq
-	55, // 55: core_api.user.Login:output_type -> core_api.LoginResp
-	56, // 56: core_api.user.SignUp:output_type -> core_api.SignUpResp
-	57, // 57: core_api.user.GetSetting:output_type -> core_api.GetSettingResp
-	58, // 58: core_api.user.ListActivities:output_type -> core_api.ListActivitiesResp
-	59, // 59: core_api.user.GetActivity:output_type -> core_api.GetActivityResp
-	60, // 60: core_api.user.DoFavorite:output_type -> core_api.Response
-	60, // 61: core_api.user.CancelFavorite:output_type -> core_api.Response
-	60, // 62: core_api.user.CreateBooking:output_type -> core_api.Response
-	60, // 63: core_api.user.CancelBookRecord:output_type -> core_api.Response
-	61, // 64: core_api.user.ListActivitiesByBookRecords:output_type -> core_api.ListActivitiesByBookRecordsResp
-	62, // 65: core_api.user.ListReservers:output_type -> core_api.ListReserversResp
-	60, // 66: core_api.user.CreateReserver:output_type -> core_api.Response
-	60, // 67: core_api.user.DeleteReserver:output_type -> core_api.Response
-	60, // 68: core_api.user.UpdateReserver:output_type -> core_api.Response
-	63, // 69: core_api.user.GetUserInfo:output_type -> core_api.GetUserInfoResp
-	60, // 70: core_api.user.UpdateUserInfo:output_type -> core_api.Response
-	60, // 71: core_api.user.UpdateNotice:output_type -> core_api.Response
-	64, // 72: core_api.user.GetMerchantInfo:output_type -> core_api.GetMerchantInfoResp
-	65, // 73: core_api.user.ListActivitiesByView:output_type -> core_api.ListActivitiesByViewResp
-	66, // 74: core_api.merchant.MerchantListActivities:output_type -> core_api.MerchantListActivitiesResp
-	60, // 75: core_api.merchant.MerchantCreateActivity:output_type -> core_api.Response
-	60, // 76: core_api.merchant.MerchantUpdateActivity:output_type -> core_api.Response
-	60, // 77: core_api.merchant.MerchantDeleteActivity:output_type -> core_api.Response
-	67, // 78: core_api.merchant.MerchantGetActivity:output_type -> core_api.MerchantGetActivityResp
-	60, // 79: core_api.merchant.MerchantTopActivity:output_type -> core_api.Response
-	68, // 80: core_api.merchant.MerchantLogin:output_type -> core_api.MerchantLoginResp
-	69, // 81: core_api.merchant.MerchantGetSetting:output_type -> core_api.MerchantGetSettingResp
-	69, // 82: core_api.merchant.MerchantUpdateSetting:output_type -> core_api.MerchantGetSettingResp
-	70, // 83: core_api.merchant.MerchantListBookRecords:output_type -> core_api.MerchantListBookRecordsResp
-	60, // 84: core_api.merchant.MerchantUpdateInfo:output_type -> core_api.Response
-	71, // 85: core_api.merchant.MerchantGetInfo:output_type -> core_api.MerchantGetInfoResp
-	72, // 86: core_api.merchant.GetMerchantInfoByUri:output_type -> core_api.GetMerchantInfoByUriResp
-	73, // 87: core_api.merchant.GetAd:output_type -> core_api.GetAdResp
-	60, // 88: core_api.merchant.SetAd:output_type -> core_api.Response
-	60, // 89: core_api.merchant.MerchantSetPassword:output_type -> core_api.Response
-	74, // 90: core_api.merchant.MerchantListUsers:output_type -> core_api.MerchantListUsersResp
-	75, // 91: core_api.merchant.MerchantListReservers:output_type -> core_api.MerchantListReserversResp
-	76, // 92: core_api.merchant.MerchantListViews:output_type -> core_api.MerchantListViewsResp
-	77, // 93: core_api.merchant.MerchantListFavorites:output_type -> core_api.MerchantListFavoritesResp
-	78, // 94: core_api.merchant.MerchantListAllBookRecords:output_type -> core_api.MerchantListAllBookRecordsResp
-	79, // 95: core_api.merchant.MerchantGetNewUserNumber:output_type -> core_api.MerchantGetNewUserNumberResp
-	80, // 96: core_api.merchant.MerchantGetActivityNumber:output_type -> core_api.MerchantGetActivityNumberResp
-	81, // 97: core_api.merchant.GetMerchantMoreInfo:output_type -> core_api.GetMerchantMoreInfoResp
-	60, // 98: core_api.merchant.UpdateMerchantMoreInfo:output_type -> core_api.Response
-	82, // 99: core_api.system.SystemLogin:output_type -> core_api.SystemLoginResp
-	45, // 100: core_api.system.SystemListMerchant:output_type -> core_api.SystemListMerchantsReq
-	83, // 101: core_api.system.SystemGetMerchant:output_type -> core_api.SystemGetMerchantResp
-	60, // 102: core_api.system.SystemCreateMerchant:output_type -> core_api.Response
-	60, // 103: core_api.system.SystemUpdateMerchant:output_type -> core_api.Response
-	84, // 104: core_api.system.SystemGetDashboard:output_type -> core_api.SystemGetDashboardResp
-	85, // 105: core_api.system.SystemGetOverallDashboard:output_type -> core_api.SystemGetOverallDashboardResp
-	86, // 106: core_api.sts.StsApplySignedUrl:output_type -> core_api.StsApplySignedUrlResp
-	87, // 107: core_api.sts.StsAIModify:output_type -> core_api.StsAIModifyResp
-	60, // 108: core_api.sts.StsSendVerifyCode:output_type -> core_api.Response
-	60, // 109: core_api.sts.StsView:output_type -> core_api.Response
-	55, // [55:110] is the sub-list for method output_type
-	0,  // [0:55] is the sub-list for method input_type
+	51, // 51: core_api.system.ResetMerchantPassword:input_type -> core_api.ResetMerchantPasswordReq
+	52, // 52: core_api.sts.StsApplySignedUrl:input_type -> core_api.StsApplySignedUrlReq
+	53, // 53: core_api.sts.StsAIModify:input_type -> core_api.StsAIModifyReq
+	54, // 54: core_api.sts.StsSendVerifyCode:input_type -> core_api.StsSendVerifyCodeReq
+	55, // 55: core_api.sts.StsView:input_type -> core_api.StsViewReq
+	56, // 56: core_api.user.Login:output_type -> core_api.LoginResp
+	57, // 57: core_api.user.SignUp:output_type -> core_api.SignUpResp
+	58, // 58: core_api.user.GetSetting:output_type -> core_api.GetSettingResp
+	59, // 59: core_api.user.ListActivities:output_type -> core_api.ListActivitiesResp
+	60, // 60: core_api.user.GetActivity:output_type -> core_api.GetActivityResp
+	61, // 61: core_api.user.DoFavorite:output_type -> core_api.Response
+	61, // 62: core_api.user.CancelFavorite:output_type -> core_api.Response
+	61, // 63: core_api.user.CreateBooking:output_type -> core_api.Response
+	61, // 64: core_api.user.CancelBookRecord:output_type -> core_api.Response
+	62, // 65: core_api.user.ListActivitiesByBookRecords:output_type -> core_api.ListActivitiesByBookRecordsResp
+	63, // 66: core_api.user.ListReservers:output_type -> core_api.ListReserversResp
+	61, // 67: core_api.user.CreateReserver:output_type -> core_api.Response
+	61, // 68: core_api.user.DeleteReserver:output_type -> core_api.Response
+	61, // 69: core_api.user.UpdateReserver:output_type -> core_api.Response
+	64, // 70: core_api.user.GetUserInfo:output_type -> core_api.GetUserInfoResp
+	61, // 71: core_api.user.UpdateUserInfo:output_type -> core_api.Response
+	61, // 72: core_api.user.UpdateNotice:output_type -> core_api.Response
+	65, // 73: core_api.user.GetMerchantInfo:output_type -> core_api.GetMerchantInfoResp
+	66, // 74: core_api.user.ListActivitiesByView:output_type -> core_api.ListActivitiesByViewResp
+	67, // 75: core_api.merchant.MerchantListActivities:output_type -> core_api.MerchantListActivitiesResp
+	61, // 76: core_api.merchant.MerchantCreateActivity:output_type -> core_api.Response
+	61, // 77: core_api.merchant.MerchantUpdateActivity:output_type -> core_api.Response
+	61, // 78: core_api.merchant.MerchantDeleteActivity:output_type -> core_api.Response
+	68, // 79: core_api.merchant.MerchantGetActivity:output_type -> core_api.MerchantGetActivityResp
+	61, // 80: core_api.merchant.MerchantTopActivity:output_type -> core_api.Response
+	69, // 81: core_api.merchant.MerchantLogin:output_type -> core_api.MerchantLoginResp
+	70, // 82: core_api.merchant.MerchantGetSetting:output_type -> core_api.MerchantGetSettingResp
+	70, // 83: core_api.merchant.MerchantUpdateSetting:output_type -> core_api.MerchantGetSettingResp
+	71, // 84: core_api.merchant.MerchantListBookRecords:output_type -> core_api.MerchantListBookRecordsResp
+	61, // 85: core_api.merchant.MerchantUpdateInfo:output_type -> core_api.Response
+	72, // 86: core_api.merchant.MerchantGetInfo:output_type -> core_api.MerchantGetInfoResp
+	73, // 87: core_api.merchant.GetMerchantInfoByUri:output_type -> core_api.GetMerchantInfoByUriResp
+	74, // 88: core_api.merchant.GetAd:output_type -> core_api.GetAdResp
+	61, // 89: core_api.merchant.SetAd:output_type -> core_api.Response
+	61, // 90: core_api.merchant.MerchantSetPassword:output_type -> core_api.Response
+	75, // 91: core_api.merchant.MerchantListUsers:output_type -> core_api.MerchantListUsersResp
+	76, // 92: core_api.merchant.MerchantListReservers:output_type -> core_api.MerchantListReserversResp
+	77, // 93: core_api.merchant.MerchantListViews:output_type -> core_api.MerchantListViewsResp
+	78, // 94: core_api.merchant.MerchantListFavorites:output_type -> core_api.MerchantListFavoritesResp
+	79, // 95: core_api.merchant.MerchantListAllBookRecords:output_type -> core_api.MerchantListAllBookRecordsResp
+	80, // 96: core_api.merchant.MerchantGetNewUserNumber:output_type -> core_api.MerchantGetNewUserNumberResp
+	81, // 97: core_api.merchant.MerchantGetActivityNumber:output_type -> core_api.MerchantGetActivityNumberResp
+	82, // 98: core_api.merchant.GetMerchantMoreInfo:output_type -> core_api.GetMerchantMoreInfoResp
+	61, // 99: core_api.merchant.UpdateMerchantMoreInfo:output_type -> core_api.Response
+	83, // 100: core_api.system.SystemLogin:output_type -> core_api.SystemLoginResp
+	45, // 101: core_api.system.SystemListMerchant:output_type -> core_api.SystemListMerchantsReq
+	84, // 102: core_api.system.SystemGetMerchant:output_type -> core_api.SystemGetMerchantResp
+	61, // 103: core_api.system.SystemCreateMerchant:output_type -> core_api.Response
+	61, // 104: core_api.system.SystemUpdateMerchant:output_type -> core_api.Response
+	85, // 105: core_api.system.SystemGetDashboard:output_type -> core_api.SystemGetDashboardResp
+	86, // 106: core_api.system.SystemGetOverallDashboard:output_type -> core_api.SystemGetOverallDashboardResp
+	61, // 107: core_api.system.ResetMerchantPassword:output_type -> core_api.Response
+	87, // 108: core_api.sts.StsApplySignedUrl:output_type -> core_api.StsApplySignedUrlResp
+	88, // 109: core_api.sts.StsAIModify:output_type -> core_api.StsAIModifyResp
+	61, // 110: core_api.sts.StsSendVerifyCode:output_type -> core_api.Response
+	61, // 111: core_api.sts.StsView:output_type -> core_api.Response
+	56, // [56:112] is the sub-list for method output_type
+	0,  // [0:56] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name

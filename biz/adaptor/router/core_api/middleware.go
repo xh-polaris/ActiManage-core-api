@@ -450,3 +450,8 @@ func _updatemerchantmoreinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _resetmerchantpasswordMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

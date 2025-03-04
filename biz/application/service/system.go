@@ -292,3 +292,22 @@ func (s SystemService) SystemGetOverallDashboard(ctx context.Context, req *core_
 	}
 	return resp, nil
 }
+
+func (s SystemService) ResetMerchantPassword(ctx context.Context, req *core_api.ResetMerchantPasswordReq) (resp *core_api.Response, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	response, err := s.SystemRpc.ResetMerchantPassword(ctx, &gensystem.ResetMerchantPasswordReq{
+		MerchantId:  req.MerchantId,
+		NewPassword: req.NewPassword,
+		AdminId:     userId,
+	})
+	if err != nil || response.Code != 0 {
+		return nil, err
+	}
+	resp.Code = 0
+	resp.Msg = "success"
+	return resp, nil
+}
