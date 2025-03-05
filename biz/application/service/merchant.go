@@ -377,7 +377,7 @@ func (s *MerchantService) MerchantUpdateInfo(ctx context.Context, req *core_api.
 	rpcReq := &gensystem.UpdateMerchantInfoReq{
 		Id:          userId,
 		Name:        req.Name,
-		Logo:        req.Name,
+		Logo:        req.Logo,
 		Description: req.Description,
 		Licences:    req.Licences,
 		Openings:    make([]*gensystem.Opening, 0, len(req.Openings)),
@@ -415,6 +415,7 @@ func (s *MerchantService) MerchantGetInfo(ctx context.Context, req *core_api.Mer
 		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
 		Location: &core_api.Location{},
 		Uri:      response.Uri,
+		Logo:     response.Logo,
 	}
 	err = copier.Copy(&resp, &response)
 	if err != nil {
