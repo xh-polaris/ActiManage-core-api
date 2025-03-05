@@ -452,6 +452,8 @@ func (s *MerchantService) GetMerchantInfoByUri(ctx context.Context, req *core_ap
 		Msg:        "success",
 		MerchantId: response.MerchantId,
 		Ad:         &core_api.Ad{},
+		Logo:       response.Logo,
+		Name:       response.Name,
 	}
 	err = copier.Copy(&resp.Ad, &response.Ad)
 	if err != nil {
