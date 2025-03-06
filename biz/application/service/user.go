@@ -674,6 +674,10 @@ func (s UserService) ListActivitiesByView(ctx context.Context, req *core_api.Lis
 		if err != nil || response.Code != 0 {
 			return nil, err
 		}
+		// 没找到，跳过
+		if response.Code == 1 {
+			continue
+		}
 		v := response.Activity
 		activity := &core_api.ListActivitiesByViewResp_Item{
 			Setting:  &core_api.ActivitySetting{},
