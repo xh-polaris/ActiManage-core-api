@@ -1,6 +1,7 @@
 module github.com/xh-polaris/ActiManage-core-api
 
 go 1.22.7
+toolchain go1.23.7
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
@@ -90,10 +91,10 @@ require (
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	go.uber.org/automaxprocs v1.5.3 // indirect
 	golang.org/x/arch v0.6.0 // indirect
-	golang.org/x/net v0.31.0 // indirect
-	golang.org/x/sync v0.9.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/text v0.20.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241104194629-dd2ea8efbc28 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241104194629-dd2ea8efbc28 // indirect
