@@ -15,15 +15,18 @@ import (
 	"github.com/xh-polaris/ActiManage-core-api/provider"
 	"github.com/xh-polaris/gopkg/hertz/middleware"
 	logx "github.com/xh-polaris/gopkg/util/log"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/contrib/propagators/b3"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
+	"net/http"
 )
 
 func Init() {
 	provider.Init()
 	hlog.SetLogger(logx.NewHlogLogger())
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(b3.New(), propagation.Baggage{}, propagation.TraceContext{}))
+	http.DefaultTransport = otelhttp.NewTransport(http.DefaultTransport)
 }
 
 func main() {
