@@ -211,7 +211,7 @@ func (s UserService) ListActivities(ctx context.Context, req *core_api.ListActiv
 			return nil, err
 		}
 		activity.Favorite = fvResp.Favorite
-		activity.View = fvResp.View
+		activity.View = v.View
 
 		// 是否收藏
 		favoriteResp, err := s.UserRpc.CheckFavorite(ctx, &genuser.CheckFavoriteReq{
@@ -286,7 +286,7 @@ func (s UserService) GetActivity(ctx context.Context, req *core_api.GetActivityR
 		return nil, err
 	}
 	resp.Favorite = fvResp.Favorite
-	resp.View = fvResp.View
+	resp.View = v.View
 
 	// 预约判断
 	bookResp, err := s.UserRpc.CheckBookRecordByUserIdAndActivityId(ctx, &genuser.CheckBookRecordByUserIdAndActivityIdReq{
@@ -703,7 +703,7 @@ func (s UserService) ListActivitiesByView(ctx context.Context, req *core_api.Lis
 			return nil, err
 		}
 		activity.Favorite = fvResp.Favorite
-		activity.View = fvResp.View
+		activity.View = v.View
 		activities = append(activities, activity)
 	}
 	return &core_api.ListActivitiesByViewResp{
