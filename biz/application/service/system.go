@@ -25,6 +25,7 @@ type ISystemService interface {
 	SystemUpdateMerchant(ctx context.Context, req *core_api.SystemUpdateMerchantReq) (resp *core_api.Response, err error)
 	SystemGetDashboard(ctx context.Context, req *core_api.SystemGetDashboardReq) (resp *core_api.SystemGetDashboardResp, err error)
 	SystemGetOverallDashboard(ctx context.Context, req *core_api.SystemGetOverallDashboardReq) (resp *core_api.SystemGetOverallDashboardResp, err error)
+	DeleteMerchant(ctx context.Context, req *core_api.DeleteMerchantReq) (resp *core_api.Response, err error)
 }
 
 type SystemService struct {
@@ -312,6 +313,27 @@ func (s SystemService) ResetMerchantPassword(ctx context.Context, req *core_api.
 	})
 	if err != nil || response.Code != 0 {
 		return nil, err
+	}
+	resp = &core_api.Response{
+		Code: 0,
+		Msg:  "success",
+	}
+	return resp, nil
+}
+
+func (s SystemService) DeleteMerchant(ctx context.Context, req *core_api.DeleteMerchantReq) (resp *core_api.Response, err error) {
+	userId, err := adaptor.ExtractUserId(ctx)
+	if err != nil || userId == "" {
+		return nil, consts.ErrNotAuthentication
+	}
+
+	response, err := s.SystemRpc.DeleteMerchant(ctx, &gensystem.DeleteMerchantReq{
+		AdminId:    userId,
+		MerchantId: req.Id,
+	})
+	if err != nil || response.Code != 0 {
+		log.Error("删除失败:err", err)
+		return &core_api.Response{Code: response.Code, Msg: "删除失败"}, nil
 	}
 	resp = &core_api.Response{
 		Code: 0,

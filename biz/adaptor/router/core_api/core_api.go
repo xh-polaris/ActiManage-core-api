@@ -108,6 +108,7 @@ func Register(r *server.Hertz) {
 		{
 			_merchant0 := _system.Group("/merchant", _merchant0Mw()...)
 			_merchant0.POST("/create", append(_systemcreatemerchantMw(), core_api.SystemCreateMerchant)...)
+			_merchant0.POST("/delete", append(_deletemerchantMw(), core_api.DeleteMerchant)...)
 			_merchant0.POST("/get", append(_systemgetmerchantMw(), core_api.SystemGetMerchant)...)
 			_merchant0.POST("/list", append(_systemlistmerchantMw(), core_api.SystemListMerchant)...)
 			_merchant0.POST("/reset", append(_resetmerchantpasswordMw(), core_api.ResetMerchantPassword)...)

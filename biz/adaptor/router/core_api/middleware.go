@@ -455,3 +455,8 @@ func _resetmerchantpasswordMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _deletemerchantMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
