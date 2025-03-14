@@ -380,6 +380,8 @@ func (s *MerchantService) MerchantUpdateInfo(ctx context.Context, req *core_api.
 		Logo:        req.Logo,
 		Description: req.Description,
 		Licences:    req.Licences,
+		Establish:   req.Establish,
+		Capital:     req.Capital,
 		Openings:    make([]*gensystem.Opening, 0, len(req.Openings)),
 		Location:    &gensystem.Location{},
 	}
@@ -410,12 +412,14 @@ func (s *MerchantService) MerchantGetInfo(ctx context.Context, req *core_api.Mer
 		return nil, err
 	}
 	resp = &core_api.MerchantGetInfoResp{
-		Code:     0,
-		Msg:      "success",
-		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
-		Location: &core_api.Location{},
-		Uri:      response.Uri,
-		Logo:     response.Logo,
+		Code:      0,
+		Msg:       "success",
+		Openings:  make([]*core_api.Opening, 0, len(response.Openings)),
+		Location:  &core_api.Location{},
+		Uri:       response.Uri,
+		Logo:      response.Logo,
+		Establish: response.Establish,
+		Capital:   response.Capital,
 	}
 	err = copier.Copy(&resp, &response)
 	if err != nil {

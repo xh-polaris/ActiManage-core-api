@@ -97,10 +97,12 @@ func (s SystemService) SystemGetMerchant(ctx context.Context, req *core_api.Syst
 		return nil, err
 	}
 	resp = &core_api.SystemGetMerchantResp{
-		Code:     0,
-		Msg:      "success",
-		Location: &core_api.Location{},
-		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
+		Code:      0,
+		Msg:       "success",
+		Location:  &core_api.Location{},
+		Openings:  make([]*core_api.Opening, 0, len(response.Openings)),
+		Establish: response.Establish,
+		Capital:   response.Capital,
 	}
 	err = copier.Copy(&resp, &response)
 	if err != nil {
@@ -123,6 +125,8 @@ func (s SystemService) SystemCreateMerchant(ctx context.Context, req *core_api.S
 		Location:    &gensystem.Location{},
 		Openings:    make([]*gensystem.Opening, 0, len(req.Openings)),
 		Logo:        req.Logo,
+		Establish:   req.Establish,
+		Capital:     req.Capital,
 	}
 	err = copier.Copy(&rpcReq, &req)
 	if err != nil {
@@ -143,9 +147,11 @@ func (s SystemService) SystemUpdateMerchant(ctx context.Context, req *core_api.S
 	rpcReq := &gensystem.UpdateMerchantReq{
 		AdminId: userId,
 		Merchant: &gensystem.Merchant{
-			Id:       req.MerchantId,
-			Location: &gensystem.Location{},
-			Openings: make([]*gensystem.Opening, 0, len(req.Openings)),
+			Id:        req.MerchantId,
+			Establish: req.Establish,
+			Capital:   req.Capital,
+			Location:  &gensystem.Location{},
+			Openings:  make([]*gensystem.Opening, 0, len(req.Openings)),
 		},
 	}
 	err = copier.Copy(&rpcReq.Merchant, &req)

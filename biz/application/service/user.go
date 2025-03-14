@@ -638,10 +638,12 @@ func (s UserService) GetMerchantInfo(ctx context.Context, req *core_api.GetMerch
 		return nil, err
 	}
 	resp = &core_api.GetMerchantInfoResp{
-		Code:     0,
-		Msg:      "success",
-		Openings: make([]*core_api.Opening, 0, len(response.Openings)),
-		Location: &core_api.Location{},
+		Code:      0,
+		Msg:       "success",
+		Openings:  make([]*core_api.Opening, 0, len(response.Openings)),
+		Location:  &core_api.Location{},
+		Establish: response.Establish,
+		Capital:   response.Capital,
 	}
 	err = copier.Copy(&resp, &response)
 	if err != nil {

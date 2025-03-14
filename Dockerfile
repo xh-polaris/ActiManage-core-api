@@ -22,7 +22,7 @@ RUN sh ./build.sh
 
 FROM ubuntu:22.04
 
-ENV TZ Asia/Shanghai
+ENV TZ Asia/Tokyo
 
 WORKDIR /app
 COPY --from=builder /build/output /app
