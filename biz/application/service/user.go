@@ -399,7 +399,16 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 	receiptResp, err := s.UserRpc.CreateReceipt(ctx, &genuser.CreateReceiptReq{
 		UserId:     userId,
 		ActivityId: req.ActivityId,
-		Msg:        fmt.Sprintf("活动预约成功!\n\r活动时间为%s-%s,活动地点为%s,预约到店时间为%s,请按时到达", time.Unix(activity.Setting.Start, 0).String(), time.Unix(activity.Setting.End, 0).String(), activity.Location.Text, time.Unix(req.Arrival, 0).String()),
+		Msg: fmt.Sprintf(
+			"活动预约成功！\n\n"+
+				"活动时间: %s - %s\n"+
+				"活动地点: %s\n"+
+				"预约到店时间: %s\n\n"+
+				"请按时到达，祝您活动愉快！",
+			time.Unix(activity.Setting.Start, 0).Format("2006-01-02 15:04:05"),
+			time.Unix(activity.Setting.End, 0).Format("2006-01-02 15:04:05"),
+			activity.Location.Text,
+			time.Unix(req.Arrival, 0).Format("2006-01-02 15:04:05")),
 	})
 	if err != nil || receiptResp.Code != 0 {
 		log.Error("回执创建失败:", err)
