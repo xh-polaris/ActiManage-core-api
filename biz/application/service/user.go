@@ -359,6 +359,14 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 	}
 	activity := actiResp.Activity
 
+	// 获取商家信息
+	merchant, err := s.SystemRpc.GetMerchantInfo(ctx, &gensystem.GetMerchantInfoReq{
+		Id: activity.MerchantId,
+	})
+	if err != nil || merchant.Code != 0 {
+		return nil, err
+	}
+
 	check, err := s.UserRpc.CheckBookRecordByUserIdAndActivityId(ctx, &genuser.CheckBookRecordByUserIdAndActivityIdReq{
 		UserId:     userId,
 		ActivityId: activity.Id,
@@ -399,16 +407,7 @@ func (s UserService) CreateBooking(ctx context.Context, req *core_api.CreateBook
 	receiptResp, err := s.UserRpc.CreateReceipt(ctx, &genuser.CreateReceiptReq{
 		UserId:     userId,
 		ActivityId: req.ActivityId,
-		Msg: fmt.Sprintf(
-			"活动预约成功！\n\n"+
-				"活动时间: %s - %s\n"+
-				"活动地点: %s\n"+
-				"预约到店时间: %s\n\n"+
-				"请按时到达，祝您活动愉快！",
-			time.Unix(activity.Setting.Start, 0).Format("2006-01-02 15:04:05"),
-			time.Unix(activity.Setting.End, 0).Format("2006-01-02 15:04:05"),
-			activity.Location.Text,
-			time.Unix(req.Arrival, 0).Format("2006-01-02 15:04:05")),
+		Msg:        fmt.Sprintf("{\"merchant\": \"%s\",\"activity\":\"%s\"}", merchant.Name, activity.Name),
 	})
 	if err != nil || receiptResp.Code != 0 {
 		log.Error("回执创建失败:", err)
