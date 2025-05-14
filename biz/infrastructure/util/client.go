@@ -44,7 +44,7 @@ func (c *HttpClient) CallGLM(text string, lang string) (map[string]interface{}, 
 				{
 					"type": "text",
 					"text": "这是一个活动的营销文案:" + text + "请帮我润色，要求有吸引力，能吸引顾客参加, 给我润色后的文案，不要有额外的输出。有适当的emoji和生动的语言，篇幅不要太短" +
-						"并用指定语言输出:" + lang,
+						"并用日语输出",
 				},
 			},
 		},
