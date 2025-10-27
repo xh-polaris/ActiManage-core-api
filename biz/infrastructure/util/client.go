@@ -5,11 +5,12 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/config"
-	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/consts"
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/config"
+	"github.com/xh-polaris/ActiManage-core-api/biz/infrastructure/consts"
 )
 
 // HttpClient 是一个简单的 HTTP 客户端
@@ -53,6 +54,9 @@ func (c *HttpClient) CallGLM(text string, lang string) (map[string]interface{}, 
 	body := make(map[string]interface{})
 	body["model"] = config.GetConfig().GLMModel
 	body["messages"] = message
+	body["thinking"] = map[string]interface{}{
+		"type": "disabled",
+	}
 
 	resp, err := c.SendRequest(consts.Post, consts.GlmUrl, header, body)
 	fmt.Println("模型响应:", resp)
