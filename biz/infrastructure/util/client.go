@@ -58,7 +58,7 @@ func (c *HttpClient) CallGLM(text string, lang string) (map[string]interface{}, 
 		"type": "disabled",
 	}
 
-	resp, err := c.SendRequest(consts.Post, consts.GlmUrl, header, body)
+	resp, err := c.SendRequest(consts.Post, config.GetConfig().GLMUrl, header, body)
 	fmt.Println("模型响应:", resp)
 	if err != nil {
 		return nil, err

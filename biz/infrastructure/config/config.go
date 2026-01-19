@@ -22,6 +22,7 @@ type Config struct {
 	Auth               Auth
 	GLMKey             string
 	GLMModel           string
+	GLMUrl             string
 	OSSAccessKeyID     string
 	OSSAccessKeySecret string
 }
