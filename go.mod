@@ -5,7 +5,7 @@ go 1.22.7
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
 	github.com/cloudwego/hertz v0.9.5
-	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golang-jwt/jwt/v4 v4.5.2
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.5.0
 	github.com/hertz-contrib/monitor-prometheus v0.1.3
